@@ -1,0 +1,34 @@
+{
+  "name": "begood-nyc",
+  "version": "1.0.0",
+  "description": "curated volunteer opportunities in nyc",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon -e html,js,css app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stephharris/begood.nyc.git"
+  },
+  "keywords": [
+    "volunteer",
+    "nyc"
+  ],
+  "author": "Steph Harris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stephharris/begood.nyc/issues"
+  },
+  "homepage": "https://github.com/stephharris/begood.nyc#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.11.0",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.27.0",
+    "webpack": "^1.13.3"
+  }
+}
