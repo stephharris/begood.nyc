@@ -2,22 +2,23 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 // routes
 
-app.set('view engine', 'js'); //js is file extension of views (JSX)
+app.set('view engine', 'js'); // js is file extension of views (JSX)
 app.set('views', path.join(__dirname, '/views')) // all the JSX
 
-// body-parsing middleware
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
+require('./server/configure')(app); // body-parsing middleware
 
 app.use(express.static(__dirname + '/node_modules'));
-app.use(express.static(path.join(__dirname, '/public'))); // all stylesheets
+app.use(express.static(path.join(__dirname, '/public')));
 
-app.get('/', function(req, res){
-  res.send('hiiii')
-})
+
+// app.get('/', function(req, res){
+//   res.send('hiiii')
+// })
+app.get('/*', function (req, res) {
+    res.sendFile(app.get('indexHTMLPath'));
+});
 
 app.use(function (err, req, res, next) {
     console.error(err);
