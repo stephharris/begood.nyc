@@ -4,7 +4,7 @@
   "description": "curated volunteer opportunities in nyc",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -e html,js,css app.js",
+    "start": "webpack -w & nodemon --watch server -e js,html app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,6 +40,7 @@
     "pg-hstore": "^2.3.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-router": "^3.0.0",
     "sequelize": "^3.27.0",
     "webpack": "^1.13.3"
   }
