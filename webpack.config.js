@@ -1,6 +1,6 @@
 'use strict';
 
-//const debug = process.env.NODE_ENV !== "production";
+// this file runs when process.env.NODE_ENV !== "production";
 const webpack = require('webpack');
 const path = require('path');
 
@@ -18,15 +18,11 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   module: {
-    loaders: [
+    loaders: [ // this loads and bundles all our front-end styles/js files
       {
         test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader'
-        // query: {
-        //   presets: ['react', 'es2015'],
-        //   plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy']
-        // }
       },
       {
         test: /\.css?$/,
