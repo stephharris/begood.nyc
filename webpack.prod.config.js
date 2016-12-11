@@ -1,22 +1,32 @@
 'use strict';
 
-//const debug = process.env.NODE_ENV !== "production";
+const debug = process.env.NODE_ENV !== "production";
 const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './views/react/index.js',
+  entry: ['./views/react/index.js'],
+
   output: {
-    path: __dirname,
-    filename: './public/bundle.js'
+    path: path.join(__dirname, 'public'),
+    filename: 'bundle.js',
+    publicPath: '/public/'
   },
+
   context: __dirname,
-  devtool: 'eval',
+  devtool: 'source-map',
   // only runs if we're in production
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.optimize.DedupePlugin(),
+    // new webpack.optimize.OccurenceOrderPlugin,
+    new webpack.optimize.UglifyJSPlugin({ mangle: false, sourcemap: false, minimize: true, compress: { warnings: false } }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    })
   ],
+
   module: {
     loaders: [
       {
