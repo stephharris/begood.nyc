@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const morgan = require('morgan');
 let port = process.env.PORT || 3001;
+let models = require('./server/db/models/index.js');
+let Listing = models.Listing;
 
 app.set('view engine', 'js'); // js is file extension of views (JSX)
 app.set('views', path.join(__dirname, '/views')) // all the JSX
@@ -16,7 +18,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api', require('./server/routes'));
 app.use('/admin', require('./server/routes/admin.js'));
 
-//app.get('/admin', require('./server/routes/admin.js'));
+
 app.get('/*', function (req, res) {
     res.sendFile(app.get('indexHTMLPath'));
 });
@@ -26,7 +28,13 @@ app.use(function (err, req, res, next) {
     res.status(500).send(err.message);
 });
 
-app.listen(port, function () {
-  console.log('Server is listening on port 3001!');
-})
 
+Listing.sync()
+    .then(function () {
+      console.log('Sequelize models synced to Postgres')
+    })
+    .then(function () {
+      app.listen(port, function () {
+        console.log('Server is listening on port 3001!');
+      });
+    });

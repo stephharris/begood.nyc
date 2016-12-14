@@ -1,6 +1,7 @@
 'use strict';
 
-// this file runs when process.env.NODE_ENV !== "production";
+// this file runs when process.env.NODE_ENV !== "production"
+// only real differences from webpack.prod.config.js are plugins & devtool
 const webpack = require('webpack');
 const path = require('path');
 
@@ -12,7 +13,6 @@ module.exports = {
   },
   context: __dirname,
   devtool: 'eval',
-  // only runs if we're in production
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
