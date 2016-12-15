@@ -33,7 +33,7 @@ let Listing = db.define('listing', {
   // this will be a dropdown menu
   borough: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
     // validate: {
     //   isIn: [['manhattan', 'queens', 'brooklyn', 'the bronx', 'bronx', 'staten island']],
     //   msg: 'must be an nyc borough'
@@ -62,11 +62,17 @@ let Listing = db.define('listing', {
   times: {
     type: Sequelize.STRING,
     alowNull: true,
-    defaultValue: 'hours tbd'
+    defaultValue: 'exact times tbd'
+  },
+
+  hours: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    defaultValue: ''
   },
 
   description: {
-    type: Sequelize.STRING(325),
+    type: Sequelize.STRING(350),
     allowNull: false
   },
 
@@ -82,15 +88,15 @@ let Listing = db.define('listing', {
   requirements: {
     type: Sequelize.STRING,
     allowNull: true,
-    defaultValue: 'no requirements specified'
+    defaultValue: 'none specified'
   },
 
   tags: {
     type: Sequelize.ARRAY(Sequelize.TEXT),
-    allowNull: false,
-    validate: {
-      isArray: true
-    }
+    allowNull: false
+    // validate: {
+    //   isArray: true
+    // }
   },
 
   author: {
@@ -100,7 +106,6 @@ let Listing = db.define('listing', {
 
   email: {
     type: Sequelize.STRING,
-    unique: true,
     validate: {
      isEmail: true
     }
@@ -110,8 +115,7 @@ let Listing = db.define('listing', {
   // this one is specifically the uri in url-bar so users can share a link to the listing
   urlTitle: {
     type: Sequelize.STRING,
-    unique: true,
-    allowNull: false
+    unique: true
   }
 }, {
 
@@ -135,5 +139,6 @@ let Listing = db.define('listing', {
 
 
 module.exports = {
-  Listing: Listing
+  Listing: Listing,
+  db: db
 };

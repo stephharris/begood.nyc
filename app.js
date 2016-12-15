@@ -29,7 +29,7 @@ app.use(function (err, req, res, next) {
 });
 
 
-Listing.sync()
+Listing.sync({})
     .then(function () {
       console.log('Sequelize models synced to Postgres')
     })
