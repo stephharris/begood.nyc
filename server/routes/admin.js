@@ -7,9 +7,7 @@ router.get('/', function(req, res, next){
   res.send('admin panel')
 })
 
-// router.post('/', function(req, res, next){
-
-// })
+// will eventually need a PUT Route & POST route from emails :)
 
 router.use(function(req, res){
   res.status(404).end();
