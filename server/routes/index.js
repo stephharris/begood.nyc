@@ -9,11 +9,12 @@ module.exports = router;
 
 router.get('/', function(req, res, next){
   console.log('hit the router in the back');
-  res.json(test)
- // .catch(next);
-  // Listing.findAll({})
-  // .then( listings => res.json(listings))
-  // .catch(next);
+  // res.json(test)
+  Listing.findAll({})
+  .then( (listings) => {
+  console.log('listings***********',listings)
+  res.json(listings)})
+  .catch(next);
 })
 
 router.post('/', function(req, res, next){

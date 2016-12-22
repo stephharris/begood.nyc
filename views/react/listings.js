@@ -13,12 +13,12 @@ export default class Listings extends React.Component {
   }
 
   displayListings(list){
-  //  console.log('list', list);
+  console.log('list', list);
     return list ? list.map((item) => {
       return (
-        <div key={item.company}>
-        <h3>{ item.company }</h3>
-        <h3 style={{color: 'red'}}>{ item.description }</h3>
+        <div key={item.id}>
+        <h3>{ item.title }</h3>
+        <h3 style={{color: 'red'}}>{ item.briefDescription }</h3>
         </div>
       )
     }) : '';

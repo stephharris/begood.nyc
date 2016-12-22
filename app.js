@@ -29,7 +29,7 @@ app.use(function (err, req, res, next) {
 });
 
 
-Listing.sync({})
+Listing.sync()
     .then(function () {
       console.log('Sequelize models synced to Postgres')
     })
@@ -37,4 +37,4 @@ Listing.sync({})
       app.listen(port, function () {
         console.log('Server is listening on port 3001!');
       });
-    });
+});

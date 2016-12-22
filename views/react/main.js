@@ -2,14 +2,13 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-//import { Router, Route, hashHistory } from "react-router";
+import { Router, Route, hashHistory } from "react-router";
 
-import About from './about.js';
-import AddOpportunity from './add-opportunity.js';
+// import About from './about.js';
+// import AddOpportunity from './add-opportunity.js';
 import Listings from './listings.js';
 
-
-export default class Main extends React.Component {
+class Main extends React.Component {
   constructor(){
     super();
   }
@@ -28,3 +27,5 @@ export default class Main extends React.Component {
     )
   }
 }
+
+export { Main };

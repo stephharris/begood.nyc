@@ -8,6 +8,18 @@ let Listing = db.define('listing', {
     values: ['active', 'pending', 'expired']
   },
 
+  author: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+
+  personalEmail: {
+    type: Sequelize.STRING,
+    validate: {
+     isEmail: true
+    }
+  },
+
   title: {
     type: Sequelize.STRING(45),
     allowNull: false,
@@ -16,10 +28,32 @@ let Listing = db.define('listing', {
     }
   },
 
-  // Saturday, January 7 || Ongoing || First Monday, Every Month || Scheduling Flexible
+  briefDescription: {
+    type: Sequelize.STRING, //(90)
+    allowNull: false,
+    set: function(val){
+      this.setDataValue('briefDescription', val.toLowerCase());
+    }
+  },
+
+  // INPUTS: Saturday, January 7 || Ongoing || Weekly || Tuesdays, etc.
   timeCommitment: {
     type: Sequelize.STRING(30),
-    allowNull: false
+    allowNull: false,
+    // set ensures every first letter is capitalized
+    set: function(val) {
+      let result = '';
+      for(let i = 0; i < val.length; i++) {
+        i === 0 || val[i - 1] === ' ' ? result += val[i].toUpperCase() : result += val[i];
+      }
+      this.setDataValue('timeCommitment', result);
+    }
+  },
+
+  hours: {
+    type: Sequelize.STRING(30),
+    allowNull: true,
+    defaultValue: 'scheduling tbd'
   },
 
   neighborhood: {
@@ -30,50 +64,45 @@ let Listing = db.define('listing', {
     }
   },
 
-  // this will be a dropdown menu
+  // dropdown menu
   borough: {
     type: Sequelize.STRING,
     allowNull: false
-    // validate: {
-    //   isIn: [['manhattan', 'queens', 'brooklyn', 'the bronx', 'bronx', 'staten island']],
-    //   msg: 'must be an nyc borough'
-    // }
   },
 
-  keyphrase: {
-    type: Sequelize.STRING(70),
-    allowNull: false
-  },
-
-  location: {
+  meetingLocation: {
     type: Sequelize.STRING(60),
-    allowNull: false
-  },
-
-  expires: {
-    type: Sequelize.DATEONLY, // this will be a string
     allowNull: false,
-    validate: {
-      isAfter: new Date().toJSON().slice(0,10)
+    set: function(val) {
+      let result = '';
+      for(let i = 0; i < val.length; i++) {
+        i === 0 || val[i - 1] === ' ' ? result += val[i].toUpperCase() : result += val[i];
+      }
+      this.setDataValue('meetingLocation', result);
     }
   },
 
-  // i.e. 12:30 - 1:30 (time of volunteer project)
-  times: {
-    type: Sequelize.STRING,
-    alowNull: true,
-    defaultValue: 'exact times tbd'
+  // come back to this one
+  tags: {
+    type: Sequelize.ARRAY(Sequelize.TEXT),
+    allowNull: false,
+    // validate: {
+    //   isArray: true
+    // }
   },
 
-  hours: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    defaultValue: ''
-  },
-
-  description: {
-    type: Sequelize.STRING(350),
+  fullDescription: {
+    type: Sequelize.STRING(330),
     allowNull: false
+  },
+
+  requirements: {
+    type: Sequelize.STRING(130),
+    allowNull: true,
+    defaultValue: 'none specified',
+    set: function(val) {
+      this.setDataValue('briefDescription', val.toLowerCase());
+    }
   },
 
   // url under 'more info.' of expanded listing
@@ -85,57 +114,47 @@ let Listing = db.define('listing', {
     }
   },
 
-  requirements: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    defaultValue: 'none specified'
-  },
-
-  tags: {
-    type: Sequelize.ARRAY(Sequelize.TEXT),
-    allowNull: false
-    // validate: {
-    //   isArray: true
-    // }
-  },
-
-  author: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-
-  email: {
+  contactEmail: {
     type: Sequelize.STRING,
     validate: {
      isEmail: true
     }
   },
 
-  // different from urlMoreInfo
-  // this one is specifically the uri in url-bar so users can share a link to the listing
-  urlTitle: {
+  expires: {
+    type: Sequelize.DATEONLY, // this will be a string
+    allowNull: false,
+    validate: {
+      isAfter: new Date().toJSON().slice(0,10)
+    }
+  },
+
+  // listing uri
+  routeTitle: {
     type: Sequelize.STRING,
     unique: true
   }
 }, {
 
-// virtuals on the instance of Listing (defining urlTitle)
+// virtuals on the instance of Listing (defining our uri's)
 
   hooks : {
     beforeValidate : function(listing){
       if(listing.title){
-      listing.urlTitle = listing.title.replace(/\s+/g, '_').replace(/\W/g, '');
+      listing.routeTitle = listing.title.replace(/\s+/g, '_').replace(/\W/g, '');
       }
     }
   },
 
   getterMethods : {
     route: function(){
-      return '/listings/' + this.urlTitle
+      return '/listings/' + this.routeTitle
     }
   }
 
 });
+
+// need to write a virtual that checks for status
 
 
 module.exports = {
