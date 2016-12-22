@@ -28,9 +28,7 @@ export default class Listings extends React.Component {
     fetch('/api')
     .then(res => res.json())
     .then(data => {
-      console.log('data', data)
       this.setState({ listings: data })
-      console.log('data', this.state.listings)
     })
     .catch(err => {
       console.error('error', err)
