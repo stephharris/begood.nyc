@@ -101,7 +101,7 @@ let Listing = db.define('listing', {
     allowNull: true,
     defaultValue: 'none specified',
     set: function(val) {
-      this.setDataValue('briefDescription', val.toLowerCase());
+      this.setDataValue('requirements', val.toLowerCase());
     }
   },
 
