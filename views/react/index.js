@@ -1,10 +1,12 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-// import { Router, Route, IndexRoute, Link } from 'react-router';
+import { render } from 'react-dom';
 
-import Main from './main.js';
+import App from './app.js';
 
-// ReactDOM.render(<Main/>, document.getElementById('app'));
+render(<App/>, document.querySelector('#app'))
 
+if (module.hot) {
+  module.hot.accept();
+}

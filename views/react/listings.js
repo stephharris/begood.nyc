@@ -5,48 +5,41 @@ import ReactDOM from 'react-dom';
 
 export default class Listings extends React.Component {
 
-  constructor(){
-    super();
-    this.state = {
-      listings: []
-    }
+  constructor(props){
+    super(props);
   }
 
-  displayListings(list){
-  console.log('list', list);
-    return list ? list.map((item) => {
+  displayListings(listings){
+    return listings ? listings.map((listing) => {
       return (
-        <div key={item.id}>
-        <h3>{ item.title }</h3>
-        <h3 style={{color: 'red'}}>{ item.briefDescription }</h3>
-        </div>
+
+          <div id="listing" key={listing.id}>
+            <div className="groupA">
+              <h2>{ listing.title }</h2>
+              <h3 className="commitment">{ listing.timeCommitment }</h3>
+              <h3 className="time">{ listing.hours }</h3>
+            </div>
+            <div className="groupB">
+              <h3>{ listing.neighborhood },</h3>
+              <h3>{ listing.borough }</h3>
+            </div>
+            <div className="groupC">
+              <h3 className="blurb">{ listing.briefDescription }</h3>
+            </div>
+          </div>
+
       )
     }) : '';
-  }
-
-  componentDidMount() {
-    fetch('/api')
-    .then(res => res.json())
-    .then(data => {
-      console.log('data', data)
-      this.setState({ listings: data })
-      console.log('data', this.state.listings)
-    })
-    .catch(err => {
-      console.error('error', err)
-    });
   }
 
   render() {
 
     return (
       <div>
-      <h1>Listingssss</h1>
-      { this.displayListings(this.state.listings) }
+      { this.displayListings(this.props.listings) }
       </div>
     )
   }
 
 }
-
 

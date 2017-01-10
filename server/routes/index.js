@@ -12,7 +12,6 @@ router.get('/', function(req, res, next){
   // res.json(test)
   Listing.findAll({})
   .then( (listings) => {
-  console.log('listings***********',listings)
   res.json(listings)})
   .catch(next);
 })
