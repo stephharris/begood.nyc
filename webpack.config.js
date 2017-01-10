@@ -11,18 +11,22 @@ module.exports = {
     path: __dirname,
     filename: './public/bundle.js'
   },
+  devServer: {
+    inline: true,
+    port: 3001
+  },
   context: __dirname,
   devtool: 'source-map',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [ // this loads and bundles all our front-end styles/js files
       {
-        test: /\.js?$/,
+        test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: 'babel-loader',
          query: {
           presets: ['es2015', 'react']
         }

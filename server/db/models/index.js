@@ -29,7 +29,7 @@ let Listing = db.define('listing', {
   },
 
   briefDescription: {
-    type: Sequelize.STRING, //(90)
+    type: Sequelize.STRING(95),
     allowNull: false,
     set: function(val){
       this.setDataValue('briefDescription', val.toLowerCase());
@@ -148,7 +148,7 @@ let Listing = db.define('listing', {
 
   getterMethods : {
     route: function(){
-      return '/listings/' + this.routeTitle
+      return this.id + '_' + this.routeTitle;
     }
   }
 
