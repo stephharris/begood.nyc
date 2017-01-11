@@ -25652,17 +25652,21 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { id: 'post' },
+	          'a',
+	          { style: { textDecoration: 'none' }, target: '_blank', href: 'https://docs.google.com/forms/d/e/1FAIpQLSdKFCn5ZVsJoeT1Um7UQwt6giQ87qOM9pgwE2Vhdem_Pcwpiw/viewform' },
 	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'submit an opportunity'
-	          ),
-	          _react2.default.createElement(
-	            'svg',
-	            { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 216 216' },
-	            _react2.default.createElement('path', { d: 'M204.3 92.9h-81.2V11.7C123.1 8 118 0 108 0S92.9 8 92.9 11.7v81.2H11.7C8 92.9 0 98 0 108s8 15.1 11.7 15.1h81.2v81.2c0 3.7 5 11.7 15.1 11.7s15.1-8 15.1-11.7v-81.2h81.2c3.7 0 11.7-5 11.7-15.1S208 92.9 204.3 92.9z' })
+	            'div',
+	            { id: 'post' },
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'submit an opportunity'
+	            ),
+	            _react2.default.createElement(
+	              'svg',
+	              { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 216 216' },
+	              _react2.default.createElement('path', { d: 'M204.3 92.9h-81.2V11.7C123.1 8 118 0 108 0S92.9 8 92.9 11.7v81.2H11.7C8 92.9 0 98 0 108s8 15.1 11.7 15.1h81.2v81.2c0 3.7 5 11.7 15.1 11.7s15.1-8 15.1-11.7v-81.2h81.2c3.7 0 11.7-5 11.7-15.1S208 92.9 204.3 92.9z' })
+	            )
 	          )
 	        ),
 	        this.state.filterActive ? _react2.default.createElement(_filter2.default, { toggleCategory: this.toggleCategory.bind(this), toggle: this.toggleFilter.bind(this), active: this.state.filterActive, categories: this.state.categories }) : _react2.default.createElement(
@@ -25718,60 +25722,153 @@
 	  function Listings(props) {
 	    _classCallCheck(this, Listings);
 	
-	    return _possibleConstructorReturn(this, (Listings.__proto__ || Object.getPrototypeOf(Listings)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Listings.__proto__ || Object.getPrototypeOf(Listings)).call(this, props));
+	
+	    _this.state = {
+	      clicked: {}
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(Listings, [{
+	    key: 'toggleView',
+	    value: function toggleView(route) {
+	      if (this.state.clicked === route) {
+	        this.setState({ clicked: {} });
+	      } else {
+	        this.setState({ clicked: route });
+	      }
+	    }
+	  }, {
 	    key: 'displayListings',
 	    value: function displayListings(listings) {
-	      return listings ? listings.map(function (listing) {
-	        return _react2.default.createElement(
-	          'div',
-	          { id: 'listing', key: listing.id },
-	          _react2.default.createElement(
+	      var _this2 = this;
+	
+	      return listings ? listings.map(function (listing, i) {
+	        if (_this2.state.clicked === listing.route) {
+	          return _react2.default.createElement(
 	            'div',
-	            { className: 'groupA' },
+	            { key: i, onClick: _this2.toggleView.bind(_this2, listing.route), className: 'listing-expanded' },
 	            _react2.default.createElement(
-	              'h2',
-	              null,
-	              listing.title
+	              'div',
+	              { className: 'groupA' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                listing.title
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'commitment' },
+	                listing.timeCommitment
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'time' },
+	                listing.hours
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'address' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  listing.meetingLocation
+	                ),
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  listing.neighborhood,
+	                  ', ',
+	                  listing.borough
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: listing.contactEmail },
+	                'contact'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: listing.moreInfoUrl },
+	                'more info'
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'tags' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { style: { fontFamily: 'Avenir Black' } },
+	                  'TAGS:'
+	                ),
+	                listing.tags
+	              )
 	            ),
 	            _react2.default.createElement(
-	              'h3',
-	              { className: 'commitment' },
-	              listing.timeCommitment
+	              'div',
+	              { className: 'groupD' },
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'description' },
+	                listing.fullDescription
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'REQUIREMENTS: ',
+	                listing.requirements
+	              )
+	            )
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'div',
+	            { onClick: _this2.toggleView.bind(_this2, listing.route), id: 'listing', key: i },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupA' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                listing.title
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'commitment' },
+	                listing.timeCommitment
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'time' },
+	                listing.hours
+	              )
 	            ),
 	            _react2.default.createElement(
-	              'h3',
-	              { className: 'time' },
-	              listing.hours
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'groupB' },
-	            _react2.default.createElement(
-	              'h3',
-	              null,
-	              listing.neighborhood,
-	              ','
+	              'div',
+	              { className: 'groupB' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                listing.neighborhood,
+	                ','
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                listing.borough
+	              )
 	            ),
 	            _react2.default.createElement(
-	              'h3',
-	              null,
-	              listing.borough
+	              'div',
+	              { className: 'groupC' },
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'blurb' },
+	                listing.briefDescription
+	              )
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'groupC' },
-	            _react2.default.createElement(
-	              'h3',
-	              { className: 'blurb' },
-	              listing.briefDescription
-	            )
-	          )
-	        );
+	          );
+	        }
 	      }) : '';
 	    }
 	  }, {
