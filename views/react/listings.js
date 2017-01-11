@@ -7,13 +7,46 @@ export default class Listings extends React.Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      clicked: {}
+    }
+  }
+
+  toggleView(route){
+    if(this.state.clicked === route){
+      this.setState({ clicked: {} })
+    }else{
+      this.setState({ clicked: route })
+    }
   }
 
   displayListings(listings){
-    return listings ? listings.map((listing) => {
-      return (
-
-          <div id="listing" key={listing.id}>
+    return listings ? listings.map((listing, i) => {
+     if(this.state.clicked === listing.route){
+       return(
+         <div key={i} onClick={this.toggleView.bind(this, listing.route)} className="listing-expanded">
+             <div className="groupA">
+                <h2>{ listing.title }</h2>
+                <h3 className="commitment">{ listing.timeCommitment }</h3>
+                <h3 className="time">{ listing.hours }</h3>
+                <div className="address">
+                  <h3>{ listing.meetingLocation }</h3>
+                  <h3>{ listing.neighborhood }, { listing.borough }</h3>
+                </div>
+                <a href={listing.contactEmail}>contact</a>
+                <a href={listing.moreInfoUrl}>more info</a>
+                <h3 className="tags"><span style={{fontFamily: 'Avenir Black'}}>TAGS:</span>{ listing.tags }</h3>
+             </div>
+             <div className="groupD">
+                <h3 className="description">
+                { listing.fullDescription }
+                </h3>
+                <h3>REQUIREMENTS: { listing.requirements }</h3>
+             </div>
+       </div>)
+     }else{
+       return(
+         <div onClick={this.toggleView.bind(this, listing.route)} id="listing" key={i}>
             <div className="groupA">
               <h2>{ listing.title }</h2>
               <h3 className="commitment">{ listing.timeCommitment }</h3>
@@ -26,9 +59,9 @@ export default class Listings extends React.Component {
             <div className="groupC">
               <h3 className="blurb">{ listing.briefDescription }</h3>
             </div>
-          </div>
-
+         </div>
       )
+     }
     }) : '';
   }
 
