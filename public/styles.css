@@ -183,8 +183,10 @@ header {
 }
 
 
-#filters-expanded h3 {
+/*#filters-expanded h3 */
+.filterDefault {
   background: #2d2d2d;
+  color: white;
   height: 1.75em;
   padding: .65em 1em .3em 1em;
   border-radius: 1.5em;
@@ -192,9 +194,14 @@ header {
   margin: .3em .4em .3em 0em;
 }
 
-#filters-expanded h3:hover {
+
+.filterSelected {
   color: #2d2d2d;
   font-weight: bold;
+  height: 1.75em;
+  padding: .65em 1em .3em 1em;
+  border-radius: 1.5em;
+  margin: .3em .4em .3em 0em;
   background: transparent;
   -webkit-box-shadow:inset 0 0 0 .2em #2d2d2d;
   -moz-box-shadow:inset 0 0 0 .2em #2d2d2d;

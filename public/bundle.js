@@ -25555,27 +25555,92 @@
 	    _this.toggleFilter = _this.toggleFilter.bind(_this);
 	    _this.state = {
 	      listings: [],
+	      filteredListings: [],
 	      filterActive: false,
-	      filterBy: []
+	      categories: [],
+	      activeFilters: []
 	    };
 	    return _this;
 	  }
 	
+	  // this is a helper function
+	  // we have activeFilters & need to check them against the tags in each listing to determine which items to display
+	
+	
 	  _createClass(Home, [{
+	    key: 'compareTags',
+	    value: function compareTags(activeFilters, arr) {
+	      var matches = void 0;
+	      for (var i = 0; i < activeFilters.length; i++) {
+	        if (arr.indexOf(activeFilters[i]) !== -1) {
+	          // aka it exists
+	          matches = true;
+	        } else {
+	          return false;
+	        }
+	      }
+	      return matches;
+	    }
+	  }, {
+	    key: 'displayFilteredListings',
+	    value: function displayFilteredListings() {
+	      var _this2 = this;
+	
+	      var update = [];
+	      if (this.state.activeFilters.length < 1) {
+	        this.setState({ filteredListings: this.state.listings });
+	      } else {
+	        this.setState({ filteredListings: this.state.listings.filter(function (listing) {
+	            return _this2.compareTags(_this2.state.activeFilters, listing.tags);
+	          })
+	        });
+	      }
+	    }
+	
+	    // adds and removes tags from this.state.activeFilters, then calls displayFilteredListings() to update display
+	
+	  }, {
+	    key: 'toggleCategory',
+	    value: function toggleCategory(category) {
+	      var _this3 = this;
+	
+	      category.selected = !category.selected;
+	      var currentFilters = this.state.activeFilters;
+	      if (category.selected) {
+	        currentFilters.push(category.name);
+	        // passing a callback as a 2nd param to setState ensures fn is called after the state, activeFilters, is set
+	        this.setState({ activeFilters: currentFilters }, function () {
+	          _this3.displayFilteredListings();
+	        });
+	      } else {
+	        console.log(this.state.activeFilters);
+	        this.setState({ activeFilters: currentFilters.filter(function (tag) {
+	            return tag !== category.name;
+	          })
+	        }, function () {
+	          _this3.displayFilteredListings();
+	        });
+	      }
+	    }
+	  }, {
 	    key: 'toggleFilter',
 	    value: function toggleFilter(event) {
 	      this.setState({ filterActive: !this.state.filterActive });
-	      console.log('clicked', this.state.filterActive);
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this2 = this;
+	      var _this4 = this;
 	
 	      fetch('/api').then(function (res) {
 	        return res.json();
 	      }).then(function (data) {
-	        _this2.setState({ listings: data, filterActive: false, filterBy: [] });
+	        _this4.setState({
+	          listings: data,
+	          filterActive: false,
+	          filteredListings: data,
+	          categories: [{ name: 'health-care', selected: false }, { name: 'environment', selected: false }, { name: 'youth', selected: false }, { name: 'social justice', selected: false }, { name: 'immigration', selected: false }, { name: 'tech', selected: false }, { name: 'human rights', selected: false }, { name: 'homelessness', selected: false }, { name: 'women', selected: false }, { name: 'racial justice', selected: false }, { name: 'housing', selected: false }, { name: 'animal rights', selected: false }, { name: 'education', selected: false }, { name: 'LGTBQ', selected: false }, { name: 'meetups/events', selected: false }, { name: 'disability', selected: false }, { name: 'senior services', selected: false }, { name: 'policy/gov', selected: false }]
+	        });
 	      }).catch(function (err) {
 	        console.error('error', err);
 	      });
@@ -25583,7 +25648,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -25601,24 +25665,16 @@
 	            _react2.default.createElement('path', { d: 'M204.3 92.9h-81.2V11.7C123.1 8 118 0 108 0S92.9 8 92.9 11.7v81.2H11.7C8 92.9 0 98 0 108s8 15.1 11.7 15.1h81.2v81.2c0 3.7 5 11.7 15.1 11.7s15.1-8 15.1-11.7v-81.2h81.2c3.7 0 11.7-5 11.7-15.1S208 92.9 204.3 92.9z' })
 	          )
 	        ),
-	        this.state.filterActive ? _react2.default.createElement(
+	        this.state.filterActive ? _react2.default.createElement(_filter2.default, { toggleCategory: this.toggleCategory.bind(this), toggle: this.toggleFilter.bind(this), active: this.state.filterActive, categories: this.state.categories }) : _react2.default.createElement(
 	          'div',
 	          { onClick: this.toggleFilter.bind(this), id: 'filters' },
 	          _react2.default.createElement(
 	            'h3',
 	            null,
-	            'filters active'
-	          )
-	        ) : _react2.default.createElement(
-	          'div',
-	          { onClick: this.toggleFilter.bind(this), id: 'filters' },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'filters inactive'
+	            'filters'
 	          )
 	        ),
-	        _react2.default.createElement(_listings2.default, { listings: this.state.listings })
+	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings })
 	      );
 	    }
 	  }]);
@@ -25721,7 +25777,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -25772,121 +25827,37 @@
 	    return _possibleConstructorReturn(this, (Filter.__proto__ || Object.getPrototypeOf(Filter)).call(this, props));
 	  }
 	
-	  // <Filter filterBy={this.filterBy.bind(this)} active={this.state.filterActive} toggle={this.toggleFilter.bind(this)}/>
-	
 	  _createClass(Filter, [{
+	    key: 'displayCategories',
+	    value: function displayCategories(categories) {
+	      var _this2 = this;
+	
+	      return categories ? categories.map(function (category, i) {
+	        return _react2.default.createElement(
+	          'div',
+	          { key: i, onClick: function onClick() {
+	              _this2.props.toggleCategory(category);
+	            } },
+	          _react2.default.createElement(
+	            'h3',
+	            { className: category.selected ? 'filterSelected' : 'filterDefault' },
+	            category.name
+	          )
+	        );
+	      }) : '';
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        this.props.filterActive ? _react2.default.createElement(
-	          'div',
-	          { id: 'filters-expanded' },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'health-care'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'environment'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'youth'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'social justice'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'immigration'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'tech'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'human rights'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'homelessness'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'women'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'racial justice'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'housing'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'animal rights'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'education'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'LGBTQ'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'meetups/events'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'disability'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'senior services'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'policy/gov'
-	          ),
-	          _react2.default.createElement(
-	            'svg',
-	            { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 162.4 162.4' },
-	            _react2.default.createElement('path', { d: 'M138.6 2.5L81.2 59.9 23.8 2.5C21.2-0.2 11.9-2.3 4.8 4.8s-5 16.3-2.4 18.9l57.4 57.4L2.5 138.6c-2.6 2.6-4.7 11.8 2.4 18.9 7.1 7.1 16.3 5 18.9 2.4l57.4-57.4 57.4 57.4c2.6 2.6 11.8 4.7 18.9-2.4 7.1-7.1 5-16.3 2.4-18.9l-57.4-57.4 57.4-57.4c2.6-2.6 4.7-11.8-2.4-18.9C150.5-2.3 141.2-0.2 138.6 2.5z' })
-	          )
-	        ) : _react2.default.createElement(
-	          'div',
-	          { id: 'filters' },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'filters'
-	          )
+	        { id: 'filters-expanded' },
+	        this.displayCategories(this.props.categories),
+	        _react2.default.createElement(
+	          'svg',
+	          { onClick: this.props.toggle, xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 162.4 162.4' },
+	          _react2.default.createElement('path', { d: 'M138.6 2.5L81.2 59.9 23.8 2.5C21.2-0.2 11.9-2.3 4.8 4.8s-5 16.3-2.4 18.9l57.4 57.4L2.5 138.6c-2.6 2.6-4.7 11.8 2.4 18.9 7.1 7.1 16.3 5 18.9 2.4l57.4-57.4 57.4 57.4c2.6 2.6 11.8 4.7 18.9-2.4 7.1-7.1 5-16.3 2.4-18.9l-57.4-57.4 57.4-57.4c2.6-2.6 4.7-11.8-2.4-18.9C150.5-2.3 141.2-0.2 138.6 2.5z' })
 	        )
 	      );
 	    }

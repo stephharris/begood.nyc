@@ -33,7 +33,6 @@ export default class Listings extends React.Component {
   }
 
   render() {
-
     return (
       <div>
       { this.displayListings(this.props.listings) }
