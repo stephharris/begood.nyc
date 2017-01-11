@@ -15,21 +15,91 @@ export default class Home extends React.Component {
     this.toggleFilter = this.toggleFilter.bind(this);
     this.state = {
       listings: [],
+      filteredListings: [],
       filterActive: false,
-      filterBy: []
+      categories: [],
+      activeFilters: []
     }
   }
 
- toggleFilter(event){
-      this.setState({filterActive: !this.state.filterActive})
-    console.log('clicked',this.state.filterActive)
+  // this is a helper function
+  // we have activeFilters & need to check them against the tags in each listing to determine which items to display
+  compareTags(activeFilters, arr){
+  let matches;
+    for(let i = 0; i < activeFilters.length; i++){
+      if(arr.indexOf(activeFilters[i]) !== -1){ // aka it exists
+        matches = true;
+      }else{
+        return false;
+      }
+    }
+    return matches;
+  }
+
+  displayFilteredListings(){
+  let update = [];
+    if(this.state.activeFilters.length < 1){
+      this.setState({ filteredListings: this.state.listings })
+    }else{
+      this.setState({ filteredListings: this.state.listings.filter(
+        (listing) => {
+           return this.compareTags(this.state.activeFilters,listing.tags)
+        })
+      })
+    }
+  }
+
+// adds and removes tags from this.state.activeFilters, then calls displayFilteredListings() to update display
+  toggleCategory(category){
+    category.selected = !category.selected;
+    let currentFilters = this.state.activeFilters;
+    if(category.selected){
+      currentFilters.push(category.name)
+      // passing a callback as a 2nd param to setState ensures fn is called after the state, activeFilters, is set
+      this.setState({ activeFilters: currentFilters }, () => { this.displayFilteredListings() });
+    }else{
+      console.log(this.state.activeFilters);
+      this.setState({ activeFilters: currentFilters.filter((tag) => {
+          return tag !== category.name
+        })
+      }, () => { this.displayFilteredListings() })
+    }
+  }
+
+
+  toggleFilter(event){
+    this.setState({filterActive: !this.state.filterActive})
   }
 
   componentDidMount() {
     fetch('/api')
     .then(res => res.json())
     .then(data => {
-      this.setState({ listings: data, filterActive: false, filterBy: [] })
+      this.setState({
+        listings: data,
+        filterActive: false,
+        filteredListings: data,
+        categories: [
+          { name: 'health-care', selected: false },
+          { name: 'environment', selected: false },
+          { name: 'youth', selected: false },
+          { name: 'social justice', selected: false },
+          { name: 'immigration', selected: false },
+          { name: 'tech', selected: false },
+          { name: 'human rights', selected: false },
+          { name: 'homelessness', selected: false },
+          { name: 'women', selected: false },
+          { name: 'racial justice', selected: false },
+          { name: 'housing', selected: false },
+          { name: 'animal rights', selected: false },
+          { name: 'education', selected: false },
+          { name: 'LGTBQ', selected: false },
+          { name: 'meetups/events', selected: false },
+          { name: 'disability', selected: false },
+          { name: 'senior services', selected: false },
+          { name: 'policy/gov', selected: false }
+        ]
+      })
     })
     .catch(err => {
       console.error('error', err)
@@ -37,7 +107,6 @@ export default class Home extends React.Component {
   }
 
   render() {
-
     return (
       <div>
 
@@ -47,11 +116,11 @@ export default class Home extends React.Component {
         </div>
 
         { this.state.filterActive ?
-        <div onClick={this.toggleFilter.bind(this)} id="filters"><h3>filters active</h3></div>
-        : <div onClick={this.toggleFilter.bind(this)} id="filters"><h3>filters inactive</h3></div>
+        <Filter toggleCategory={this.toggleCategory.bind(this)} toggle={this.toggleFilter.bind(this)} active={this.state.filterActive} categories={this.state.categories} />
+        : <div onClick={this.toggleFilter.bind(this)} id="filters"><h3>filters</h3></div>
         }
 
-        <Listings listings={this.state.listings}/>
+        <Listings listings={this.state.filteredListings}/>
       </div>
     )
   }
