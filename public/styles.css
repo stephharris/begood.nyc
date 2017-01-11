@@ -195,7 +195,7 @@ header {
 }
 
 
-.filterSelected {
+.filterDefault:hover, .filterSelected {
   color: #2d2d2d;
   font-weight: bold;
   height: 1.75em;
