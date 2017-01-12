@@ -25,7 +25,7 @@ app.use(function (err, req, res, next) {
     res.status(500).send(err.message);
 });
 
-Listing.sync()
+DB.sync()
     .then(function () {
       console.log('Sequelize models synced to Postgres')
     })
