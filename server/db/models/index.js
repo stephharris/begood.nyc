@@ -1,5 +1,7 @@
-var Sequelize = require('sequelize');
-var db = new Sequelize('postgres://localhost:5432/begood');
+const Sequelize = require('sequelize');
+const path = require('path');
+const DATABASE_URI = require(path.join(__dirname, '../env')).DATABASE_URI;
+const db = new Sequelize(DATABASE_URI);
 
 let Listing = db.define('listing', {
 

@@ -11,7 +11,7 @@ module.exports = {
     filename: './public/bundle.js'
   },
   context: __dirname,
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval',
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJSPlugin({ mangle: false, sourcemap: false, minimize: true, compress: { warnings: false } }),
