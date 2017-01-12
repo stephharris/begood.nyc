@@ -7,6 +7,7 @@ const morgan = require('morgan');
 let port = process.env.PORT || 3001;
 let models = require('./server/db/models/index.js');
 let Listing = models.Listing;
+let DB = models.db;
 
 require('./server/configure')(app); // body-parsing middleware & file paths
 
@@ -23,7 +24,6 @@ app.use(function (err, req, res, next) {
     console.error(err);
     res.status(500).send(err.message);
 });
-
 
 Listing.sync()
     .then(function () {

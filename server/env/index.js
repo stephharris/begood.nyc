@@ -1,9 +1,9 @@
 const path = require('path');
-const devConfigPath = path.join(__dirname, './development.js');
-const productionConfigPath = path.join(__dirname, './production.js');
+const devConfigPath = require('./development.js');
+const productionConfigPath = require('./production.js');
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require(productionConfigPath);
+  module.exports = productionConfigPath;
 } else {
-  module.exports = require(devConfigPath);
+  module.exports = devConfigPath;
 }

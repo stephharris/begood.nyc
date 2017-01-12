@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const path = require('path');
-const DATABASE_URI = require(path.join(__dirname, '../env')).DATABASE_URI;
+const DATABASE_URI = require('../../env/index.js').DATABASE_URI;
 const db = new Sequelize(DATABASE_URI);
 
 let Listing = db.define('listing', {
