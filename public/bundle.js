@@ -59,10 +59,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _reactDom.render)(_react2.default.createElement(_app2.default, null), document.querySelector('#app'));
-	
-	if (false) {
-	  module.hot.accept();
-	}
 
 /***/ },
 /* 1 */
@@ -25740,6 +25736,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'displayTags',
+	    value: function displayTags(tags) {
+	      return tags.length < 2 ? tags : tags.join(', ');
+	    }
+	  }, {
 	    key: 'displayListings',
 	    value: function displayListings(listings) {
 	      var _this2 = this;
@@ -25785,7 +25786,7 @@
 	              ),
 	              _react2.default.createElement(
 	                'a',
-	                { href: listing.contactEmail },
+	                { href: 'mailto:' + listing.contactEmail },
 	                'contact'
 	              ),
 	              _react2.default.createElement(
@@ -25799,9 +25800,9 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  { style: { fontFamily: 'Avenir Black' } },
-	                  'TAGS:'
+	                  'TAGS: '
 	                ),
-	                listing.tags
+	                _this2.displayTags(listing.tags)
 	              )
 	            ),
 	            _react2.default.createElement(

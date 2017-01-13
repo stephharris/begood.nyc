@@ -85,10 +85,7 @@ let Listing = db.define('listing', {
   // come back to this one
   tags: {
     type: Sequelize.ARRAY(Sequelize.TEXT),
-    allowNull: false,
-    // validate: {
-    //   isArray: true
-    // }
+    allowNull: false
   },
 
   fullDescription: {

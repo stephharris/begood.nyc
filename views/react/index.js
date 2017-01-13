@@ -7,6 +7,4 @@ import App from './app.js';
 
 render(<App/>, document.querySelector('#app'))
 
-if (module.hot) {
-  module.hot.accept();
-}
+
