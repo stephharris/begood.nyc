@@ -37,7 +37,7 @@ let listings = [
     requirements: 'Volunteers will be sent a short training video and brief quiz to help prepare them for participation.',
     moreInfoUrl: 'https://unionsettlement.org/programs/senior-services/',
     contactEmail: 'volunteers@unionsettlement.org',
-    expires: '2017-01-07'
+    expires: '2017-01-28'
   },
    {
     status: 'active',
@@ -55,10 +55,10 @@ let listings = [
     requirements: 'To participate, register here: https://www.eventbrite.com/e/debug-politics-1st-nyc-hackathon-tickets-29492120727',
     moreInfoUrl: 'http://www.debugpolitics.com/',
     contactEmail: 'hello@debugpolitics.com',
-    expires: '2017-01-15'
+    expires: '2017-01-28'
   },
    {
-    status: 'active',
+    status: 'pending',
     author: 'Steph Harris',
     personalEmail: 'steph@steph.com',
     title: 'NYC Parks: Mulchfest! Maria Hernandez Park',
@@ -71,7 +71,7 @@ let listings = [
     tags: ['environment'],
     fullDescription: 'We\'re looking for volunteers to help by spreading mulch that is generated during MulchFest around young trees to insulate them from the cold winter weather, retain moisture, & provide a decorative addition to neighborhoods around the city. You can also pick up bags of mulch to take home w/ you to use on trees on your street!',
     moreInfoUrl: 'https://www.nycgovparks.org/reg/stewardship/2696',
-    expires: '2017-01-15'
+    expires: '2017-01-28'
   },
      {
     status: 'active',
@@ -87,7 +87,7 @@ let listings = [
     tags: ['environment'],
     fullDescription: 'We\'re looking for volunteers to help by spreading mulch that is generated during MulchFest around young trees to insulate them from the cold winter weather, retain moisture, & provide a decorative addition to neighborhoods around the city. You can also pick up bags of mulch to take home w/ you to use on trees on your street!',
     moreInfoUrl: 'https://www.nycgovparks.org/reg/stewardship/2696',
-    expires: '2017-01-15'
+    expires: '2017-01-28'
   }
 ];
 

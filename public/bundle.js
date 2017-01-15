@@ -59,10 +59,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _reactDom.render)(_react2.default.createElement(_app2.default, null), document.querySelector('#app'));
-	
-	if (false) {
-	  module.hot.accept();
-	}
 
 /***/ },
 /* 1 */
@@ -21499,6 +21495,10 @@
 	
 	var _contact2 = _interopRequireDefault(_contact);
 	
+	var _admin = __webpack_require__(222);
+	
+	var _admin2 = _interopRequireDefault(_admin);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// Using React-Router v4 to direct routes and render main components
@@ -21516,6 +21516,11 @@
 	}, { pattern: '/contact',
 	  main: function main() {
 	    return _react2.default.createElement(_contact2.default, null);
+	  }
+	}, {
+	  pattern: '/admin-panel',
+	  main: function main() {
+	    return _react2.default.createElement(_admin2.default, null);
 	  }
 	}];
 	
@@ -25740,6 +25745,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'displayTags',
+	    value: function displayTags(tags) {
+	      return tags.length < 2 ? tags : tags.join(', ');
+	    }
+	  }, {
 	    key: 'displayListings',
 	    value: function displayListings(listings) {
 	      var _this2 = this;
@@ -25785,7 +25795,7 @@
 	              ),
 	              _react2.default.createElement(
 	                'a',
-	                { href: listing.contactEmail },
+	                { href: 'mailto:' + listing.contactEmail },
 	                'contact'
 	              ),
 	              _react2.default.createElement(
@@ -25799,9 +25809,9 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  { style: { fontFamily: 'Avenir Black' } },
-	                  'TAGS:'
+	                  'TAGS: '
 	                ),
-	                listing.tags
+	                _this2.displayTags(listing.tags)
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -26024,6 +26034,100 @@
 	};
 	
 	exports.default = Contact;
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(32);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Admin = function (_React$Component) {
+	  _inherits(Admin, _React$Component);
+	
+	  function Admin() {
+	    _classCallCheck(this, Admin);
+	
+	    var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this));
+	
+	    _this.state = {
+	      pending: {}
+	    };
+	    return _this;
+	  }
+	
+	  // displayPending(listings){
+	  //   return listings.map((listing, i) => {
+	  //     return (
+	  //       <div key={i}>
+	  //         <h3>{ listing.title }</h3>
+	  //       <div>
+	  //     )
+	  //   });
+	  // }
+	
+	  _createClass(Admin, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      fetch('/admin/pending').then(function (res) {
+	        return res.json();
+	      }).then(function (data) {
+	        console.log('data', data);
+	        _this2.setState({
+	          pending: data[0]
+	        });
+	      }).catch(function (err) {
+	        console.error('error', err);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      console.log('inside render function', this.state.pending.title);
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'rendering admin panel!'
+	        ),
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          this.state.pending.title
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Admin;
+	}(_react2.default.Component);
+	
+	exports.default = Admin;
 
 /***/ }
 /******/ ]);

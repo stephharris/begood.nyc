@@ -117,7 +117,9 @@ export default class Home extends React.Component {
         </a>
         { this.state.filterActive ?
         <Filter toggleCategory={this.toggleCategory.bind(this)} toggle={this.toggleFilter.bind(this)} active={this.state.filterActive} categories={this.state.categories} />
-        : <div onClick={this.toggleFilter.bind(this)} id="filters"><h3>filters</h3></div>
+        : <div onClick={this.toggleFilter.bind(this)} id="filters">
+          <h3>filters</h3>
+          </div>
         }
 
         <Listings listings={this.state.filteredListings}/>

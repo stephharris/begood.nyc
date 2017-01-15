@@ -73,9 +73,9 @@ header {
 #lockup {
   font-family: "Logo";
   font-size: 1.2rem;
-  line-height: .8rem;
+  line-height: .6rem;
   color: #151515;
-  letter-spacing: .05em;
+/*  letter-spacing: em;*/
 }
 
 #lockup a {
@@ -96,7 +96,7 @@ header {
   font-size: 1rem;
   font-family: "Avenir Roman";
   color: #2d2d2d;
-  line-height: 1rem;
+  line-height: 1.3em;
 }
 
 #nav {
@@ -346,7 +346,9 @@ header {
 /* MOBILE STYLES */
 /*****************/
 
-@media only screen and (max-width: 900px) {
+
+
+@media (max-width: 900px) {
 
   .groupB {
     width: 20%;
@@ -358,10 +360,14 @@ header {
 
 }
 
-@media only screen and (max-width: 730px) {
+@media (max-width: 730px) {
 
   h2, h3, a, .byline, #nav a {
-    font-size: .9rem;
+    font-size: 1.05rem;
+  }
+
+  #lockup h1 {
+    letter-spacing: 0.01em;
   }
 
   header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
@@ -375,6 +381,11 @@ header {
     line-height: 1.2em;
   }
 
+  #post h3, #filters h3 {
+    letter-spacing: .1em;
+    font-weight: normal;
+  }
+
 /*
 these #nav a styles prevent weird display block error:
 */
@@ -384,7 +395,7 @@ these #nav a styles prevent weird display block error:
 
   #nav a:first-child {
     margin-left: .7em;
-    margin-bottom: .2em;
+    margin-bottom: .5em;
   }
 
 /*
@@ -421,7 +432,7 @@ eliminating 'location' from mobile version
 }
 
 
-@media only screen and (max-width: 350px) {
+@media (max-width: 350px) {
 
   header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
     padding-left: .8em;
