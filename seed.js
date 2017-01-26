@@ -19,7 +19,7 @@ let listings = [
     requirements: 'deep knowledge of beadwork, jewlery design or profitable arts, able to facilitate instructions to groups, must be patient/reliable',
     moreInfoUrl: 'http://www.wpaonline.org/wpaassets/Beadwork_Volunteer.pdf',
     contactEmail: 'srice@wpaonline.org',
-    expires: '2017-07-01'
+    expires: '2017-01-01'
   },
   {
     status: 'active',
@@ -74,7 +74,7 @@ let listings = [
     expires: '2017-01-28'
   },
      {
-    status: 'active',
+    status: 'pending',
     author: 'Steph Harris',
     personalEmail: 'steph@steph.com',
     title: 'NYC Parks: Mulchfest! McCarren Park',
@@ -98,7 +98,7 @@ function seedListings () {
   });
 }
 
-Listing.sync({ force: true })
+Listing.sync({})
     .then(seedListings)
     .then(() => {
         console.log(chalk.green('Database seeded!'));

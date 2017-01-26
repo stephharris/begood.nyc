@@ -1,10 +1,44 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/begood');
 
+
+function helper(expDate) {
+      let currentTime = new Date();
+      let currYear = currentTime.getFullYear();
+      let currMonth = currentTime.getMonth() + 1;
+      let currDay = currentTime.getDate();
+      let expYear = parseInt(expDate.slice(0,4));
+
+      if(parseInt(expDate.slice(0,4)) < currYear){
+        this.setDataValue('status', 'expired');
+        return; //set to expired
+      }else{
+        if(parseInt(expDate.slice(5,7)) < currMonth ){
+          this.setDataValue('status', 'expired');
+          return; //set to expired
+        }else{
+          if(parseInt(expDate.slice(8,10)) < currDay ){
+            this.setDataValue('status', 'expired');
+            return; //set to expired
+          }else{
+            return;
+          }
+        }
+      }
+}
+
+
 let Listing = db.define('listing', {
+
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
 
   status: {
     type: Sequelize.ENUM,
+    defaultValue: 'pending',
     values: ['active', 'pending', 'expired']
   },
 
@@ -120,10 +154,10 @@ let Listing = db.define('listing', {
 
   expires: {
     type: Sequelize.DATEONLY, // this will be a string
-    allowNull: false,
-    validate: {
-      isAfter: new Date().toJSON().slice(0,10)
-    }
+    allowNull: false
+    // validate: {
+    //   isAfter: new Date().toJSON().slice(0,10)
+    // },
   },
 
   // listing uri
@@ -154,7 +188,10 @@ let Listing = db.define('listing', {
 // need to write a virtual that checks for status
 
 
+
+
 module.exports = {
   Listing: Listing,
   db: db
 };
+

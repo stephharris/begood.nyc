@@ -26055,6 +26055,12 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _reactRouter = __webpack_require__(179);
+	
+	var _pending = __webpack_require__(223);
+	
+	var _pending2 = _interopRequireDefault(_pending);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26072,22 +26078,18 @@
 	    var _this = _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).call(this));
 	
 	    _this.state = {
-	      pending: {}
+	      pending: [],
+	      selected: 'pending'
 	    };
 	    return _this;
 	  }
 	
-	  // displayPending(listings){
-	  //   return listings.map((listing, i) => {
-	  //     return (
-	  //       <div key={i}>
-	  //         <h3>{ listing.title }</h3>
-	  //       <div>
-	  //     )
-	  //   });
-	  // }
-	
 	  _createClass(Admin, [{
+	    key: 'toggleSelected',
+	    value: function toggleSelected(value) {
+	      this.setState({ selected: value });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
@@ -26095,31 +26097,68 @@
 	      fetch('/admin/pending').then(function (res) {
 	        return res.json();
 	      }).then(function (data) {
-	        console.log('data', data);
-	        _this2.setState({
-	          pending: data[0]
-	        });
+	        _this2.setState({ pending: data });
 	      }).catch(function (err) {
 	        console.error('error', err);
 	      });
 	    }
 	  }, {
+	    key: 'displayComponent',
+	    value: function displayComponent() {
+	      if (this.state.selected === 'pending') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_pending2.default, { pending: this.state.pending })
+	        );
+	      } else if (this.state.selected === 'create') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'woooo create page'
+	          )
+	        );
+	      } else if (this.state.selected === 'active') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'woooo active page'
+	          )
+	        );
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('inside render function', this.state.pending.title);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'h3',
-	          null,
-	          'rendering admin panel!'
+	          'div',
+	          { className: 'adminNav' },
+	          _react2.default.createElement(
+	            'h3',
+	            { onClick: this.toggleSelected.bind(this, 'create') },
+	            'create'
+	          ),
+	          _react2.default.createElement(
+	            'h3',
+	            { onClick: this.toggleSelected.bind(this, 'pending') },
+	            'pending'
+	          ),
+	          _react2.default.createElement(
+	            'h3',
+	            { onClick: this.toggleSelected.bind(this, 'active') },
+	            'active'
+	          )
 	        ),
-	        _react2.default.createElement(
-	          'h3',
-	          null,
-	          this.state.pending.title
-	        )
+	        this.displayComponent()
 	      );
 	    }
 	  }]);
@@ -26128,6 +26167,210 @@
 	}(_react2.default.Component);
 	
 	exports.default = Admin;
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(32);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Pending = function (_React$Component) {
+	  _inherits(Pending, _React$Component);
+	
+	  function Pending(props) {
+	    _classCallCheck(this, Pending);
+	
+	    var _this = _possibleConstructorReturn(this, (Pending.__proto__ || Object.getPrototypeOf(Pending)).call(this, props));
+	
+	    _this.state = {
+	      clicked: {}
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Pending, [{
+	    key: 'toggleView',
+	    value: function toggleView(route) {
+	      if (this.state.clicked === route) {
+	        this.setState({ clicked: {} });
+	      } else {
+	        this.setState({ clicked: route });
+	      }
+	    }
+	  }, {
+	    key: 'displayTags',
+	    value: function displayTags(tags) {
+	      return tags.length < 2 ? tags : tags.join(', ');
+	    }
+	  }, {
+	    key: 'displayPending',
+	    value: function displayPending(listings) {
+	      var _this2 = this;
+	
+	      return listings ? listings.map(function (listing, i) {
+	        if (_this2.state.clicked === listing.route) {
+	          return _react2.default.createElement(
+	            'div',
+	            { key: i, onClick: _this2.toggleView.bind(_this2, listing.route), className: 'listing-expanded' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupA' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                listing.title
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'commitment' },
+	                listing.timeCommitment
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'time' },
+	                listing.hours
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'address' },
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  listing.meetingLocation
+	                ),
+	                _react2.default.createElement(
+	                  'h3',
+	                  null,
+	                  listing.neighborhood,
+	                  ', ',
+	                  listing.borough
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: 'mailto:' + listing.contactEmail },
+	                'contact'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { href: listing.moreInfoUrl },
+	                'more info'
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'tags' },
+	                _react2.default.createElement(
+	                  'span',
+	                  { style: { fontFamily: 'Avenir Black' } },
+	                  'TAGS: '
+	                ),
+	                _this2.displayTags(listing.tags)
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupD' },
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'description' },
+	                listing.fullDescription
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'REQUIREMENTS: ',
+	                listing.requirements
+	              )
+	            )
+	          );
+	        } else {
+	          return _react2.default.createElement(
+	            'div',
+	            { onClick: _this2.toggleView.bind(_this2, listing.route), id: 'listing', key: i },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupA' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                listing.title
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'commitment' },
+	                listing.timeCommitment
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'time' },
+	                listing.hours
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupB' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                listing.neighborhood,
+	                ','
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                listing.borough
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'groupC' },
+	              _react2.default.createElement(
+	                'h3',
+	                { className: 'blurb' },
+	                listing.briefDescription
+	              )
+	            )
+	          );
+	        }
+	      }) : '';
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { style: { marginTop: '1.5em' } },
+	        this.displayPending(this.props.pending)
+	      );
+	    }
+	  }]);
+	
+	  return Pending;
+	}(_react2.default.Component);
+	
+	exports.default = Pending;
 
 /***/ }
 /******/ ]);

@@ -342,6 +342,297 @@ header {
   max-width: 70ch;
 }
 
+/******************/
+/***ADMIN PANEL****/
+/******************/
+
+/* getting rid of default styles */
+input, textarea {
+/*  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;*/
+  outline: none;
+  border: none;
+  color: #2d2d2d;
+  font-size: 1rem;
+  font-family: "Avenir Roman";
+  line-height: 1.3em;
+  letter-spacing: .08rem;
+}
+
+::-webkit-input-placeholder {
+  color: #9b9b9b;
+  font-size: 1rem;
+  font-family: "Avenir Roman";
+  line-height: 1.3em;
+  letter-spacing: .08rem;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: #9b9b9b;
+  font-size: 1rem;
+  font-family: "Avenir Roman";
+  line-height: 1.3em;
+  letter-spacing: .08rem;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #9b9b9b;
+  font-size: 1rem;
+  font-family: "Avenir Roman";
+  line-height: 1.3em;
+  letter-spacing: .08rem;
+}
+
+:-ms-input-placeholder {
+  color: #9b9b9b;
+  font-size: 1rem;
+  font-family: "Avenir Roman";
+  line-height: 1.3em;
+  letter-spacing: .08rem;
+}
+
+/*input:hover, textarea:hover {
+  font-size: 105%;
+}*/
+
+
+.adminNav {
+  background-color: #f9f9f9;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.adminNav h3 {
+  background: #2d2d2d;
+  color: white;
+  height: 1.75em;
+  padding: .65em 1em .3em 1em;
+  border-radius: .2em;
+  font-weight: normal;
+  margin: .3em 1em .3em 0em;
+}
+
+
+.adminNav h3:hover {
+  color: #2d2d2d;
+  font-weight: bold;
+  background: transparent;
+  -webkit-box-shadow:inset 0 0 0 .2em #2d2d2d;
+  -moz-box-shadow:inset 0 0 0 .2em #2d2d2d;
+  box-shadow:inset 0 0 0 .2em #2d2d2d;
+}
+
+.createContainer {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 100%;
+  margin: 1em 0 0 0;
+  padding: 0;
+}
+
+
+.containerA, .containerB {
+  width: 50%;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+
+
+.containerA {
+  margin-right: .5em;
+  top: 0;
+}
+
+.containerB {
+  margin-left: .5em;
+  top: 0;
+}
+
+.containerA form, .containerB form {
+  width: 100%;
+  padding: 1em 3em 1em 3em;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+     -webkit-align-self: flex-start;
+   align-self: flex-start;
+}
+
+.adminAuth {
+  margin-bottom: 1.5em;
+  height: 3em;
+  width: 90%;
+  border-bottom: .3em solid #ff4d4d;
+  background: transparent;
+}
+
+form label {
+   -webkit-align-self: flex-start;
+   align-self: flex-start;
+   margin: 1.5em 0 1em 5%;
+   font-family: "Avenir Medium";
+   font-weight: bold;
+}
+
+label span {
+  color: #ff4d4d;
+}
+
+.createTitle {
+  margin-bottom: 1em;
+  padding: 1rem 1rem 1rem 1rem;
+  width: 80%;
+  border: .3em solid #ff4d4d;
+}
+
+.createBriefDescription {
+  margin-bottom: 1em;
+  padding: 1rem 1rem 1rem 1rem;
+  width: 80%;
+  border: .3em solid #ff4d4d;
+  height: 7em;
+}
+
+.createLoc {
+  margin-bottom: 1em;
+  padding: 1rem 1rem 1rem 1rem;
+  width: 80%;
+  border: .3em solid #ff4d4d;
+  height: 4em;
+}
+
+.createLongDescription {
+  margin-bottom: 1em;
+  padding: 1rem 1rem 1rem 1rem;
+  width: 80%;
+  border: .3em solid #ff4d4d;
+  height: 10em;
+}
+
+.adminHours {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 90%;
+  margin-bottom: 1em;
+}
+
+.adminHours div {
+  padding-top: 1em;
+  font-family: "Avenir Medium";
+  font-weight: bold;
+}
+
+.adminHours input{
+  height: 3em;
+  width: 100%;
+  padding: 0 1.5em 0 1.5em;
+  border-bottom: .3em solid #ff4d4d;
+  background: transparent;
+}
+
+select {
+  width: 90%;
+  margin-bottom: 1em;
+  padding: 1rem 1rem 1rem 1rem;
+  border: .3em solid #ff4d4d;
+  height: 4em;
+  outline: 0;
+/*  -webkit-appearance: none;*/
+  -webkit-border-radius: 0px;
+}
+
+.adminExpiration {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 90%;
+  margin-bottom: 1em;
+}
+
+.adminExpiration input{
+  height: 3em;
+  width: 100%;
+  padding: 0 1.5em 0 1.5em;
+  border-bottom: .3em solid #ff4d4d;
+  background: transparent;
+}
+
+.adminExpiration input:first-child {
+  margin-right: 1.5em;
+}
+
+.adminExpiration input:last-child {
+  margin-left: 1.5em;
+}
+
+.adminTags {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 90%;
+  margin-bottom: 1em;
+  padding: 0;
+}
+
+
+.adminTagsGroup {
+  width: 100%;
+  padding: 0;
+}
+
+/* CHECKBOX STYLES */
+
+.control {
+  position: relative;
+  padding-left: 1.5em;
+  cursor: pointer;
+  display: block;
+}
+
+.adminTagsGroup label {
+  margin: 0 0 .5em 0;
+  font-family: "Avenir Roman";
+  font-weight: normal;
+}
+
+.control input[type="checkbox"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.controlIndicator {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  position: absolute;
+  top: .2em;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: .15rem solid black;
+}
+
+.control input:checked ~ .controlIndicator {
+  background: #ff4d4d;
+}
+
+
 /*****************/
 /* MOBILE STYLES */
 /*****************/
@@ -356,6 +647,11 @@ header {
 
   .listing-expanded .groupD {
     width: 60%;
+  }
+
+  .adminTags {
+    -webkit-flex-direction: column;
+    flex-direction: column;
   }
 
 }
@@ -427,6 +723,32 @@ eliminating 'location' from mobile version
 
   .groupD .description {
     margin-bottom: 1em;
+  }
+
+     /*
+    admin styles
+  */
+
+  .adminNav {
+    align-items: center;
+  }
+
+  .createContainer {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .containerA, .containerB {
+    margin: 0;
+    width: 100%;
+  }
+
+  .containerA form {
+    padding: 1.5em 1.5em 1em 1.5em;
+  }
+
+  .containerB form {
+    padding: 0em 1.5em 1em 1.5em;
   }
 
 }
