@@ -10,7 +10,9 @@ module.exports = router;
 router.get('/', function(req, res, next){
   console.log('hit the router in the back');
   // res.json(test)
-  Listing.findAll({})
+  Listing.findAll({
+    where: { status: 'active' }
+  })
   .then( (listings) => {
     res.json(listings)
   })

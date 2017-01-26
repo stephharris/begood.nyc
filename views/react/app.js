@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Link, Match } from 'react-router';
 import Home from './home';
 import About from './about';
 import Contact from './contact';
-import Admin from './admin';
+import Admin from './admin/admin.js';
 
 // Using React-Router v4 to direct routes and render main components
 // Le DOCS: https://react-router.now.sh/sidebar
