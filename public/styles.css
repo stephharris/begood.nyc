@@ -418,7 +418,7 @@ input, textarea {
 }
 
 
-.adminNav h3:hover {
+.adminNav h3:hover, .adminNavActive {
   color: #2d2d2d;
   font-weight: bold;
   background: transparent;
