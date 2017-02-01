@@ -2,16 +2,16 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from 'react-router/BrowserRouter';
-import Match from 'react-router/Match';
-import Link from 'react-router/Link';
+// import Router from 'react-router/BrowserRouter';
+// import Match from 'react-router/Match';
+// import Link from 'react-router/Link';
 import Listings from './listings.js';
 import Filter from './filter.js';
 
 export default class Home extends React.Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.state = {
       listings: [],
@@ -122,10 +122,9 @@ export default class Home extends React.Component {
           </div>
         }
 
-        <Listings listings={this.state.filteredListings}/>
+        <Listings listings={this.state.filteredListings} opportunity={this.props.params.opportunity}/>
       </div>
     )
   }
 
 }
-
