@@ -21473,9 +21473,6 @@
 
 	'use strict';
 	
-	// import React from 'react'
-	// import { Router, Link, Match } from 'react-router';
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -21512,61 +21509,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	//
-	// // Using React-Router v4 to direct routes and render main components
-	// // Le DOCS: https://react-router.now.sh/sidebar
-	//
-	// const routes = [
-	//   { pattern: '/',
-	//     exactly: true,
-	//     main: () => <Home/>
-	//   },
-	//   { pattern: '/about',
-	//     main: () => <About/>
-	//   },
-	//   { pattern: '/contact',
-	//     main: () => <Contact/>
-	//   },
-	//   {
-	//     pattern: '/admin-panel',
-	//     main: () => <Admin/>
-	//   }
-	// ]
-	//
-	// const App = ({ history }) => (
-	//   <Router history={history}>
-	//   <div>
-	//
-	//   <header>
-	//         <div id="lockup"><Link to="/">
-	//           <h1>BEGOOD</h1>
-	//           <h1 className="NYC"><span className="dot">.</span>NYC</h1>
-	//           <h3 className="byline">curated local volunteer opportunities</h3>
-	//         </Link>
-	//         </div>
-	//         <div id="nav">
-	//           <Link to="/about">about</Link>
-	//           <Link to="/contact">contact</Link>
-	//         </div>
-	//   </header>
-	//
-	//   <div>
-	//         {routes.map((route, index) => (
-	//           <Match
-	//             key={index}
-	//             pattern={route.pattern}
-	//             component={route.main}
-	//             exactly={route.exactly}
-	//           />
-	//         ))}
-	//   </div>
-	//
-	//   </div>
-	//   </Router>
-	// )
-	//
-	// export default App;
-	
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 	
@@ -21582,7 +21524,11 @@
 	      return _react2.default.createElement(
 	        _reactRouter.Router,
 	        { history: _reactRouter.browserHistory },
-	        _react2.default.createElement(_reactRouter.Route, { path: '/admin-panel', component: _admin2.default }),
+	        _react2.default.createElement(
+	          _reactRouter.Route,
+	          { path: '/admin-panel', component: AdminLayout },
+	          _react2.default.createElement(_reactRouter.IndexRoute, { component: Login })
+	        ),
 	        _react2.default.createElement(
 	          _reactRouter.Route,
 	          { path: '/', component: Layout },
@@ -21597,6 +21543,46 @@
 	
 	  return App;
 	}(_react.Component);
+	
+	var AdminLayout = function AdminLayout(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      _react2.default.createElement(
+	        'div',
+	        { id: 'lockup' },
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/admin-panel' },
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            'BEGOOD'
+	          ),
+	          _react2.default.createElement(
+	            'h1',
+	            { className: 'NYC' },
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'dot' },
+	              '.'
+	            ),
+	            'NYC'
+	          ),
+	          _react2.default.createElement(
+	            'h3',
+	            { className: 'byline' },
+	            'curated local volunteer opportunities'
+	          )
+	        )
+	      )
+	    ),
+	    props.children
+	  );
+	};
 	
 	var Layout = function Layout(props) {
 	  return _react2.default.createElement(
