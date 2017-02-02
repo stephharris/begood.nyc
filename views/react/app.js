@@ -67,17 +67,19 @@ class App extends Component {
   render() {
     return (
       <Router history={browserHistory}>
-          <Route path='/(:opportunity)' component={Layout}>
+          <Route path='/admin-panel' component={Admin}/>
+          <Route path='/' component={Layout}>
             <IndexRoute component={Home} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
+            <Route path='/(:opportunity)' component={Home}/>
           </Route>
       </Router>
     )
   }
 }
 
-const Layout = props => (
+const Layout = (props) => (
   <div>
     <header>
       <div id="lockup"><Link to="/">
@@ -95,4 +97,4 @@ const Layout = props => (
   </div>
 );
 
-export default App
+export default App;
