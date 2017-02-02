@@ -12,7 +12,7 @@ export default class Login extends React.Component {
       this.state = {
         username: '',
         password: '',
-        errors: false
+        errors: {}
       }
   }
 
@@ -22,25 +22,33 @@ export default class Login extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    this.setState({ errors: {} });
     axios.post('/admin', { user: this.state }).then(
-    () => {},
-    ({ data }) => this.setState({ errors: data })
-    );
+    () => { console.log('success') },
+    (data) => {
+      this.setState({ errors: data });
+    });
   }
 
 
   render(){
     return(
     <div>
-        <h2>Woo! Log in girl.</h2>
-        <form onSubmit={this.onSubmit}>
-          <label>name</label>
-          <input type="text" name="username" style={{ border: '.05em solid grey'}} value={this.state.username} onChange={this.onChange}/>
-          <label>password</label>
-          <input type="text" name="password" style={{ border: '.05em solid grey'}} value={this.state.password} onChange={this.onChange}/>
-          <button style={{backgroundColor: 'lightblue'}}>log in</button>
-        </form>
-        { this.state.errors && (<h3>Bad Login Info</h3>) }
+          <form onSubmit={this.onSubmit}>
+            <label>name</label>
+            <input type="text" name="username" style={{ border: '.05em solid grey'}} value={this.state.username} onChange={this.onChange}/>
+            <label>password</label>
+            <input type="text" name="password" style={{ border: '.05em solid grey'}} value={this.state.password} onChange={this.onChange}/>
+            <button style={{backgroundColor: 'lightblue'}}>log in</button>
+          </form>
+          { Object.keys(this.state.errors).length !== 0 ?
+
+            <div>
+            <h3>Login Invalid</h3>
+            <h3>{ this.state.errors.username }</h3>
+            <h3>{ this.state.errors.password }</h3>
+            </div>
+            : '' }
     </div>
     )
   }

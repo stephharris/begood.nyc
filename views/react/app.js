@@ -6,6 +6,7 @@ import Home from './home';
 import About from './about';
 import Contact from './contact';
 import Admin from './admin/admin.js';
+import Login from './admin/login.js';
 
 class App extends Component {
   render() {
