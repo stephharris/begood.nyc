@@ -21531,12 +21531,13 @@
 	        _react2.default.createElement(
 	          _reactRouter.Route,
 	          { path: '/admin-panel', component: AdminLayout },
-	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _login2.default })
+	          _react2.default.createElement(_reactRouter.IndexRoute, { authorize: ['user', 'admin'], component: _login2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { authorize: ['admin'], path: '/admin-panel/loggedin', component: _admin2.default })
 	        ),
 	        _react2.default.createElement(
 	          _reactRouter.Route,
 	          { path: '/', component: Layout },
-	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
+	          _react2.default.createElement(_reactRouter.IndexRoute, { authorize: ['user', 'admin'], component: _home2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _about2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/contact', component: _contact2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/(:opportunity)', component: _home2.default })
@@ -27851,6 +27852,8 @@
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
+	var _reactRouter = __webpack_require__(179);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -27885,6 +27888,11 @@
 	      this.setState(_defineProperty({}, e.target.name, e.target.value));
 	    }
 	  }, {
+	    key: 'revealState',
+	    value: function revealState() {
+	      console.log('revealing errors', this.state.errors);
+	    }
+	  }, {
 	    key: 'onSubmit',
 	    value: function onSubmit(e) {
 	      var _this2 = this;
@@ -27892,9 +27900,9 @@
 	      e.preventDefault();
 	      this.setState({ errors: {} });
 	      _axios2.default.post('/admin', { user: this.state }).then(function () {
-	        console.log('success');
-	      }, function (data) {
-	        _this2.setState({ errors: data });
+	        _reactRouter.browserHistory.push('/admin-panel/loggedin');
+	      }).catch(function (error) {
+	        _this2.setState({ errors: error.response.data });
 	      });
 	    }
 	  }, {
@@ -27930,11 +27938,6 @@
 	          _react2.default.createElement(
 	            'h3',
 	            null,
-	            'Login Invalid'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            null,
 	            this.state.errors.username
 	          ),
 	          _react2.default.createElement(
@@ -27951,6 +27954,11 @@
 	}(_react2.default.Component);
 	
 	exports.default = Login;
+	
+	
+	Login.contextTypes = {
+	  router: _react2.default.PropTypes.object
+	};
 
 /***/ },
 /* 245 */

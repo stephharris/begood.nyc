@@ -15,18 +15,18 @@ function validateInput(data) {
 
   if(!Validator.equals(data.user.username, Credentials.username)) {
     if(Validator.isEmpty(data.user.username)) {
-      errors.username = 'Username is required';
+      errors.username = 'username is required';
     }else{
-      errors.username = 'Username does not match';
+      errors.username = 'username does not match';
     }
   }
 
 
   if(!Validator.equals(data.user.password, Credentials.password)) {
     if(Validator.isEmpty(data.user.password)) {
-      errors.password = 'Password is required';
+      errors.password = 'password is required';
     }else{
-      errors.password = 'Password does not match';
+      errors.password = 'password does not match';
     }
   }
 
@@ -41,10 +41,10 @@ router.post('/', function(req, res, next) {
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
     console.log('oooooh errors', errors)
-    res.status(400).send(errors);
+    res.status(400).json(errors);
   }else{
     console.log('okay')
-    res.send('okay!')
+    res.status(200).json({ success: true })
   }
 
 })

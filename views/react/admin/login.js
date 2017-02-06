@@ -2,6 +2,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 export default class Login extends React.Component {
 
@@ -20,14 +21,20 @@ export default class Login extends React.Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  revealState() {
+    console.log('revealing errors', this.state.errors);
+  }
+
   onSubmit(e) {
     e.preventDefault();
     this.setState({ errors: {} });
-    axios.post('/admin', { user: this.state }).then(
-    () => { console.log('success') },
-    (data) => {
-      this.setState({ errors: data });
-    });
+    axios.post('/admin', { user: this.state })
+    .then( () => {
+      browserHistory.push('/admin-panel/loggedin');
+    })
+    .catch( (error) => {
+      this.setState({ errors: error.response.data })
+    })
   }
 
 
@@ -44,7 +51,6 @@ export default class Login extends React.Component {
           { Object.keys(this.state.errors).length !== 0 ?
 
             <div>
-            <h3>Login Invalid</h3>
             <h3>{ this.state.errors.username }</h3>
             <h3>{ this.state.errors.password }</h3>
             </div>
@@ -54,4 +60,8 @@ export default class Login extends React.Component {
   }
 
 
+}
+
+Login.contextTypes = {
+  router: React.PropTypes.object
 }

@@ -13,10 +13,11 @@ class App extends Component {
     return (
       <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
-            <IndexRoute component={Login} />
+            <IndexRoute authorize={['user', 'admin']} component={Login} />
+            <Route authorize={['admin']} path='/admin-panel/loggedin' component={Admin} />
           </Route>
           <Route path='/' component={Layout}>
-            <IndexRoute component={Home} />
+            <IndexRoute authorize={['user', 'admin']} component={Home} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
             <Route path='/(:opportunity)' component={Home}/>
