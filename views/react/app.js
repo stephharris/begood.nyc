@@ -7,6 +7,11 @@ import About from './about';
 import Contact from './contact';
 import Admin from './admin/admin.js';
 import Login from './admin/login.js';
+import setAuthorizationToken from './admin/setAuthorizationToken';
+
+if(localStorage.jwtToken){
+  setAuthorizationToken(localStorage.jwtToken);
+}
 
 class App extends Component {
   render() {
@@ -14,6 +19,7 @@ class App extends Component {
       <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
+            <Route path='/admin-panel/loggedin' component={Admin} />
           </Route>
           <Route path='/' component={Layout}>
             <IndexRoute component={Home} />
