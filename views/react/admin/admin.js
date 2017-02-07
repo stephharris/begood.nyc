@@ -2,9 +2,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Link, Match } from 'react-router';
+import { browserHistory } from 'react-router';
 import Pending from './pending';
 import Active from './active';
+import Create from './createListingContainer';
 import axios from 'axios';
 
 export default class Admin extends React.Component {
@@ -51,6 +52,10 @@ export default class Admin extends React.Component {
     })
   }
 
+  handleRoute() {
+    browserHistory.push('/admin-panel/loggedin/create');
+  }
+
 
   displayComponent(){
     if(this.state.selected === 'pending'){
@@ -68,9 +73,10 @@ export default class Admin extends React.Component {
       )
     }
     else if(this.state.selected === 'create'){
+      this.handleRoute();
       return (
         <div>
-        <h3>woooo create page</h3>
+        <Create/>
         </div>
       )
     }
