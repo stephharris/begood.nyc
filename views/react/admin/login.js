@@ -55,7 +55,6 @@ export default class Login extends React.Component {
 
 
   render(){
-    console.log(this.state.isAuthenticated)
     return(
     <div>
           <form onSubmit={this.onSubmit}>
