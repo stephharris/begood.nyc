@@ -27885,6 +27885,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -27902,34 +27904,58 @@
 	    _this.handleEnter = _this.handleEnter.bind(_this);
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    var initialState = {
+	      name: '',
+	      email: '',
+	      title: '',
+	      timecommitment: '',
+	      hoursA: '',
+	      hoursB: ''
+	    };
 	    _this.state = {
-	      input: ''
+	      inputCleared: initialState,
+	      author: '',
+	      personalEmail: '',
+	      title: '',
+	      timeCommitment: '',
+	      hoursA: '',
+	      hoursB: '',
+	      briefDescription: '',
+	      neighborhood: '',
+	      borough: '',
+	      meetingLocation: ''
 	    };
 	    return _this;
 	  }
 	
+	  // TO DO BEFORE AXIOS REQUEST:
+	  // must concatenate hoursA + hoursB
+	
+	
 	  _createClass(CreateListingContainer, [{
 	    key: 'handleChange',
 	    value: function handleChange(e) {
-	      var currentInput = e.target.value;
-	      this.setState({ input: currentInput });
-	      console.log('current input', this.state.input);
+	      this.setState(_defineProperty({}, e.target.name, e.target.value));
 	    }
 	
-	    // this simply saves the data upon enter key
+	    // this simply 'saves our data' to state upon hitting enter key
 	
 	  }, {
 	    key: 'handleEnter',
 	    value: function handleEnter(e) {
 	      e.preventDefault();
-	      console.log('saved value on enter key', this.state.input);
+	      console.log('saved values on enter key', this.state.input);
 	    }
 	  }, {
 	    key: 'handleSubmit',
-	    value: function handleSubmit(e) {
+	    value: function handleSubmit() {
 	      console.log('clicked le button');
+	      console.log('state', this.state);
+	      var obj = Object.assign({}, this.state.inputCleared, { inputCleared: this.state.inputCleared });
 	      // here we should submit post request a la axios
-	      this.setState({ input: '' });
+	
+	      // this clears our inputs after clicking submit
+	      this.setState(obj);
 	    }
 	  }, {
 	    key: 'render',
@@ -27937,7 +27963,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_createListingForm2.default, { input: this.state.input, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
+	        _react2.default.createElement(_createListingForm2.default, { input: this.state, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
 	      );
 	    }
 	  }]);
@@ -29440,7 +29466,7 @@
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29453,26 +29479,142 @@
 	  var handleSubmit = props.handleSubmit;
 	
 	  return _react2.default.createElement(
-	    'div',
-	    null,
+	    "div",
+	    { className: "createContainer" },
 	    _react2.default.createElement(
-	      'form',
-	      { onSubmit: handleEnter },
+	      "div",
+	      { className: "containerA" },
 	      _react2.default.createElement(
-	        'div',
-	        null,
+	        "form",
+	        { onSubmit: handleEnter, onChange: handleChange },
+	        _react2.default.createElement("input", { name: "author", value: props.input.author, className: "adminAuth", type: "text", placeholder: "name*" }),
+	        _react2.default.createElement("input", { name: "personalEmail", value: props.input.personalEmail, className: "adminAuth", type: "email", placeholder: "personal email*" }),
 	        _react2.default.createElement(
-	          'label',
-	          { style: { display: 'block' } },
-	          'Enter Name'
+	          "label",
+	          null,
+	          "title (45 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
 	        ),
-	        _react2.default.createElement('input', { onChange: handleChange, style: { border: '.05em solid grey', marginLeft: '1em' }, type: 'text', name: 'test', value: props.input })
+	        _react2.default.createElement("textarea", { name: "title", value: props.input.title, className: "createTitle", type: "text", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "time commitment",
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            "*"
+	          )
+	        ),
+	        _react2.default.createElement("textarea", { name: "timeCommitment", value: props.input.timeCommitment, className: "createTitle", type: "text", placeholder: "saturday, january 7, weekly, tuesdays, ongoing, etc.", maxLength: "45" }),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "hours ",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { fontStyle: 'italic' } },
+	            "(default = scheduling tbd)"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "adminHours" },
+	          _react2.default.createElement("input", { name: "hoursA", value: props.input.hoursA, type: "text", placeholder: "9:30am" }),
+	          _react2.default.createElement(
+	            "div",
+	            { style: { margin: '0 .4em 0 .4em' } },
+	            "to"
+	          ),
+	          _react2.default.createElement("input", { name: "hoursB", value: props.input.hoursB, type: "text", placeholder: "1:00pm" })
+	        ),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "brief description (80 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        _react2.default.createElement("textarea", { name: "briefDescription", value: props.input.briefDescription, className: "createBriefDescription", type: "text", placeholder: "tell us what, but also tell us why your opportunity matters. (i.e. \u201Ccombat recidivism by teaching inmates beadwork & jewelry making skills\u201D)", maxLength: "80" }),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "neighborhood",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        _react2.default.createElement("input", { name: "neighborhood", value: props.input.neighborhood, className: "adminAuth", type: "text", placeholder: "east harlem, williamsburg, etc." }),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "borough",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "select",
+	          { name: "borough", required: true },
+	          _react2.default.createElement(
+	            "option",
+	            { value: "" },
+	            "----"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "brooklyn" },
+	            "brooklyn"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "manhattan" },
+	            "manhattan"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "queens" },
+	            "queens"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "the bronx" },
+	            "the bronx"
+	          ),
+	          _react2.default.createElement(
+	            "option",
+	            { value: "staten island" },
+	            "staten island"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "label",
+	          null,
+	          "meeting location (60 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        _react2.default.createElement("textarea", { name: "meetingLocation", value: props.input.meetingLocation, className: "createLoc", type: "text", placeholder: "Jefferson Senior Center, 2205, First Avenue (at E. 113th St.)", maxLength: "60" })
+	      ),
+	      _react2.default.createElement(
+	        "button",
+	        { style: { backgroundColor: 'lightblue' }, onClick: handleSubmit },
+	        "click me"
 	      )
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { style: { border: '.05em solid grey', marginLeft: '2em', backgroundColor: 'lightblue' }, onClick: handleSubmit },
-	      'click me'
 	    )
 	  );
 	};

@@ -360,6 +360,11 @@ input, textarea {
   letter-spacing: .08rem;
 }
 
+/* gets rid of chrome's yellow autofill */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
 ::-webkit-input-placeholder {
   color: #9b9b9b;
   font-size: 1rem;
@@ -392,9 +397,6 @@ input, textarea {
   letter-spacing: .08rem;
 }
 
-/*input:hover, textarea:hover {
-  font-size: 105%;
-}*/
 
 
 .adminNav {
@@ -545,7 +547,7 @@ label span {
 select {
   width: 90%;
   margin-bottom: 1em;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 0rem 1rem 0rem 1rem;
   border: .3em solid #ff4d4d;
   height: 4em;
   outline: 0;
