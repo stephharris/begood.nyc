@@ -8,7 +8,8 @@ module.exports = router;
 
 router.get('/', function(req, res, next){
   Listing.findAll({
-    where: { status: 'active' }
+    where: { status: 'active' },
+    order: '"expires"'
   })
   .then( (listings) => {
     res.json(listings)

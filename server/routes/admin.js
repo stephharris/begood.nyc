@@ -8,7 +8,10 @@ const Validator = require('validator');
 const _ = require('lodash');
 const Login = require('../configure/login-credentials');
 const Credentials = Login.Credentials;
+const expressJWT = require('express-jwt');
+const jwt = require('jsonwebtoken');
 module.exports = router;
+
 
 function validateInput(data) {
   let errors = {};
@@ -21,7 +24,6 @@ function validateInput(data) {
     }
   }
 
-
   if(!Validator.equals(data.user.password, Credentials.password)) {
     if(Validator.isEmpty(data.user.password)) {
       errors.password = 'password is required';
@@ -29,29 +31,33 @@ function validateInput(data) {
       errors.password = 'password does not match';
     }
   }
-
   return {
     errors,
     isValid: _.isEmpty(errors)
   }
 }
 
-router.post('/', function(req, res, next) {
+// router.use(expressJWT({ secret: Credentials.jwtSecret }));
+
+router.put('/', function(req, res, next) {
   console.log('loggin req body', req.body);
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
     console.log('oooooh errors', errors)
     res.status(400).json(errors);
-  }else{
-    console.log('okay')
-    res.status(200).json({ success: true })
+  }else {
+    const token = jwt.sign(req.body.user.username , Credentials.jwtSecret);
+    res.status(200).json(token)
   }
 
 })
 
-router.get('/pending', function(req, res, next){
+
+
+router.get('/pending', function(req, res, next) {
   Listing.findAll({
-    where: { status: 'pending' }
+    where: { status: 'pending' },
+    order: '"expires"'
   }).then( (pendingListings) => { res.json(pendingListings) })
   .catch(next)
 })
@@ -59,6 +65,6 @@ router.get('/pending', function(req, res, next){
 
 // will eventually need a PUT Route & POST route from emails :)
 
-router.use(function(req, res){
+router.use(function(req, res) {
   res.status(404).end();
 })

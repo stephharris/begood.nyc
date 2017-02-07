@@ -37,6 +37,10 @@ module.exports = {
         include: path.join(__dirname, 'views', 'styles')
       }
     ]
+  },
+  node: {
+    net: 'empty',
+    dns: 'empty'
   }
 };
 

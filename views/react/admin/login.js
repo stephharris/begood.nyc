@@ -3,6 +3,9 @@
 import React from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import setAuthorizationToken from './setAuthorizationToken';
+import jwt from 'jsonwebtoken';
+
 
 export default class Login extends React.Component {
 
@@ -13,8 +16,15 @@ export default class Login extends React.Component {
       this.state = {
         username: '',
         password: '',
-        errors: {}
+        errors: {},
+        isAuthenticated: false,
+        session: {}
       }
+  }
+
+  setCurrentUser(data) {
+    console.log('data', data)
+    this.setState({ isAuthenticated: true , session: data })
   }
 
   onChange(e) {
@@ -28,8 +38,13 @@ export default class Login extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     this.setState({ errors: {} });
-    axios.post('/admin', { user: this.state })
-    .then( () => {
+    axios.put('/admin', { user: this.state })
+    .then( (res) => {
+      const token = res.data;
+      localStorage.setItem('jwtToken', token);
+      setAuthorizationToken(token);
+      console.log(jwt.decode(token))
+      this.setCurrentUser(jwt.decode(token));
       browserHistory.push('/admin-panel/loggedin');
     })
     .catch( (error) => {
@@ -38,7 +53,9 @@ export default class Login extends React.Component {
   }
 
 
+
   render(){
+    console.log(this.state.isAuthenticated)
     return(
     <div>
           <form onSubmit={this.onSubmit}>
@@ -62,6 +79,4 @@ export default class Login extends React.Component {
 
 }
 
-Login.contextTypes = {
-  router: React.PropTypes.object
-}
+

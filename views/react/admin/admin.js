@@ -5,11 +5,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Link, Match } from 'react-router';
 import Pending from './pending';
 import Active from './active';
+import axios from 'axios';
 
 export default class Admin extends React.Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       pending: [],
       // selected: { pending: true, active: false, create: false },
