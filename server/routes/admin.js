@@ -52,7 +52,9 @@ router.put('/', function(req, res, next) {
 
 })
 
-
+router.post('/create', function(req, res, next) {
+  console.log('body', req.body)
+});
 
 router.get('/pending', function(req, res, next) {
   Listing.findAll({
