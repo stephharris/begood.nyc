@@ -27287,7 +27287,6 @@
 	
 	    _this.state = {
 	      pending: [],
-	      // selected: { pending: true, active: false, create: false },
 	      selected: 'pending',
 	      active: []
 	    };
@@ -27909,6 +27908,7 @@
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.handleCheckbox = _this.handleCheckbox.bind(_this);
+	    _this.reconfigureData = _this.reconfigureData.bind(_this);
 	    var initialState = {
 	      author: '',
 	      personalEmail: '',
@@ -27925,7 +27925,8 @@
 	      requirements: '',
 	      moreInfoUrl: '',
 	      contactEmail: '',
-	      expires: ''
+	      expires: '',
+	      errors: {}
 	    };
 	    _this.state = {
 	      inputCleared: initialState,
@@ -27946,7 +27947,8 @@
 	      contactEmail: '',
 	      mm: '',
 	      dd: '',
-	      yyyy: ''
+	      yyyy: '',
+	      errors: {}
 	    };
 	    return _this;
 	  }
@@ -27986,19 +27988,46 @@
 	      console.log('saved values on enter key', this.state.input);
 	    }
 	  }, {
+	    key: 'reconfigureData',
+	    value: function reconfigureData() {
+	      var undesiredKeys = ['inputCleared', 'yyyy', 'mm', 'dd', 'hoursA', 'hoursB', 'errors'];
+	      var data = {};
+	      // must concatenate hoursA + hoursB
+	      this.state.hoursA && this.state.hoursB ? data.hours = this.state.hoursA + ' to ' + this.state.hoursB : data.hours = 'scheduling tbd';
+	      // handles expiration date
+	      data.expires = this.state.yyyy + '-' + this.state.mm + '-' + this.state.dd;
+	      for (var i in this.state) {
+	        if (undesiredKeys.indexOf(i) === -1) {
+	          data[i] = this.state[i];
+	        }
+	      }
+	      data.expires === '--' ? data.expires = '' : '';
+	      return data;
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit() {
 	      var _this2 = this;
 	
-	      console.log('state', this.state);
 	      var clear = Object.assign({}, this.state.inputCleared, { inputCleared: this.state.inputCleared });
-	      _axios2.default.post('/admin/create', { listing: this.state }).catch(function (error) {
-	        _this2.setState({ errors: error.response.data });
-	      });
-	      // here we should submit post request a la axios
 	
-	      // this clears our inputs after clicking submit
-	      this.setState(clear);
+	      var data = this.reconfigureData();
+	
+	      _axios2.default.post('/admin/create', { data: data }).then(function () {
+	        console.log('success!');
+	        // re-direct to success pg?
+	        // browserHistory.push('/admin-panel/loggedin/');
+	        _this2.setState(clear);
+	      }).catch(function (error) {
+	        var errorArray = error.response.data;
+	        console.log('error array', errorArray);
+	        var err = {};
+	        for (var i = 0; i < errorArray.length; i++) {
+	          err[errorArray[i].path] = errorArray[i].message;
+	        }
+	        _this2.setState({ errors: err });
+	        console.log('error city!', err);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -33444,9 +33473,13 @@
 	      _react2.default.createElement(_formPart4.default, { input: input, handleChange: handleChange, handleEnter: handleEnter, handleSubmit: handleSubmit })
 	    ),
 	    _react2.default.createElement(
-	      'button',
-	      { style: { backgroundColor: 'lightblue' }, onClick: handleSubmit },
-	      'click me'
+	      'div',
+	      { className: 'submitForm' },
+	      _react2.default.createElement(
+	        'button',
+	        { onClick: handleSubmit },
+	        'submit'
+	      )
 	    )
 	  );
 	};
@@ -33480,6 +33513,7 @@
 	  var handleEnter = props.handleEnter;
 	  var handleChange = props.handleChange;
 	  var handleSubmit = props.handleSubmit;
+	  var errors = props.input.errors;
 	
 	  return _react2.default.createElement(
 	    "div",
@@ -33488,27 +33522,55 @@
 	      "form",
 	      { onSubmit: handleEnter, onChange: handleChange },
 	      _react2.default.createElement("input", { name: "author", value: props.input.author, className: "adminAuth", type: "text", placeholder: "name*" }),
+	      errors.author ? _react2.default.createElement(
+	        "h6",
+	        { className: "error" },
+	        errors.author
+	      ) : '',
 	      _react2.default.createElement("input", { name: "personalEmail", value: props.input.personalEmail, className: "adminAuth", type: "email", placeholder: "personal email*" }),
+	      errors.personalEmail ? _react2.default.createElement(
+	        "h6",
+	        { className: "error" },
+	        errors.personalEmail
+	      ) : '',
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "title (45 char. max)",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
-	          { style: { color: '#ff4d4d' } },
-	          "*"
-	        )
+	          "label",
+	          null,
+	          "title (45 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.title ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.title
+	        ) : ''
 	      ),
 	      _react2.default.createElement("textarea", { name: "title", value: props.input.title, className: "createTitle", type: "text", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "time commitment",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
+	          "label",
 	          null,
-	          "*"
-	        )
+	          "time commitment",
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            "*"
+	          )
+	        ),
+	        errors.timeCommitment ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.timeCommitment
+	        ) : ''
 	      ),
 	      _react2.default.createElement("textarea", { name: "timeCommitment", value: props.input.timeCommitment, className: "createTitle", type: "text", placeholder: "saturday, january 7, weekly, tuesdays, ongoing, etc.", maxLength: "45" }),
 	      _react2.default.createElement(
@@ -33533,43 +33595,70 @@
 	        _react2.default.createElement("input", { name: "hoursB", value: props.input.hoursB, type: "text", placeholder: "1:00pm" })
 	      ),
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "brief description (80 char. max)",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
-	          { style: { color: '#ff4d4d' } },
-	          "*"
-	        )
+	          "label",
+	          null,
+	          "brief description (80 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.briefDescription ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.briefDescription
+	        ) : ''
 	      ),
 	      _react2.default.createElement("textarea", { name: "briefDescription", value: props.input.briefDescription, className: "createBriefDescription", type: "text", placeholder: "tell us what, but also tell us why your opportunity matters. (i.e. \u201Ccombat recidivism by teaching inmates beadwork & jewelry making skills\u201D)", maxLength: "80" }),
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "neighborhood",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
-	          { style: { color: '#ff4d4d' } },
-	          "*"
-	        )
+	          "label",
+	          null,
+	          "neighborhood",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.neighborhood ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.neighborhood
+	        ) : ''
 	      ),
 	      _react2.default.createElement("input", { name: "neighborhood", value: props.input.neighborhood, className: "adminAuth", type: "text", placeholder: "east harlem, williamsburg, etc." }),
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "borough",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
-	          { style: { color: '#ff4d4d' } },
-	          "*"
-	        )
+	          "label",
+	          null,
+	          "borough",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.borough ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.borough
+	        ) : ''
 	      ),
 	      _react2.default.createElement(
 	        "select",
 	        { name: "borough", required: true },
 	        _react2.default.createElement(
 	          "option",
-	          { value: "" },
+	          null,
 	          "----"
 	        ),
 	        _react2.default.createElement(
@@ -33599,14 +33688,23 @@
 	        )
 	      ),
 	      _react2.default.createElement(
-	        "label",
-	        null,
-	        "meeting location (60 char. max)",
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          "span",
-	          { style: { color: '#ff4d4d' } },
-	          "*"
-	        )
+	          "label",
+	          null,
+	          "meeting location (60 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.meetingLocation ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.meetingLocation
+	        ) : ''
 	      ),
 	      _react2.default.createElement("textarea", { name: "meetingLocation", value: props.input.meetingLocation, className: "createLoc", type: "text", placeholder: "Jefferson Senior Center, 2205, First Avenue (at E. 113th St.)", maxLength: "60" })
 	    )
@@ -33623,7 +33721,7 @@
 /* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -33634,207 +33732,257 @@
 	  var handleEnter = props.handleEnter;
 	  var handleChange = props.handleChange;
 	  var handleSubmit = props.handleSubmit;
+	  var errors = props.input.errors;
 	
 	  return _react2.default.createElement(
-	    'div',
-	    { className: 'containerB' },
+	    "div",
+	    { className: "containerB" },
 	    _react2.default.createElement(
-	      'form',
+	      "form",
 	      { onSubmit: handleEnter, onChange: handleChange },
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'tags (check all that apply)',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "tags (check all that apply)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.tags ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.tags
+	        ) : ''
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'adminTags' },
+	        "div",
+	        { className: "adminTags" },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'adminTagsGroup' },
+	          "div",
+	          { className: "adminTagsGroup" },
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'health-care',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'health-care' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "health-care",
+	            _react2.default.createElement("input", { type: "checkbox", value: "health-care" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'education',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'education' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "education",
+	            _react2.default.createElement("input", { type: "checkbox", value: "education" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'tech',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'tech' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "tech",
+	            _react2.default.createElement("input", { type: "checkbox", value: "tech" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'human rights',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'human rights' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "human rights",
+	            _react2.default.createElement("input", { type: "checkbox", value: "human rights" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'environment',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'environment' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "environment",
+	            _react2.default.createElement("input", { type: "checkbox", value: "environment" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'youth',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'youth' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "youth",
+	            _react2.default.createElement("input", { type: "checkbox", value: "youth" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'LGBTQ',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'LGBTQ' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "LGBTQ",
+	            _react2.default.createElement("input", { type: "checkbox", value: "LGBTQ" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'policy/gov',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'policy/gov' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "policy/gov",
+	            _react2.default.createElement("input", { type: "checkbox", value: "policy/gov" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'adminTagsGroup' },
+	          "div",
+	          { className: "adminTagsGroup" },
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'racial justice',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'racial justice' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "racial justice",
+	            _react2.default.createElement("input", { type: "checkbox", value: "racial justice" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'meetups/events',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'meetups/events' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "meetups/events",
+	            _react2.default.createElement("input", { type: "checkbox", value: "meetups/events" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'social justice',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'social justice' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "social justice",
+	            _react2.default.createElement("input", { type: "checkbox", value: "social justice" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'animal rights',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'animal rights' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "animal rights",
+	            _react2.default.createElement("input", { type: "checkbox", value: "animal rights" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'senior services',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'senior services' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "senior services",
+	            _react2.default.createElement("input", { type: "checkbox", value: "senior services" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'immigration',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'immigration' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "immigration",
+	            _react2.default.createElement("input", { type: "checkbox", value: "immigration" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'disability',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'disability' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "disability",
+	            _react2.default.createElement("input", { type: "checkbox", value: "disability" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          ),
 	          _react2.default.createElement(
-	            'label',
-	            { className: 'control' },
-	            'housing',
-	            _react2.default.createElement('input', { type: 'checkbox', value: 'housing' }),
-	            _react2.default.createElement('div', { className: 'controlIndicator' })
+	            "label",
+	            { className: "control" },
+	            "housing",
+	            _react2.default.createElement("input", { type: "checkbox", value: "housing" }),
+	            _react2.default.createElement("div", { className: "controlIndicator" })
 	          )
 	        )
 	      ),
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'full description (330 char. max)',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "full description (330 char. max)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.fullDescription ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.fullDescription
+	        ) : ''
 	      ),
-	      _react2.default.createElement('textarea', { name: 'fullDescription', value: props.input.fullDescription, className: 'createLongDescription', type: 'text', placeholder: 'this is your listing\u2019s elevator pitch. be sure to emphasize its impact on the community in addition to including a description of the volunteer-work itself.', maxLength: '330' }),
+	      _react2.default.createElement("textarea", { name: "fullDescription", value: props.input.fullDescription, className: "createLongDescription", type: "text", placeholder: "This is your listing\u2019s elevator pitch. Be sure to emphasize its impact on the community in addition to including a description of the volunteer work itself.", maxLength: "330" }),
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'requirements (130 char. max)',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "requirements (130 char. max)"
+	        ),
+	        errors.requirements ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.requirements
+	        ) : ''
 	      ),
-	      _react2.default.createElement('textarea', { name: 'requirements', value: props.input.requirements, className: 'createBriefDescription', type: 'text', placeholder: 'voluteers will be sent a short training video and brief quiz to help prepare them for participation', maxLength: '130' }),
+	      _react2.default.createElement("textarea", { name: "requirements", value: props.input.requirements, className: "createBriefDescription", type: "text", placeholder: "voluteers will be sent a short training video and brief quiz to help prepare them for participation", maxLength: "130" }),
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'url (for more info.)',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "url (for more info.)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.moreInfoUrl ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.moreInfoUrl
+	        ) : ''
 	      ),
-	      _react2.default.createElement('input', { name: 'moreInfoUrl', value: props.input.moreInfoUrl, className: 'adminAuth', type: 'text', placeholder: 'paste link' }),
+	      _react2.default.createElement("input", { name: "moreInfoUrl", value: props.input.moreInfoUrl, className: "adminAuth", type: "text", placeholder: "paste link" }),
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'contact email (public)',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "contact email (public)",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.contactEmail ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.contactEmail
+	        ) : ''
 	      ),
-	      _react2.default.createElement('input', { name: 'contactEmail', value: props.input.contactEmail, className: 'adminAuth', type: 'email', placeholder: 'email of organizer' }),
+	      _react2.default.createElement("input", { name: "contactEmail", value: props.input.contactEmail, className: "adminAuth", type: "email", placeholder: "email of organizer" }),
 	      _react2.default.createElement(
-	        'label',
-	        null,
-	        'listing expiration date',
+	        "div",
+	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
-	          'span',
-	          { style: { color: '#ff4d4d' } },
-	          '*'
-	        )
+	          "label",
+	          null,
+	          "listing expiration date",
+	          _react2.default.createElement(
+	            "span",
+	            { style: { color: '#ff4d4d' } },
+	            "*"
+	          )
+	        ),
+	        errors.expires ? _react2.default.createElement(
+	          "h6",
+	          { className: "error2" },
+	          errors.expires
+	        ) : ''
 	      ),
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'adminExpiration' },
-	        _react2.default.createElement('input', { name: 'mm', value: props.input.mm, type: 'text', placeholder: 'mm', maxLength: '2' }),
-	        _react2.default.createElement('input', { name: 'dd', value: props.input.dd, type: 'text', placeholder: 'dd', maxLength: '2' }),
-	        _react2.default.createElement('input', { name: 'yyyy', value: props.input.yyyy, type: 'text', placeholder: 'yyyy', maxLength: '4' })
+	        "div",
+	        { className: "adminExpiration" },
+	        _react2.default.createElement("input", { name: "mm", value: props.input.mm, type: "text", placeholder: "mm", maxLength: "2" }),
+	        _react2.default.createElement("input", { name: "dd", value: props.input.dd, type: "text", placeholder: "dd", maxLength: "2" }),
+	        _react2.default.createElement("input", { name: "yyyy", value: props.input.yyyy, type: "text", placeholder: "yyyy", maxLength: "4" })
 	      )
 	    )
 	  );

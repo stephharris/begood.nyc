@@ -49,11 +49,12 @@ router.put('/', function(req, res, next) {
     const token = jwt.sign(req.body.user.username , Credentials.jwtSecret);
     res.status(200).json(token)
   }
-
 })
 
 router.post('/create', function(req, res, next) {
-  console.log('body', req.body)
+  Listing.create(req.body.data)
+  .then( () => res.sendStatus(201))
+  .catch(next);
 });
 
 router.get('/pending', function(req, res, next) {
@@ -67,6 +68,8 @@ router.get('/pending', function(req, res, next) {
 
 // will eventually need a PUT Route & POST route from emails :)
 
-router.use(function(req, res) {
-  res.status(404).end();
+// 404 is error not found
+router.use(function(err, req, res, next) {
+  console.log('error', err.message)
+  res.status(500).json(err.errors);
 })

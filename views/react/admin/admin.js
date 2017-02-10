@@ -14,7 +14,6 @@ export default class Admin extends React.Component {
     super(props);
     this.state = {
       pending: [],
-      // selected: { pending: true, active: false, create: false },
       selected: 'pending',
       active: []
     }

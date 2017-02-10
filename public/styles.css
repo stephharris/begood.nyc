@@ -481,7 +481,7 @@ input:-webkit-autofill {
 form label {
    -webkit-align-self: flex-start;
    align-self: flex-start;
-   margin: 1.5em 0 1em 5%;
+   margin: 1.5em 0em 1em 5%;
    font-family: "Avenir Medium";
    font-weight: bold;
 }
@@ -490,17 +490,19 @@ label span {
   color: #ff4d4d;
 }
 
+textarea {
+  width: 83%;
+}
+
 .createTitle {
   margin-bottom: 1em;
   padding: 1rem 1rem 1rem 1rem;
-  width: 80%;
   border: .3em solid #ff4d4d;
 }
 
 .createBriefDescription {
   margin-bottom: 1em;
   padding: 1rem 1rem 1rem 1rem;
-  width: 80%;
   border: .3em solid #ff4d4d;
   height: 7em;
 }
@@ -508,15 +510,13 @@ label span {
 .createLoc {
   margin-bottom: 1em;
   padding: 1rem 1rem 1rem 1rem;
-  width: 80%;
   border: .3em solid #ff4d4d;
   height: 4em;
 }
 
 .createLongDescription {
-  margin-bottom: 1em;
+  margin-bottom: 1.7em;
   padding: 1rem 1rem 1rem 1rem;
-  width: 80%;
   border: .3em solid #ff4d4d;
   height: 10em;
 }
@@ -551,7 +551,6 @@ select {
   border: .3em solid #ff4d4d;
   height: 4em;
   outline: 0;
-/*  -webkit-appearance: none;*/
   -webkit-border-radius: 0px;
 }
 
@@ -586,7 +585,7 @@ select {
   -webkit-flex-direction: row;
   flex-direction: row;
   width: 90%;
-  margin-bottom: 1em;
+  margin-bottom: 1.2em;
   padding: 0;
 }
 
@@ -634,11 +633,76 @@ select {
   background: #ff4d4d;
 }
 
+.submitForm {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  justify-content: center;
+  height: 4em;
+  outline: 0;
+  margin: 2em 0em 1em 0em;
+}
+
+.submitForm button {
+  background: #2d2d2d;
+  color: white;
+  height: 3.5em;
+  outline: 0;
+  margin-bottom: 1em;
+  width: 20em;
+  font-weight: normal;
+  border: none;
+/*  border-radius: 2.5em;*/
+  margin: .3em .4em .3em 0em;
+/*  padding: .65em 1em .3em 1em;*/
+  font-family: "Avenir Medium";
+  letter-spacing: .08rem;
+  font-size: 1rem;
+}
+
+#errorCaseContainer {
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  margin-top: 1em;
+}
+
+h6.error {
+  margin-top: -1em;
+  padding: .5em 1.5em .5em 1.5em;
+  margin-left: auto;
+  margin-right: 5%;
+  color: #FFF;
+  background-color: red;
+  display: inline;
+}
+
+h6.error2 {
+  color: #FFF;
+  padding: .5em 1.5em .5em 1.5em;
+  display: inline;
+  margin-left: auto;
+  margin-right: 5%;
+  background-color: red;
+}
+
 
 /*****************/
 /* MOBILE STYLES */
 /*****************/
 
+@media (max-width: 1000px) {
+
+  .containerA form, .containerB form {
+    padding: 1em 1.5em 1em 1.5em;
+  }
+
+  textarea {
+    width: 80%;
+  }
+
+}
 
 
 @media (max-width: 900px) {
@@ -654,6 +718,10 @@ select {
   .adminTags {
     -webkit-flex-direction: column;
     flex-direction: column;
+  }
+
+  .createLongDescription {
+    margin-bottom: 1em;
   }
 
 }
@@ -723,6 +791,10 @@ eliminating 'location' from mobile version
     max-width: none;
   }
 
+  textarea {
+    width: 84%;
+  }
+
   .groupD .description {
     margin-bottom: 1em;
   }
@@ -753,6 +825,10 @@ eliminating 'location' from mobile version
     padding: 0em 1.5em 1em 1.5em;
   }
 
+  .submitForm button {
+    width: 21.5em;
+  }
+
 }
 
 
@@ -761,6 +837,10 @@ eliminating 'location' from mobile version
   header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
     padding-left: .8em;
     padding-right: .8em;
+  }
+
+  .submitForm button {
+    width: 17em;
   }
 
 }
