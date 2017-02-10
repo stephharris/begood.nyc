@@ -2,30 +2,30 @@ var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/begood');
 
 
-function helper(expDate) {
-      let currentTime = new Date();
-      let currYear = currentTime.getFullYear();
-      let currMonth = currentTime.getMonth() + 1;
-      let currDay = currentTime.getDate();
-      let expYear = parseInt(expDate.slice(0,4));
+// function helper(expDate) {
+//       let currentTime = new Date();
+//       let currYear = currentTime.getFullYear();
+//       let currMonth = currentTime.getMonth() + 1;
+//       let currDay = currentTime.getDate();
+//       let expYear = parseInt(expDate.slice(0,4));
 
-      if(parseInt(expDate.slice(0,4)) < currYear){
-        this.setDataValue('status', 'expired');
-        return; //set to expired
-      }else{
-        if(parseInt(expDate.slice(5,7)) < currMonth ){
-          this.setDataValue('status', 'expired');
-          return; //set to expired
-        }else{
-          if(parseInt(expDate.slice(8,10)) < currDay ){
-            this.setDataValue('status', 'expired');
-            return; //set to expired
-          }else{
-            return;
-          }
-        }
-      }
-}
+//       if(parseInt(expDate.slice(0,4)) < currYear){
+//         this.setDataValue('status', 'expired');
+//         return; //set to expired
+//       }else{
+//         if(parseInt(expDate.slice(5,7)) < currMonth ){
+//           this.setDataValue('status', 'expired');
+//           return; //set to expired
+//         }else{
+//           if(parseInt(expDate.slice(8,10)) < currDay ){
+//             this.setDataValue('status', 'expired');
+//             return; //set to expired
+//           }else{
+//             return;
+//           }
+//         }
+//       }
+// }
 
 
 let Listing = db.define('listing', {
@@ -44,19 +44,26 @@ let Listing = db.define('listing', {
 
   author: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    }
   },
 
   personalEmail: {
     type: Sequelize.STRING,
     validate: {
-     isEmail: true
+     notEmpty: { msg: 'field required'},
+     isEmail: { msg: 'invalid email.'}
     }
   },
 
   title: {
     type: Sequelize.STRING(45),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    },
     set: function(val) {
       this.setDataValue('title', val.toUpperCase());
     }
@@ -65,6 +72,9 @@ let Listing = db.define('listing', {
   briefDescription: {
     type: Sequelize.STRING(95),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    },
     set: function(val){
       this.setDataValue('briefDescription', val.toLowerCase());
     }
@@ -74,6 +84,9 @@ let Listing = db.define('listing', {
   timeCommitment: {
     type: Sequelize.STRING(30),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    },
     // set ensures every first letter is capitalized
     set: function(val) {
       let result = '';
@@ -93,6 +106,9 @@ let Listing = db.define('listing', {
   neighborhood: {
     type: Sequelize.STRING(25),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    },
     set: function(val) {
       this.setDataValue('neighborhood', val.toLowerCase());
     }
@@ -101,12 +117,18 @@ let Listing = db.define('listing', {
   // dropdown menu
   borough: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    }
   },
 
   meetingLocation: {
     type: Sequelize.STRING(60),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    },
     set: function(val) {
       let result = '';
       for(let i = 0; i < val.length; i++) {
@@ -119,12 +141,18 @@ let Listing = db.define('listing', {
   // come back to this one
   tags: {
     type: Sequelize.ARRAY(Sequelize.TEXT),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    }
   },
 
   fullDescription: {
     type: Sequelize.STRING(330),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: 'field required.' }
+    }
   },
 
   requirements: {
@@ -141,23 +169,25 @@ let Listing = db.define('listing', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      isUrl: true
+      isUrl: { msg: 'invalid url.' },
+      notEmpty: { msg: 'field required.' }
     }
   },
 
   contactEmail: {
     type: Sequelize.STRING,
     validate: {
-     isEmail: true
+     notEmpty: { msg: 'field required.' },
+     isEmail: { msg: 'invalid email.' }
     }
   },
 
   expires: {
     type: Sequelize.DATEONLY, // this will be a string
-    allowNull: false
-    // validate: {
-    //   isAfter: new Date().toJSON().slice(0,10)
-    // },
+    allowNull: false,
+    validate: {
+     notEmpty: { msg: 'field required.' }
+    }
   },
 
   // listing uri
@@ -179,15 +209,11 @@ let Listing = db.define('listing', {
 
   getterMethods : {
     route: function(){
-      return this.id + '_' + this.routeTitle;
+      return this.id + '_' + this.routeTitle.toLowerCase();
     }
   }
 
 });
-
-// need to write a virtual that checks for status
-
-
 
 
 module.exports = {

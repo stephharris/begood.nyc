@@ -13,6 +13,7 @@ export default class CreateListingContainer extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.reconfigureData = this.reconfigureData.bind(this);
     const initialState = {
        author: '',
        personalEmail: '',
@@ -29,7 +30,8 @@ export default class CreateListingContainer extends React.Component {
        requirements: '',
        moreInfoUrl: '',
        contactEmail: '',
-       expires: ''
+       expires: '',
+       errors: {}
     }
     this.state = {
       inputCleared: initialState,
@@ -50,7 +52,8 @@ export default class CreateListingContainer extends React.Component {
        contactEmail: '',
        mm: '',
        dd: '',
-       yyyy: ''
+       yyyy: '',
+       errors: {}
     }
   }
 
@@ -83,17 +86,45 @@ export default class CreateListingContainer extends React.Component {
     console.log('saved values on enter key', this.state.input);
   }
 
-  handleSubmit() {
-    console.log('state', this.state);
-    let clear = Object.assign({}, this.state.inputCleared, {inputCleared: this.state.inputCleared })
-    axios.post('/admin/create', { listing: this.state })
-    .catch( (error) => {
-      this.setState({ errors: error.response.data })
-    })
-    // here we should submit post request a la axios
+  reconfigureData() {
+    const undesiredKeys = ['inputCleared','yyyy','mm','dd','hoursA','hoursB', 'errors']
+    let data = {};
+    // must concatenate hoursA + hoursB
+    (this.state.hoursA && this.state.hoursB) ? data.hours = this.state.hoursA + ' to ' + this.state.hoursB : data.hours = 'scheduling tbd';
+    // handles expiration date
+    data.expires = this.state.yyyy + '-' + this.state.mm + '-' + this.state.dd;
+    for(let i in this.state){
+      if(undesiredKeys.indexOf(i) === -1){
+        data[i] = this.state[i]
+      }
+    }
+    data.expires === '--' ? data.expires = '' : '';
+    return data;
+  }
 
-    // this clears our inputs after clicking submit
-    this.setState(clear);
+  handleSubmit() {
+    let clear = Object.assign({}, this.state.inputCleared, {inputCleared: this.state.inputCleared })
+
+    let data = this.reconfigureData();
+
+    axios.post('/admin/create', { data })
+    .then( () => {
+      console.log('success!');
+      // re-direct to success pg?
+      // browserHistory.push('/admin-panel/loggedin/');
+      this.setState(clear);
+    })
+    .catch( (error) => {
+      let errorArray = error.response.data
+      console.log('error array', errorArray);
+      let err = {};
+      for(let i = 0; i < errorArray.length; i++){
+        err[errorArray[i].path] = errorArray[i].message;
+      }
+      this.setState({ errors: err })
+      console.log('error city!', err )
+    })
+
   }
 
   render() {

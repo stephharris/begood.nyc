@@ -17,13 +17,14 @@ export default function (props) {
       <Part1 input={input} handleChange={handleChange} handleEnter={handleEnter} handleSubmit={handleSubmit}/>
       <Part2 input={input} handleChange={handleChange} handleEnter={handleEnter} handleSubmit={handleSubmit}/>
     </div>
-          <button style={{backgroundColor: 'lightblue'}} onClick={handleSubmit}>click me</button>
+      <div className="submitForm">
+          <button onClick={handleSubmit}>submit</button>
+      </div>
     </div>
   );
 
 }
 
 
-//       <button style={{backgroundColor: 'lightblue'}} onClick={handleSubmit}>click me</button>
 
 
