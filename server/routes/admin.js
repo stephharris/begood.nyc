@@ -65,11 +65,8 @@ router.get('/pending', function(req, res, next) {
   .catch(next)
 })
 
-
-// will eventually need a PUT Route & POST route from emails :)
-
-// 404 is error not found
+// handling errors from '/create'
 router.use(function(err, req, res, next) {
-  console.log('error', err.message)
+  // console.log('error', err.message)
   res.status(500).json(err.errors);
 })
