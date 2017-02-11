@@ -40,6 +40,8 @@ function validateInput(data) {
 // router.use(expressJWT({ secret: Credentials.jwtSecret }));
 
 router.put('/', function(req, res, next) {
+console.log('req', req)
+console.log('res', res)
   console.log('loggin req body', req.body);
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
@@ -47,6 +49,8 @@ router.put('/', function(req, res, next) {
     res.status(400).json(errors);
   }else {
     const token = jwt.sign(req.body.user.username , Credentials.jwtSecret);
+    // simulates writing jwtToken to database
+    Credentials.jwtToken = token;
     res.status(200).json(token)
   }
 })

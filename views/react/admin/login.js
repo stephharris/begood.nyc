@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import axios from 'axios';
-import { browserHistory } from 'react-router';
-import setAuthorizationToken from './setAuthorizationToken';
-import jwt from 'jsonwebtoken';
+// import axios from 'axios';
+// import { browserHistory } from 'react-router';
+// import setAuthorizationToken from './setAuthorizationToken';
+// import jwt from 'jsonwebtoken';
+import AuthAction from './authAction';
 
 
 export default class Login extends React.Component {
@@ -22,10 +23,10 @@ export default class Login extends React.Component {
       }
   }
 
-  setCurrentUser(data) {
-    console.log('data', data)
-    this.setState({ isAuthenticated: true , session: data })
-  }
+  // setCurrentUser(data) {
+  //   console.log('data', data)
+  //   this.setState({ isAuthenticated: true , session: data })
+  // }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
@@ -38,18 +39,23 @@ export default class Login extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     this.setState({ errors: {} });
-    axios.put('/admin', { user: this.state })
-    .then( (res) => {
-      const token = res.data;
-      localStorage.setItem('jwtToken', token);
-      setAuthorizationToken(token);
-      console.log(jwt.decode(token))
-      this.setCurrentUser(jwt.decode(token));
-      browserHistory.push('/admin-panel/loggedin');
-    })
-    .catch( (error) => {
-      this.setState({ errors: error.response.data })
-    })
+    const authAction = new AuthAction;
+    authAction.handleSubmit(this.state);
+setTimeout(function() {
+console.log('authAction', authAction);
+}, 20000)
+    // axios.put('/admin', { user: this.state })
+    // .then( (res) => {
+    //   const token = res.data;
+    //   localStorage.setItem('jwtToken', token);
+    //   setAuthorizationToken(token);
+    //   console.log(jwt.decode(token))
+    //   this.setCurrentUser(jwt.decode(token));
+    //   browserHistory.push('/admin-panel/loggedin');
+    // })
+    // .catch( (error) => {
+    //   this.setState({ errors: error.response.data })
+    // })
   }
 
 
@@ -77,5 +83,3 @@ export default class Login extends React.Component {
 
 
 }
-
-
