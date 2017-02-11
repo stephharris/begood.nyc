@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
+import Authenticated from './authenticated';
 import Home from './home';
 import About from './about';
 import Contact from './contact';
@@ -20,8 +21,10 @@ class App extends Component {
       <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
-            <Route path='/admin-panel/loggedin' component={Admin} />
-            <Route path='/admin-panel/loggedin/create' component={Create}/>
+            <Route component={Authenticated}>
+              <Route path='/admin-panel/loggedin' component={Admin} />
+              <Route path='/admin-panel/loggedin/create' component={Create}/>
+            </Route>
           </Route>
           <Route path='/' component={Layout}>
             <IndexRoute component={Home} />
