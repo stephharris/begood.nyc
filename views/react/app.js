@@ -9,11 +9,11 @@ import Contact from './contact';
 import Admin from './admin/admin.js';
 import Login from './admin/login.js';
 import Create from './admin/createListingContainer';
-import setAuthorizationToken from './admin/setAuthorizationToken';
+// import setAuthorizationToken from './admin/setAuthorizationToken';
 
-if(localStorage.jwtToken){
-  setAuthorizationToken(localStorage.jwtToken);
-}
+// if(localStorage.jwtToken){
+//   setAuthorizationToken(localStorage.jwtToken);
+// }
 
 class App extends Component {
   render() {
@@ -22,7 +22,7 @@ class App extends Component {
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
             <Route component={Authenticated}>
-              <Route path='/admin-panel/loggedin' component={Admin} />
+              <Route path='/admin-panel/loggedin' component={Admin}/>
               <Route path='/admin-panel/loggedin/create' component={Create}/>
             </Route>
           </Route>
