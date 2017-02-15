@@ -16,7 +16,6 @@ export default class Pending extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.edit = this.edit.bind(this);
     this.state = {
-       editedListing: {},
        author: '',
        personalEmail: '',
        title: '',
@@ -41,7 +40,7 @@ export default class Pending extends React.Component {
 
 
   cancel(listing){
-    this.setState({ editing: false, oldListing: {}, clicked: {} })
+    this.setState({ editing: false, clicked: '' })
   }
 
   approve(){
@@ -50,29 +49,22 @@ export default class Pending extends React.Component {
 
   edit(listing){
     this.setState({ editing: true })
-    let parsedListing = _.omit(listing, ['route', 'routeTitle'])
-    this.setState({ editedListing: parsedListing })
-    console.log('hit editing', this.state)
-    // maybe omit route/title keys
   }
 
   save(listing){
-    console.log('listing within save', listing)
     let editedKeys = {};
+
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
       listing[fields[i]] = this.state[fields[i]];
       editedKeys[fields[i]] = this.state[fields[i]];
     }
 
-    // let updated = Object.assign(this.state.editedListing, editedKeys);
-    // this.setState({ editedListing: updated })
-
     editedKeys.id = this.state.clicked;
 
     axios.put('/admin/pending', editedKeys)
     .then( () => {
-       this.setState({ editing: false, fieldsEdited: [], title: '' })
+       this.setState({ editing: false, fieldsEdited: [] })
     })
     .catch( (error) => {
       let errorArray = error.response.data
