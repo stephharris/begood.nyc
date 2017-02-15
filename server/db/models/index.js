@@ -200,7 +200,12 @@ let Listing = db.define('listing', {
 // virtuals on the instance of Listing (defining our uri's)
 
   hooks : {
-    beforeValidate : function(listing){
+    beforeCreate : function(listing){
+      if(listing.title){
+      listing.routeTitle = listing.title.replace(/\s+/g, '_').replace(/\W/g, '');
+      }
+    },
+    beforeUpdate : function(listing){
       if(listing.title){
       listing.routeTitle = listing.title.replace(/\s+/g, '_').replace(/\W/g, '');
       }

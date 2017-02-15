@@ -2,103 +2,141 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ListingContracted from '../listing-contracted';
+import ListingExpanded from '../listing-expanded';
+import Part1 from './form-part1';
+import Part2 from './form-part2';
+import _ from 'lodash';
+import axios from 'axios';
 
 export default class Pending extends React.Component {
 
   constructor(props){
     super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.edit = this.edit.bind(this);
     this.state = {
-      clicked: {},
-      editing: false
+       author: '',
+       personalEmail: '',
+       title: '',
+       timeCommitment: '',
+       hours: '',
+       briefDescription: '',
+       neighborhood: '',
+       borough: '',
+       meetingLocation: '',
+       tags: [],
+       fullDescription: '',
+       requirements: '',
+       moreInfoUrl: '',
+       contactEmail: '',
+       expires: '',
+       errors: {},
+       clicked: '',
+       editing: false,
+       fieldsEdited: []
     }
   }
 
-  edit(){
-    console.log('hit the edit button')
+
+  cancel(listing){
+    this.setState({ editing: false, clicked: '' })
+  }
+
+  approve(){
+    console.log('this is the listing in state', this.state);
+  }
+
+  edit(listing){
     this.setState({ editing: true })
-    console.log(this.state.editing);
   }
 
-  toggleView(route){
-    if(this.state.clicked === route){
-      this.setState({ clicked: {} })
+  save(listing){
+    let editedKeys = {};
+
+    let fields = this.state.fieldsEdited;
+    for(let i = 0; i < fields.length; i++){
+      listing[fields[i]] = this.state[fields[i]];
+      editedKeys[fields[i]] = this.state[fields[i]];
+    }
+
+    editedKeys.id = this.state.clicked;
+
+    axios.put('/admin/pending', editedKeys)
+    .then( () => {
+       this.setState({ editing: false, fieldsEdited: [] })
+    })
+    .catch( (error) => {
+      let errorArray = error.response.data
+      let err = {};
+      for(let i = 0; i < errorArray.length; i++){
+        err[errorArray[i].path] = errorArray[i].message;
+      }
+      this.setState({ errors: err })
+      console.log('error city!', err )
+    })
+  }
+
+  toggleView(id){
+    if(this.state.clicked === id){
+      this.setState({ clicked: '' })
     }else{
-      this.setState({ clicked: route })
+      this.setState({ clicked: id })
     }
   }
 
-  displayTags(tags){
-    return tags.length < 2 ? tags : tags.join(', ');
+  handleChange(e){
+  console.log(e.target.value)
+  let fields = this.state.fieldsEdited;
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+    if(fields.indexOf(e.target.name) === -1){
+      fields.push(e.target.name);
+      this.setState({ fieldsEdited: fields });
+    }
   }
 
   renderEditing(listing, i){
-    console.log('got to render editing')
     return(
-    <div key={i} className="listing-expanded">
-      <div onClick={this.toggleView.bind(this, listing.route)}  className="groupA">
-        <h1>{ listing.title }</h1>
+      <div key={i} className="createContainer">
+      <div className="containerA">
+        <form onChange={this.handleChange}>
+          <input name="title" defaultValue={listing.title} className="adminAuth" type="text" placeholder="title*"/>
+        </form>
       </div>
+        <button onClick={this.save.bind(this, listing)}>Save</button>
+        <button onClick={this.cancel.bind(this, listing)}>Cancel</button>
     </div>
     )
   }
 
-  renderNormal(listing, i){
+  renderExpanded(listing, i){
     return(
-     <div key={i} className="listing-expanded">
-         <div onClick={this.toggleView.bind(this, listing.route)} className="groupA">
-            <h2>{ listing.title }</h2>
-            <h3 className="commitment">{ listing.timeCommitment }</h3>
-            <h3 className="time">{ listing.hours }</h3>
-            <div className="address">
-              <h3>{ listing.meetingLocation }</h3>
-              <h3>{ listing.neighborhood }, { listing.borough }</h3>
-            </div>
-            <a href={`mailto:${listing.contactEmail}`}>contact</a>
-            <a href={listing.moreInfoUrl}>more info</a>
-            <h3 className="tags"><span style={{fontFamily: 'Avenir Black'}}>TAGS: </span>{ this.displayTags(listing.tags) }</h3>
-         </div>
-         <div className="groupD">
-            <h3 className="description">
-            { listing.fullDescription }
-            </h3>
-            <h3>REQUIREMENTS: { listing.requirements }</h3>
-          <button onClick={this.edit.bind(this)}>Edit</button>
-          <button>Remove</button>
-          <button>Approve</button>
-         </div>
+     <div key={i}>
+        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit} approve={this.approve} pending={true}/>
     </div>
     )
   }
 
 
   displayPending(listings){
-    return listings ? listings.map((listing, i) => {
-    // this renders expanded version of listing
-     if(this.state.clicked === listing.route){
-        if(this.state.editing){
-          return this.renderEditing(listing, i);
-        }else{
-          return this.renderNormal(listing, i)
-        }
-     }else{
+    return listings.map((listing, i) => {
+    if(this.state.editing && (this.state.clicked === listing.id)){
+       return this.renderEditing(listing, i);
+     }
+    else if(this.state.clicked === listing.id){
+       return this.renderExpanded(listing, i)
+     }
+    else{
       // this renders collapsed version of listing
        return(
-           <div onClick={this.toggleView.bind(this, listing.route)} id="listing" key={i}>
-              <div className="groupA">
-                <h2>{ listing.title }</h2>
-                <h3 className="commitment">{ listing.timeCommitment }</h3>
-                <h3 className="time">{ listing.hours }</h3>
-              </div>
-              <div className="groupB">
-                <h3>{ listing.neighborhood },</h3>
-                <h3>{ listing.borough }</h3>
-              </div>
-              <div className="groupC">
-                <h3 className="blurb">{ listing.briefDescription }</h3>
-              </div>
-           </div>)
+          <div onClick={this.toggleView.bind(this, listing.id)} key={i}>
+           <ListingContracted listing={listing}/>
+          </div>
+       )
      }
-    }) : '';
+    });
   }
 
  render() {

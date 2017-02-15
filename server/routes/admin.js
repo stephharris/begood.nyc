@@ -61,11 +61,27 @@ router.post('/create', function(req, res, next) {
   .catch(next);
 });
 
+router.put('/pending', function(req, res, next) {
+  // console.log('being served this', req.body.title )
+  // Listing.update(
+  // { title: req.body.title },
+  // { where: { id: req.body.id } }
+  Listing.findOne({ where: { id: req.body.id } })
+  .then( (listing) => {
+    listing.update(req.body)
+  }).then( (updated) => {
+    res.json(updated)
+  })
+  .catch(next)
+})
+
 router.get('/pending', function(req, res, next) {
   Listing.findAll({
     where: { status: 'pending' },
     order: '"expires"'
-  }).then( (pendingListings) => { res.json(pendingListings) })
+  }).then( (pendingListings) => {
+    res.json(pendingListings)
+  })
   .catch(next)
 })
 
