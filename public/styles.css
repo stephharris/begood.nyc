@@ -687,6 +687,23 @@ h6.error2 {
   background-color: red;
 }
 
+.pending {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+}
+
+.update {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  justify-content: center;
+  height: 4em;
+  outline: 0;
+  margin: 0em 0em 1em 0em;
+}
+
 
 /*****************/
 /* MOBILE STYLES */
