@@ -23,6 +23,7 @@ router.post('/', function(req, res, next){
 })
 
 router.use(function(req, res){
+  console.log('bizarrely got here')
   res.status(404).end()
 })
 

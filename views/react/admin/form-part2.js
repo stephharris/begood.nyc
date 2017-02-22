@@ -60,9 +60,19 @@ export default function (props) {
               <input type="checkbox" value="policy/gov"/>
               <div className="controlIndicator"></div>
             </label>
+
+            <label className="control">women
+              <input type="checkbox" value="women"/>
+              <div className="controlIndicator"></div>
+            </label>
           </div>
 
           <div className="adminTagsGroup">
+
+            <label className="control">homelessness
+              <input type="checkbox" value="homelessness"/>
+              <div className="controlIndicator"></div>
+            </label>
 
             <label className="control">racial justice
               <input type="checkbox" value="racial justice"/>

@@ -8,6 +8,7 @@ import Part1 from './form-part1';
 import Part2 from './form-part2';
 import _ from 'lodash';
 import axios from 'axios';
+import EditingMode from './editing-mode';
 
 export default class Pending extends React.Component {
 
@@ -15,6 +16,8 @@ export default class Pending extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.edit = this.edit.bind(this);
+    this.cancel = this.cancel.bind(this);
+    // this.approve = this.approve.bind(this);
     this.state = {
        author: '',
        personalEmail: '',
@@ -39,8 +42,15 @@ export default class Pending extends React.Component {
   }
 
 
-  cancel(listing){
-    this.setState({ editing: false, clicked: '' })
+  cancel(){
+    // resetting/clearing the state
+    let clearKeys = {};
+    let fields = this.state.fieldsEdited;
+    for(let i = 0; i < fields.length; i++){
+      fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
+    }
+    this.setState(clearKeys)
+    this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} })
   }
 
   approve(){
@@ -48,23 +58,35 @@ export default class Pending extends React.Component {
   }
 
   edit(listing){
-    this.setState({ editing: true })
+    // console.log('inside edit', this.state, listing)
+    let copyTags = listing.tags.map( (tag) => { return tag });
+    this.setState({ editing: true, tags: copyTags })
   }
 
   save(listing){
+    console.log('being saved', this.state)
     let editedKeys = {};
+    let clearKeys = {};
 
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
-      listing[fields[i]] = this.state[fields[i]];
+      // listing[fields[i]] = this.state[fields[i]];
       editedKeys[fields[i]] = this.state[fields[i]];
+      clearKeys[fields[i]] = '';
     }
 
     editedKeys.id = this.state.clicked;
 
     axios.put('/admin/pending', editedKeys)
     .then( () => {
-       this.setState({ editing: false, fieldsEdited: [] })
+      console.log('success')
+
+      for(let i = 0; i < fields.length; i++){
+        listing[fields[i]] = this.state[fields[i]];
+      }
+
+       this.setState({ clearKeys })
+       this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -85,12 +107,26 @@ export default class Pending extends React.Component {
     }
   }
 
+
+  handleCheckbox(e) {
+    let currentTags = this.state.tags;
+    currentTags.indexOf(e.target.value) > -1 ? currentTags = _.remove(currentTags, (tag) => { return tag !== e.target.value }) : currentTags.push(e.target.value);
+    this.setState({
+      tags: currentTags
+    })
+  }
+
+
   handleChange(e){
-  console.log(e.target.value)
   let fields = this.state.fieldsEdited;
+    if(e.target.type === 'checkbox'){
+      this.handleCheckbox(e);
+    }else {
       this.setState({
         [e.target.name]: e.target.value
       });
+    }
+
     if(fields.indexOf(e.target.name) === -1){
       fields.push(e.target.name);
       this.setState({ fieldsEdited: fields });
@@ -99,22 +135,20 @@ export default class Pending extends React.Component {
 
   renderEditing(listing, i){
     return(
-      <div key={i} className="createContainer">
-      <div className="containerA">
-        <form onChange={this.handleChange}>
-          <input name="title" defaultValue={listing.title} className="adminAuth" type="text" placeholder="title*"/>
-        </form>
+      <div key={i} className="editing-outer">
+        <EditingMode errors={this.state.errors} handleChange={this.handleChange} listing={listing} listingTags={this.state.tags} />
+        <div className="editingButtons">
+          <button onClick={this.save.bind(this, listing)}>save</button>
+          <button onClick={this.cancel.bind(this)}>cancel</button>
+        </div>
       </div>
-        <button onClick={this.save.bind(this, listing)}>Save</button>
-        <button onClick={this.cancel.bind(this, listing)}>Cancel</button>
-    </div>
     )
   }
 
   renderExpanded(listing, i){
     return(
      <div key={i}>
-        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit} approve={this.approve} pending={true}/>
+        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit.bind(this, listing)} approve={this.approve.bind(this)} pending={true}/>
     </div>
     )
   }

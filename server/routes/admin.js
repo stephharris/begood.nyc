@@ -62,18 +62,20 @@ router.post('/create', function(req, res, next) {
 });
 
 router.put('/pending', function(req, res, next) {
-  // console.log('being served this', req.body.title )
+  console.log('being served this', req.body )
   // Listing.update(
   // { title: req.body.title },
   // { where: { id: req.body.id } }
+  // )
   Listing.findOne({ where: { id: req.body.id } })
   .then( (listing) => {
-    listing.update(req.body)
-  }).then( (updated) => {
-    res.json(updated)
+    if(listing){
+      listing.updateAttributes(req.body)
+      .then( () => res.sendStatus(201) )
+      .catch(next)
+    }
   })
-  .catch(next)
-})
+});
 
 router.get('/pending', function(req, res, next) {
   Listing.findAll({
@@ -85,8 +87,8 @@ router.get('/pending', function(req, res, next) {
   .catch(next)
 })
 
-// handling errors from '/create'
+// handling put/post request errors from '/create' & '/pending'
 router.use(function(err, req, res, next) {
-  // console.log('error', err.message)
+  console.log('error', err.message)
   res.status(500).json(err.errors);
 })
