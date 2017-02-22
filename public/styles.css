@@ -60,6 +60,10 @@ h3 {
   font-size: 1rem;
 }
 
+textarea {
+    resize: none;
+}
+
 /*****************/
 /* HEADER STYLES */
 /*****************/
@@ -704,10 +708,141 @@ h6.error2 {
   margin: 0em 0em 1em 0em;
 }
 
+/************************/
+/* EDIT LISTING STYLES */
+/**********************/
+.editing {
+  background: #EEEEEE;
+  padding: 1em 3em 0em 3em;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+}
+
+.editing-outer {
+  border-bottom: .1em solid #dbdbdb;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  background: #EEEEEE;
+}
+
+.editingButtons {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.editingButtons button {
+  height: 3.5em;
+  background: #2d2d2d;
+  color: #FFF;
+  width: 20em;
+  margin-bottom: 1em;
+  padding: 0em .5em 0em .5em;
+  border: none;
+  outline: none;
+  align-self: center;
+  font-family: "Avenir Medium";
+  font-weight: normal;
+  letter-spacing: .08rem;
+  font-size: 1rem;
+}
+
+.editingButtons button:nth-child(1) {
+  margin-right: .5em;
+}
+
+.editingButtons button:nth-child(2) {
+  margin-left: .5em;
+}
+
+.editGroupA form, .editGroupB form, .editGroupC form {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.editGroupA, .editGroupB, .editGroupC {
+  width: 33.33%;
+}
+
+.editAuth {
+  margin-bottom: .5em;
+  height: 3em;
+  width: 85%;
+  padding: 0em .5em 0em .5em;
+  border-radius: .25em;
+  background: #FFF;
+}
+
+.editLoc {
+  margin: 0em 0em .5em 0em;
+  padding: .5em .5em .5em .5em;
+  border-radius: .25em;
+  width: 85%;
+  height: 2.5em;
+}
+
+.editGroupA select {
+  width: 89%;
+  margin-bottom: 2em;
+  padding: 0em .5em 0em .5em;
+  border-radius: .25em;
+  border: none;
+  height: 4em;
+}
+
+.editBriefDescription {
+  margin: 0em 0em .5em 0em;
+  padding: .5em .5em .5em .5em;
+  border-radius: .25em;
+  width: 85%;
+  height: 5em;
+}
+
+.editadminTags {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  width: 90%;
+  margin-top: 1em;
+  padding: 0;
+}
+
+.editLongDescription {
+  margin: 0em 0em .5em 0em;
+  padding: .5em .5em .5em .5em;
+  border-radius: .25em;
+  width: 85%;
+  height: 15em;
+  font-family:
+}
+
+.editing h6 {
+  margin: .5em 0em 0.7em 5%;
+  letter-spacing: .1em;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+  color: #9b9b9b;
+  text-transform: uppercase;
+}
+
+.editAuthError {
+  border: .2em solid red;
+}
+
+.editing h6.errortext {
+  color: red;
+}
 
 /*****************/
 /* MOBILE STYLES */
 /*****************/
+
 
 @media (max-width: 1000px) {
 
@@ -717,6 +852,11 @@ h6.error2 {
 
   textarea {
     width: 80%;
+  }
+
+  .editadminTags {
+    -webkit-flex-direction: column;
+    flex-direction: column;
   }
 
 }
@@ -739,6 +879,38 @@ h6.error2 {
 
   .createLongDescription {
     margin-bottom: 1em;
+  }
+
+
+  .editing {
+    flex-direction: column;
+  }
+
+  .editGroupA, .editGroupB, .editGroupC {
+    width: 100%;
+  }
+
+  .editing select {
+    width: 87%;
+  }
+
+  .adminTags {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .editadminTags {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    width: 86%;
+  }
+
+  .editing h6 {
+    margin-left: 6.5%;
+  }
+
+  .editingButtons {
+    margin-top: 1em;
   }
 
 }
@@ -844,6 +1016,37 @@ eliminating 'location' from mobile version
 
   .submitForm button {
     width: 21.5em;
+  }
+
+    /* edit styles */
+
+  .editing {
+    padding: 1em 0em 0em 0em;
+  }
+
+  .editingButtons button:nth-child(1), .editingButtons button:nth-child(2) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .editingButtons {
+    flex-direction: column;
+  }
+
+
+}
+
+@media (max-width: 500px) {
+  .editing select {
+    width: 89%;
+  }
+
+  .editingButtons {
+    flex-direction: column;
+  }
+
+  .editingButtons button {
+    width: 89%;
   }
 
 }
