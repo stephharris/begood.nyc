@@ -15,7 +15,8 @@ export default class ListingExpanded extends React.Component {
 
   render() {
     return (
-            <div className="listing-expanded">
+            <div className="pending-for-edit">
+            <div className="listing-expanded noborder">
                <div className="groupA" onClick={this.props.toggleView}>
                   <h2>{ this.props.listing.title }</h2>
                   <h3 className="commitment">{ this.props.listing.timeCommitment }</h3>
@@ -33,17 +34,16 @@ export default class ListingExpanded extends React.Component {
                   { this.props.listing.fullDescription }
                   </h3>
                   <h3>REQUIREMENTS: { this.props.listing.requirements }</h3>
-
-              { this.props.pending ?
-                  <div>
-                    <button onClick={this.props.edit}>Edit</button>
-                    <button>Remove</button>
-                    <button onClick={this.props.approve}>Approve</button>
-                  </div>
-                : '' }
-
                </div>
          </div>
+         { this.props.pending ?
+             <div id='editPending'>
+                <button onClick={this.props.edit}>edit</button>
+                <button onClick={this.props.delete}>remove</button>
+                <button onClick={this.props.approve}>approve</button>
+              </div>
+         : '' }
+        </div>
     )
   }
 

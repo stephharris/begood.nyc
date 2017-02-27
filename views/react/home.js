@@ -12,7 +12,7 @@ export default class Home extends React.Component {
 
   constructor(props){
     super(props);
-    this.toggleFilter = this.toggleFilter.bind(this);
+
     this.state = {
       listings: [],
       filteredListings: [],
@@ -20,6 +20,8 @@ export default class Home extends React.Component {
       categories: [],
       activeFilters: []
     }
+    this.toggleFilter = this.toggleFilter.bind(this);
+    this.toggleCategory = this.toggleCategory.bind(this);
   }
 
   // this is a helper function
@@ -35,7 +37,31 @@ export default class Home extends React.Component {
     }
     return matches;
   }
+  /*****************************
+  {
+  a: "chiceken",
+  b: "dog"
+  }
+  obj.a = "cat";
+  object.assign({}, obj, {a: "cat"})
 
+  possible thing to try for filter
+  search array [tag1,tag2,tag3] -> for each that goes through each one ->
+
+  function does search that checks each next filtered group of searches that way you aren't searching
+  back through entire lists again
+
+
+  state = { arrayOfSearchValues: ['women', "cats"] }
+  function(arrayOfSearchValues)--> return back the filtered set
+  arrayOfSearchValues.reduce( (prev, current) => {
+    return prev.filter( item => item.tags.indexOf(current) > 0 )
+  }, [...allResultsArray])
+
+  --Think about keeping a reference of what is not so that way if something
+  becomes unchecked, then you have a smaller list to go through.
+
+  ******************************/
   displayFilteredListings(){
   let update = [];
     if(this.state.activeFilters.length < 1){
@@ -116,8 +142,8 @@ export default class Home extends React.Component {
         </div>
         </a>
         { this.state.filterActive ?
-        <Filter toggleCategory={this.toggleCategory.bind(this)} toggle={this.toggleFilter.bind(this)} active={this.state.filterActive} categories={this.state.categories} />
-        : <div onClick={this.toggleFilter.bind(this)} id="filters">
+        <Filter toggleCategory={this.toggleCategory} toggle={this.toggleFilter} active={this.state.filterActive} categories={this.state.categories} />
+        : <div onClick={this.toggleFilter} id="filters">
           <h3>filters</h3>
           </div>
         }

@@ -40,8 +40,8 @@ function validateInput(data) {
 // router.use(expressJWT({ secret: Credentials.jwtSecret }));
 
 router.put('/', function(req, res, next) {
-console.log('req', req)
-console.log('res', res)
+  console.log('req', req)
+  console.log('res', res)
   console.log('loggin req body', req.body);
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
@@ -61,13 +61,23 @@ router.post('/create', function(req, res, next) {
   .catch(next);
 });
 
+router.put('/pending/approve', function(req, res, next) {
+  console.log('body of put', req.body)
+  Listing.findById(req.body.id)
+  .then( (listing) => {
+    if(listing){
+      listing.updateAttributes({
+        status: 'active'
+      })
+      .then( () => res.sendStatus(201) )
+      .catch(next)
+    }
+  })
+});
+
+
 router.put('/pending', function(req, res, next) {
-  console.log('being served this', req.body )
-  // Listing.update(
-  // { title: req.body.title },
-  // { where: { id: req.body.id } }
-  // )
-  Listing.findOne({ where: { id: req.body.id } })
+  Listing.findById(req.body.id)
   .then( (listing) => {
     if(listing){
       listing.updateAttributes(req.body)
@@ -87,7 +97,14 @@ router.get('/pending', function(req, res, next) {
   .catch(next)
 })
 
-// handling put/post request errors from '/create' & '/pending'
+router.delete('/pending', function(req, res, next) {
+  console.log('logging body $$$$', req.body)
+  Listing.destroy({ where: { id: req.body.id }})
+  .then( () => res.sendStatus(201) )
+  .catch(next)
+});
+
+// handling request errors from '/pending'
 router.use(function(err, req, res, next) {
   console.log('error', err.message)
   res.status(500).json(err.errors);
