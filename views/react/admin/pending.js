@@ -15,9 +15,10 @@ export default class Pending extends React.Component {
   constructor(props){
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.edit = this.edit.bind(this);
     this.cancel = this.cancel.bind(this);
-    // this.approve = this.approve.bind(this);
+    this.approve = this.approve.bind(this);
+    this.delete = this.delete.bind(this);
+    this.save = this.save.bind(this);
     this.state = {
        author: '',
        personalEmail: '',
@@ -53,8 +54,38 @@ export default class Pending extends React.Component {
     this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} })
   }
 
-  approve(){
-    console.log('this is the listing in state', this.state);
+  delete(){
+    console.log('clicked', this.state.clicked )
+    axios.delete('/admin/pending', { data: { id: this.state.clicked } })
+    .then( () => {
+      this.setState({ clicked: '' })
+    })
+    .catch( (error) => {
+      let errorArray = error.response.data
+      let err = {};
+      for(let i = 0; i < errorArray.length; i++){
+        err[errorArray[i].path] = errorArray[i].message;
+      }
+      this.setState({ errors: err })
+      console.log('error city!', err )
+    })
+  }
+
+  approve(listing){
+    // setting the status in our database to active
+    axios.put('/admin/pending/approve', { id: this.state.clicked })
+    .then( () => {
+      this.setState({ clicked: '' })
+    })
+    .catch( (error) => {
+      let errorArray = error.response.data
+      let err = {};
+      for(let i = 0; i < errorArray.length; i++){
+        err[errorArray[i].path] = errorArray[i].message;
+      }
+      this.setState({ errors: err })
+      console.log('error city!', err )
+    })
   }
 
   edit(listing){
@@ -70,7 +101,6 @@ export default class Pending extends React.Component {
 
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
-      // listing[fields[i]] = this.state[fields[i]];
       editedKeys[fields[i]] = this.state[fields[i]];
       clearKeys[fields[i]] = '';
     }
@@ -81,9 +111,9 @@ export default class Pending extends React.Component {
     .then( () => {
       console.log('success')
 
-      for(let i = 0; i < fields.length; i++){
-        listing[fields[i]] = this.state[fields[i]];
-      }
+      fields.map( (field) => {
+        listing[field] = this.state[field]
+      })
 
        this.setState({ clearKeys })
        this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} })
@@ -148,7 +178,7 @@ export default class Pending extends React.Component {
   renderExpanded(listing, i){
     return(
      <div key={i}>
-        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit.bind(this, listing)} approve={this.approve.bind(this)} pending={true}/>
+        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit.bind(this,listing)} approve={this.approve} delete={this.delete} pending={true}/>
     </div>
     )
   }

@@ -21521,11 +21521,48 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/********************
+	If you aren't going to use redux think about changing token store to be window global starting from app.js
+	which is  parent to all other routes and all other routes need to access same object.
+	If you keep importing tokenStore, you will create new instances possibly.
+	
+	window.tokenStore = tokenStore
+	
+	if refresh -
+	localstorage with token
+	first before window.tokenStore = require tokenStore
+	do check if localstorage contains token store
+	then if you require token store, you replace whatever is in the logged in token store
+	with what is on localStorage, if noting in local storage, then it's treated as new store
+	
+	********************/
+	
 	// import setAuthorizationToken from './admin/setAuthorizationToken';
 	
 	// if(localStorage.jwtToken){
 	//   setAuthorizationToken(localStorage.jwtToken);
 	// }
+	
+	{} /* Take a look at onEnter={function} for react router if you need to do a check before you go to a route */
+	
+	/*********************************************
+	function onEnter(token){
+	  if (tokenStore.token){
+	
+	  }
+	}
+	const authTransition = function authTransition(nextState, replace, callback) {
+	  const state = store.getState()
+	  const user = state.user
+	
+	  // todo: in react-router 2.0, you can pass a single object to replace :)
+	  if (!user.isAuthenticated) {
+	    replace({ nextPathname: nextState.location.pathname }, '/login', nextState.location.query)
+	  }
+	
+	  callback()
+	}
+	*********************************************/
 	
 	var App = function (_Component) {
 	  _inherits(App, _Component);
@@ -21567,6 +21604,10 @@
 	
 	  return App;
 	}(_react.Component);
+	
+	/*****************************
+	These bottom two feel like they should be in two different files
+	******************************/
 	
 	var AdminLayout = function AdminLayout(props) {
 	  return _react2.default.createElement(
@@ -26720,7 +26761,6 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 	
-	    _this.toggleFilter = _this.toggleFilter.bind(_this);
 	    _this.state = {
 	      listings: [],
 	      filteredListings: [],
@@ -26728,6 +26768,8 @@
 	      categories: [],
 	      activeFilters: []
 	    };
+	    _this.toggleFilter = _this.toggleFilter.bind(_this);
+	    _this.toggleCategory = _this.toggleCategory.bind(_this);
 	    return _this;
 	  }
 	
@@ -26749,6 +26791,26 @@
 	      }
 	      return matches;
 	    }
+	    /*****************************
+	    {
+	    a: "chiceken",
+	    b: "dog"
+	    }
+	    obj.a = "cat";
+	    object.assign({}, obj, {a: "cat"})
+	     possible thing to try for filter
+	    search array [tag1,tag2,tag3] -> for each that goes through each one ->
+	     function does search that checks each next filtered group of searches that way you aren't searching
+	    back through entire lists again
+	      state = { arrayOfSearchValues: ['women', "cats"] }
+	    function(arrayOfSearchValues)--> return back the filtered set
+	    arrayOfSearchValues.reduce( (prev, current) => {
+	      return prev.filter( item => item.tags.indexOf(current) > 0 )
+	    }, [...allResultsArray])
+	     --Think about keeping a reference of what is not so that way if something
+	    becomes unchecked, then you have a smaller list to go through.
+	     ******************************/
+	
 	  }, {
 	    key: 'displayFilteredListings',
 	    value: function displayFilteredListings() {
@@ -26837,9 +26899,9 @@
 	            )
 	          )
 	        ),
-	        this.state.filterActive ? _react2.default.createElement(_filter2.default, { toggleCategory: this.toggleCategory.bind(this), toggle: this.toggleFilter.bind(this), active: this.state.filterActive, categories: this.state.categories }) : _react2.default.createElement(
+	        this.state.filterActive ? _react2.default.createElement(_filter2.default, { toggleCategory: this.toggleCategory, toggle: this.toggleFilter, active: this.state.filterActive, categories: this.state.categories }) : _react2.default.createElement(
 	          'div',
-	          { onClick: this.toggleFilter.bind(this), id: 'filters' },
+	          { onClick: this.toggleFilter, id: 'filters' },
 	          _react2.default.createElement(
 	            'h3',
 	            null,
@@ -27005,96 +27067,100 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'listing-expanded' },
+	        { className: 'pending-for-edit' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'groupA', onClick: this.props.toggleView },
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            this.props.listing.title
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            { className: 'commitment' },
-	            this.props.listing.timeCommitment
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            { className: 'time' },
-	            this.props.listing.hours
-	          ),
+	          { className: 'listing-expanded noborder' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'address' },
+	            { className: 'groupA', onClick: this.props.toggleView },
 	            _react2.default.createElement(
-	              'h3',
+	              'h2',
 	              null,
-	              this.props.listing.meetingLocation
+	              this.props.listing.title
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              null,
-	              this.props.listing.neighborhood,
-	              ', ',
-	              this.props.listing.borough
+	              { className: 'commitment' },
+	              this.props.listing.timeCommitment
+	            ),
+	            _react2.default.createElement(
+	              'h3',
+	              { className: 'time' },
+	              this.props.listing.hours
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'address' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                this.props.listing.meetingLocation
+	              ),
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                this.props.listing.neighborhood,
+	                ', ',
+	                this.props.listing.borough
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'mailto:' + this.props.listing.contactEmail },
+	              'contact'
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { href: this.props.listing.moreInfoUrl },
+	              'more info'
+	            ),
+	            _react2.default.createElement(
+	              'h3',
+	              { className: 'tags' },
+	              _react2.default.createElement(
+	                'span',
+	                { style: { fontFamily: 'Avenir Black' } },
+	                'TAGS: '
+	              ),
+	              this.displayTags(this.props.listing.tags)
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'a',
-	            { href: 'mailto:' + this.props.listing.contactEmail },
-	            'contact'
-	          ),
-	          _react2.default.createElement(
-	            'a',
-	            { href: this.props.listing.moreInfoUrl },
-	            'more info'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            { className: 'tags' },
+	            'div',
+	            { className: 'groupD' },
 	            _react2.default.createElement(
-	              'span',
-	              { style: { fontFamily: 'Avenir Black' } },
-	              'TAGS: '
+	              'h3',
+	              { className: 'description' },
+	              this.props.listing.fullDescription
 	            ),
-	            this.displayTags(this.props.listing.tags)
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'REQUIREMENTS: ',
+	              this.props.listing.requirements
+	            )
 	          )
 	        ),
-	        _react2.default.createElement(
+	        this.props.pending ? _react2.default.createElement(
 	          'div',
-	          { className: 'groupD' },
+	          { id: 'editPending' },
 	          _react2.default.createElement(
-	            'h3',
-	            { className: 'description' },
-	            this.props.listing.fullDescription
+	            'button',
+	            { onClick: this.props.edit },
+	            'edit'
 	          ),
 	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'REQUIREMENTS: ',
-	            this.props.listing.requirements
+	            'button',
+	            { onClick: this.props.delete },
+	            'remove'
 	          ),
-	          this.props.pending ? _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: this.props.edit },
-	              'Edit'
-	            ),
-	            _react2.default.createElement(
-	              'button',
-	              null,
-	              'Remove'
-	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: this.props.approve },
-	              'Approve'
-	            )
-	          ) : ''
-	        )
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.approve },
+	            'approve'
+	          )
+	        ) : ''
 	      );
 	    }
 	  }]);
@@ -27567,9 +27633,10 @@
 	    var _this = _possibleConstructorReturn(this, (Pending.__proto__ || Object.getPrototypeOf(Pending)).call(this, props));
 	
 	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.edit = _this.edit.bind(_this);
 	    _this.cancel = _this.cancel.bind(_this);
-	    // this.approve = this.approve.bind(this);
+	    _this.approve = _this.approve.bind(_this);
+	    _this.delete = _this.delete.bind(_this);
+	    _this.save = _this.save.bind(_this);
 	    _this.state = {
 	      author: '',
 	      personalEmail: '',
@@ -27607,9 +27674,40 @@
 	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} });
 	    }
 	  }, {
+	    key: 'delete',
+	    value: function _delete() {
+	      var _this2 = this;
+	
+	      console.log('clicked', this.state.clicked);
+	      _axios2.default.delete('/admin/pending', { data: { id: this.state.clicked } }).then(function () {
+	        _this2.setState({ clicked: '' });
+	      }).catch(function (error) {
+	        var errorArray = error.response.data;
+	        var err = {};
+	        for (var i = 0; i < errorArray.length; i++) {
+	          err[errorArray[i].path] = errorArray[i].message;
+	        }
+	        _this2.setState({ errors: err });
+	        console.log('error city!', err);
+	      });
+	    }
+	  }, {
 	    key: 'approve',
-	    value: function approve() {
-	      console.log('this is the listing in state', this.state);
+	    value: function approve(listing) {
+	      var _this3 = this;
+	
+	      // setting the status in our database to active
+	      _axios2.default.put('/admin/pending/approve', { id: this.state.clicked }).then(function () {
+	        _this3.setState({ clicked: '' });
+	      }).catch(function (error) {
+	        var errorArray = error.response.data;
+	        var err = {};
+	        for (var i = 0; i < errorArray.length; i++) {
+	          err[errorArray[i].path] = errorArray[i].message;
+	        }
+	        _this3.setState({ errors: err });
+	        console.log('error city!', err);
+	      });
 	    }
 	  }, {
 	    key: 'edit',
@@ -27623,7 +27721,7 @@
 	  }, {
 	    key: 'save',
 	    value: function save(listing) {
-	      var _this2 = this;
+	      var _this4 = this;
 	
 	      console.log('being saved', this.state);
 	      var editedKeys = {};
@@ -27631,7 +27729,6 @@
 	
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
-	        // listing[fields[i]] = this.state[fields[i]];
 	        editedKeys[fields[i]] = this.state[fields[i]];
 	        clearKeys[fields[i]] = '';
 	      }
@@ -27641,19 +27738,19 @@
 	      _axios2.default.put('/admin/pending', editedKeys).then(function () {
 	        console.log('success');
 	
-	        for (var _i = 0; _i < fields.length; _i++) {
-	          listing[fields[_i]] = _this2.state[fields[_i]];
-	        }
+	        fields.map(function (field) {
+	          listing[field] = _this4.state[field];
+	        });
 	
-	        _this2.setState({ clearKeys: clearKeys });
-	        _this2.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} });
+	        _this4.setState({ clearKeys: clearKeys });
+	        _this4.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
-	        for (var _i2 = 0; _i2 < errorArray.length; _i2++) {
-	          err[errorArray[_i2].path] = errorArray[_i2].message;
+	        for (var _i = 0; _i < errorArray.length; _i++) {
+	          err[errorArray[_i].path] = errorArray[_i].message;
 	        }
-	        _this2.setState({ errors: err });
+	        _this4.setState({ errors: err });
 	        console.log('error city!', err);
 	      });
 	    }
@@ -27721,24 +27818,24 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { key: i },
-	        _react2.default.createElement(_listingExpanded2.default, { listing: listing, toggleView: this.toggleView.bind(this, listing.id), edit: this.edit.bind(this, listing), approve: this.approve.bind(this), pending: true })
+	        _react2.default.createElement(_listingExpanded2.default, { listing: listing, toggleView: this.toggleView.bind(this, listing.id), edit: this.edit.bind(this, listing), approve: this.approve, 'delete': this.delete, pending: true })
 	      );
 	    }
 	  }, {
 	    key: 'displayPending',
 	    value: function displayPending(listings) {
-	      var _this3 = this;
+	      var _this5 = this;
 	
 	      return listings.map(function (listing, i) {
-	        if (_this3.state.editing && _this3.state.clicked === listing.id) {
-	          return _this3.renderEditing(listing, i);
-	        } else if (_this3.state.clicked === listing.id) {
-	          return _this3.renderExpanded(listing, i);
+	        if (_this5.state.editing && _this5.state.clicked === listing.id) {
+	          return _this5.renderEditing(listing, i);
+	        } else if (_this5.state.clicked === listing.id) {
+	          return _this5.renderExpanded(listing, i);
 	        } else {
 	          // this renders collapsed version of listing
 	          return _react2.default.createElement(
 	            'div',
-	            { onClick: _this3.toggleView.bind(_this3, listing.id), key: i },
+	            { onClick: _this5.toggleView.bind(_this5, listing.id), key: i },
 	            _react2.default.createElement(_listingContracted2.default, { listing: listing })
 	          );
 	        }
@@ -33820,7 +33917,7 @@
 	            _react2.default.createElement(
 	              'h6',
 	              { className: errors.tags ? 'errortext' : '' },
-	              'tags'
+	              'tags (check all that apply)'
 	            ),
 	            _react2.default.createElement(_tags2.default, { tags: this.props.listingTags })
 	          )

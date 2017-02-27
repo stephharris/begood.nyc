@@ -341,7 +341,7 @@ header {
   color: #ff4d4d;
 }
 
-.groupD h3:last-child {
+.groupD > h3:last-child {
   padding-top: 1em;
   max-width: 70ch;
 }
@@ -726,6 +726,52 @@ h6.error2 {
   background: #EEEEEE;
 }
 
+.pending-for-edit {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  background: lightgrey;
+}
+
+#editPending {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: #fff7f7;
+}
+
+/*#editPending h3 {
+  padding-right: 1.5em;
+  background: #2d2d2d;
+  color: white;
+  height: 1.75em;
+  padding: .65em 1em .3em 1em;
+  border-radius: .2em;
+  font-weight: normal;
+  margin: .3em 1em .3em 0em;
+}*/
+.noborder {
+  border-bottom: none;
+}
+
+#editPending button {
+    background: #2d2d2d;
+  color: white;
+  height: 3.5em;
+  outline: 0;
+  margin-bottom: 1em;
+  width: 15em;
+  font-weight: normal;
+  border: none;
+/*  border-radius: 2.5em;*/
+  margin: .3em .4em 1em 0em;
+/*  padding: .65em 1em .3em 1em;*/
+  font-family: "Avenir Medium";
+  letter-spacing: .08rem;
+  font-size: 1rem;
+}
+
 .editingButtons {
   display: -webkit-flex;
   display: flex;
@@ -809,7 +855,7 @@ h6.error2 {
   -webkit-flex-direction: row;
   flex-direction: row;
   width: 90%;
-  margin-top: 1em;
+  margin-top: .5em;
   padding: 0;
 }
 

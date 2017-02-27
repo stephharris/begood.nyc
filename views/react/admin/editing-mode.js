@@ -57,7 +57,7 @@ export default class EditingMode extends React.Component {
             <h6 className={ errors.briefDescription ? 'errortext' : '' }>BRIEF DESCRIPTION</h6>
             <textarea name="briefDescription" defaultValue={listing.briefDescription} className={"editBriefDescription " + (errors.briefDescription ? 'editAuthError' : '')} type="text" maxLength="80"></textarea>
 
-            <h6 className={ errors.tags ? 'errortext' : '' }>tags</h6>
+            <h6 className={ errors.tags ? 'errortext' : '' }>tags (check all that apply)</h6>
             <Tags tags={this.props.listingTags}/>
           </form>
         </div>
