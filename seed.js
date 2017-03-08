@@ -19,7 +19,7 @@ let listings = [
     requirements: 'deep knowledge of beadwork, jewlery design or profitable arts, able to facilitate instructions to groups, must be patient/reliable',
     moreInfoUrl: 'http://www.wpaonline.org/wpaassets/Beadwork_Volunteer.pdf',
     contactEmail: 'srice@wpaonline.org',
-    expires: '2017-02-28'
+    expires: '2017-03-28'
   },
   {
     status: 'active',
@@ -108,7 +108,4 @@ Listing.sync({})
     .catch(function(err){
         console.error(err)
     })
-    // .finally(() => {
-    //     //Listing.close(); // else, connection held ~10 secs. Does not return a promise.
-    //     return null;
-    // })
+

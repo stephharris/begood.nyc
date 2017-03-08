@@ -39,7 +39,20 @@ function validateInput(data) {
 
 // router.use(expressJWT({ secret: Credentials.jwtSecret }));
 
+// updating the listing (regardless of status)
 router.put('/', function(req, res, next) {
+  Listing.findById(req.body.id)
+  .then( (listing) => {
+    if(listing){
+      listing.updateAttributes(req.body)
+      .then( () => res.sendStatus(201) )
+      .catch(next)
+    }
+  })
+});
+
+// verifying login request
+router.put('/login', function(req, res, next) {
   console.log('req', req)
   console.log('res', res)
   console.log('loggin req body', req.body);
@@ -55,12 +68,14 @@ router.put('/', function(req, res, next) {
   }
 })
 
+// creating new listing
 router.post('/create', function(req, res, next) {
   Listing.create(req.body.data)
   .then( () => res.sendStatus(201))
   .catch(next);
 });
 
+// updating a listing's status to active
 router.put('/pending/approve', function(req, res, next) {
   console.log('body of put', req.body)
   Listing.findById(req.body.id)
@@ -76,17 +91,7 @@ router.put('/pending/approve', function(req, res, next) {
 });
 
 
-router.put('/pending', function(req, res, next) {
-  Listing.findById(req.body.id)
-  .then( (listing) => {
-    if(listing){
-      listing.updateAttributes(req.body)
-      .then( () => res.sendStatus(201) )
-      .catch(next)
-    }
-  })
-});
-
+// retrieving all pending listings
 router.get('/pending', function(req, res, next) {
   Listing.findAll({
     where: { status: 'pending' },
@@ -97,7 +102,7 @@ router.get('/pending', function(req, res, next) {
   .catch(next)
 })
 
-router.delete('/pending', function(req, res, next) {
+router.delete('/', function(req, res, next) {
   console.log('logging body $$$$', req.body)
   Listing.destroy({ where: { id: req.body.id }})
   .then( () => res.sendStatus(201) )

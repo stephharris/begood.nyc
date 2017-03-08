@@ -56,7 +56,7 @@ export default class Pending extends React.Component {
 
   delete(){
     console.log('clicked', this.state.clicked )
-    axios.delete('/admin/pending', { data: { id: this.state.clicked } })
+    axios.delete('/admin', { data: { id: this.state.clicked } })
     .then( () => {
       this.setState({ clicked: '' })
     })
@@ -107,7 +107,7 @@ export default class Pending extends React.Component {
 
     editedKeys.id = this.state.clicked;
 
-    axios.put('/admin/pending', editedKeys)
+    axios.put('/admin', editedKeys)
     .then( () => {
       console.log('success')
 

@@ -2,72 +2,83 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ListingContracted from '../listing-contracted';
+import ListingExpanded from '../listing-expanded';
 
 export default class Active extends React.Component {
 
   constructor(props){
     super(props);
+    this.setToExpired = this.setToExpired.bind(this)
+    this.delete = this.delete.bind(this)
     this.state = {
-      clicked: {}
+      errors: {},
+      clicked: '',
+      editing: false
     }
   }
 
-  toggleView(route){
-    if(this.state.clicked === route){
-      this.setState({ clicked: {} })
+  toggleView(id){
+    if(this.state.clicked === id){
+      this.setState({ clicked: '' })
     }else{
-      this.setState({ clicked: route })
+      this.setState({ clicked: id })
     }
   }
 
-  displayTags(tags){
-    return tags.length < 2 ? tags : tags.join(', ');
+  delete(){
+    console.log('deleting active')
+    axios.delete('/admin', { data: { id: this.state.clicked } })
+    .then( () => {
+      this.setState({ clicked: '' })
+    })
+    .catch( (error) => {
+      let errorArray = error.response.data
+      let err = {};
+        for(let i = 0; i < errorArray.length; i++){
+          err[errorArray[i].path] = errorArray[i].message;
+        }
+      this.setState({ errors: err })
+      console.log('error city!', err )
+    })
+  }
+
+  setToExpired(){
+    console.log('setting this active listing to expired')
+  }
+
+  edit(){
+    console.log('editing mode')
+  }
+
+  renderExpanded(listing, i){
+    return(
+     <div key={i}>
+        <ListingExpanded listing={listing} toggleView={this.toggleView.bind(this,listing.id)} edit={this.edit.bind(this,listing)} delete={this.delete} approve={this.approve} setToExpired={this.setToExpired} active={true}/>
+    </div>
+    )
   }
 
 
   displayActive(listings){
-    return listings ? listings.map((listing, i) => {
-     if(this.state.clicked === listing.route){
-       return(
-           <div key={i} onClick={this.toggleView.bind(this, listing.route)} className="listing-expanded">
-               <div className="groupA">
-                  <h2>{ listing.title }</h2>
-                  <h3 className="commitment">{ listing.timeCommitment }</h3>
-                  <h3 className="time">{ listing.hours }</h3>
-                  <div className="address">
-                    <h3>{ listing.meetingLocation }</h3>
-                    <h3>{ listing.neighborhood }, { listing.borough }</h3>
-                  </div>
-                  <a href={`mailto:${listing.contactEmail}`}>contact</a>
-                  <a href={listing.moreInfoUrl}>more info</a>
-                  <h3 className="tags"><span style={{fontFamily: 'Avenir Black'}}>TAGS: </span>{ this.displayTags(listing.tags) }</h3>
-               </div>
-               <div className="groupD">
-                  <h3 className="description">
-                  { listing.fullDescription }
-                  </h3>
-                  <h3>REQUIREMENTS: { listing.requirements }</h3>
-               </div>
-         </div>)
-     }else{
-       return(
-           <div onClick={this.toggleView.bind(this, listing.route)} id="listing" key={i}>
-              <div className="groupA">
-                <h2>{ listing.title }</h2>
-                <h3 className="commitment">{ listing.timeCommitment }</h3>
-                <h3 className="time">{ listing.hours }</h3>
-              </div>
-              <div className="groupB">
-                <h3>{ listing.neighborhood },</h3>
-                <h3>{ listing.borough }</h3>
-              </div>
-              <div className="groupC">
-                <h3 className="blurb">{ listing.briefDescription }</h3>
-              </div>
-           </div>)
+    return listings.map((listing, i) => {
+    // if(this.state.editing && (this.state.clicked === listing.id)){
+    //    return this.renderEditing(listing, i);
+    //  }
+    if(this.state.clicked === listing.id){
+       return this.renderExpanded(listing, i)
      }
-    }) : '';
+    else{
+       // this renders collapsed version of listing
+       return(
+          <div onClick={this.toggleView.bind(this, listing.id)} key={i}>
+           <ListingContracted active={true} listing={listing}/>
+          </div>
+       )
+     }
+    });
   }
+
 
  render() {
   return(
