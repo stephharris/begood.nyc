@@ -6,6 +6,7 @@ const Listing = models.Listing;
 module.exports = router;
 
 
+// retrieve all active listings
 router.get('/', function(req, res, next){
   Listing.findAll({
     where: { status: 'active' },
@@ -15,11 +16,6 @@ router.get('/', function(req, res, next){
     res.json(listings)
   })
   .catch(next);
-})
-
-router.post('/', function(req, res, next){
-  console.log('hit the post route')
-  res.json('submitted volunteer form')
 })
 
 router.use(function(req, res){

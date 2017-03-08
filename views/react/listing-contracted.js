@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 export default class ListingContracted extends React.Component {
 
@@ -10,6 +9,8 @@ export default class ListingContracted extends React.Component {
   }
 
   render() {
+   // let expiringSoon = { backgroundColor: 'lightblue' };
+   // style={ (this.props.active) ? expiringSoon : {}}
     return (
       <div id="listing">
         <div className="groupA">
@@ -25,6 +26,6 @@ export default class ListingContracted extends React.Component {
           <h3 className="blurb">{ this.props.listing.briefDescription }</h3>
         </div>
       </div>)
-  }
+    }
 }
 

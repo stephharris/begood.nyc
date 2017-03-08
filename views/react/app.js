@@ -53,10 +53,21 @@ const authTransition = function authTransition(nextState, replace, callback) {
 }
 *********************************************/
 
+function hashLinkScroll() {
+  const { hash } = window.location;
+  if (hash !== '') {
+    setTimeout(() => {
+      const id = hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) element.scrollIntoView();
+    }, 1);
+  }
+}
+
 class App extends Component {
   render() {
     return (
-      <Router history={browserHistory} >
+      <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
             <Route component={Authenticated}>
@@ -64,7 +75,7 @@ class App extends Component {
               <Route path='/admin-panel/loggedin/create' component={Create}/>
             </Route>
           </Route>
-          <Route path='/' component={Layout}>
+          <Route path='/' component={Layout} onEnter={hashLinkScroll}>
             <IndexRoute component={Home} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />

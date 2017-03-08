@@ -12,7 +12,6 @@ export default class Home extends React.Component {
 
   constructor(props){
     super(props);
-
     this.state = {
       listings: [],
       filteredListings: [],
@@ -97,8 +96,10 @@ export default class Home extends React.Component {
     this.setState({filterActive: !this.state.filterActive})
   }
 
+
   componentDidMount() {
-    fetch('/api')
+
+  return fetch('/api')
     .then(res => res.json())
     .then(data => {
       this.setState({
@@ -127,6 +128,19 @@ export default class Home extends React.Component {
         ]
       })
     })
+    .then( () => {
+        let hash = window.location.hash.replace('#', '');
+        console.log('hash', hash)
+        console.log('params', this.props.location.hash)
+        if (hash) {
+            let node = document.getElementById(hash);
+            console.log('node', node)
+            if (node) {
+                node.scrollIntoView(true);
+            }
+        }
+
+    })
     .catch(err => {
       console.error('error', err)
     });
@@ -148,7 +162,7 @@ export default class Home extends React.Component {
           </div>
         }
 
-        <Listings listings={this.state.filteredListings} opportunity={this.props.params.opportunity}/>
+        <Listings listings={this.state.filteredListings} opportunity={this.props.location.hash}/>
       </div>
     )
   }

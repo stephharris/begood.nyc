@@ -21564,6 +21564,18 @@
 	}
 	*********************************************/
 	
+	function hashLinkScroll() {
+	  var hash = window.location.hash;
+	
+	  if (hash !== '') {
+	    setTimeout(function () {
+	      var id = hash.replace('#', '');
+	      var element = document.getElementById(id);
+	      if (element) element.scrollIntoView();
+	    }, 1);
+	  }
+	}
+	
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 	
@@ -21592,7 +21604,7 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactRouter.Route,
-	          { path: '/', component: Layout },
+	          { path: '/', component: Layout, onEnter: hashLinkScroll },
 	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _about2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/contact', component: _contact2.default }),
@@ -26862,7 +26874,7 @@
 	    value: function componentDidMount() {
 	      var _this4 = this;
 	
-	      fetch('/api').then(function (res) {
+	      return fetch('/api').then(function (res) {
 	        return res.json();
 	      }).then(function (data) {
 	        _this4.setState({
@@ -26871,6 +26883,17 @@
 	          filteredListings: data,
 	          categories: [{ name: 'health-care', selected: false }, { name: 'environment', selected: false }, { name: 'youth', selected: false }, { name: 'social justice', selected: false }, { name: 'immigration', selected: false }, { name: 'tech', selected: false }, { name: 'human rights', selected: false }, { name: 'homelessness', selected: false }, { name: 'women', selected: false }, { name: 'racial justice', selected: false }, { name: 'housing', selected: false }, { name: 'animal rights', selected: false }, { name: 'education', selected: false }, { name: 'LGTBQ', selected: false }, { name: 'meetups/events', selected: false }, { name: 'disability', selected: false }, { name: 'senior services', selected: false }, { name: 'policy/gov', selected: false }]
 	        });
+	      }).then(function () {
+	        var hash = window.location.hash.replace('#', '');
+	        console.log('hash', hash);
+	        console.log('params', _this4.props.location.hash);
+	        if (hash) {
+	          var node = document.getElementById(hash);
+	          console.log('node', node);
+	          if (node) {
+	            node.scrollIntoView(true);
+	          }
+	        }
 	      }).catch(function (err) {
 	        console.error('error', err);
 	      });
@@ -26908,7 +26931,7 @@
 	            'filters'
 	          )
 	        ),
-	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings, opportunity: this.props.params.opportunity })
+	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings, opportunity: this.props.location.hash })
 	      );
 	    }
 	  }]);
@@ -26976,20 +26999,37 @@
 	    value: function toggleView(route) {
 	      console.log('clicked', route);
 	      if (this.state.clicked !== route) {
-	        _reactRouter.browserHistory.push('' + route);
-	        this.setState({ clicked: route });
+	        _reactRouter.browserHistory.push('#' + route);
+	        this.setState({ clicked: route, route: '#' + route });
 	      } else {
 	        _reactRouter.browserHistory.push('/');
-	        this.setState({ clicked: {} });
+	        this.setState({ clicked: {}, route: '' });
 	      }
 	    }
+	
+	    // componentDidMount() {
+	    //     let hash = window.location.hash.replace('#', '');
+	    //       console.log('hash', hash)
+	    //       if (hash) {
+	    //           let node = document.getElementById(hash);
+	    //           console.log('node', node)
+	    //           if (node) {
+	    //               node.scrollIntoView(true);
+	    //           }
+	    //       }
+	    // }
+	
+	
 	  }, {
 	    key: 'displayListings',
 	    value: function displayListings(listings) {
 	      var _this2 = this;
 	
 	      return listings ? listings.map(function (listing, i) {
-	        if (_this2.state.clicked === listing.route || _this2.state.route === listing.route) {
+	        var hashed = '#' + listing.route;
+	        console.log('state route', _this2.state.route);
+	
+	        if (_this2.state.route === hashed || _this2.state.clicked === listing.route) {
 	          return _react2.default.createElement(
 	            'div',
 	            { key: i, onClick: _this2.toggleView.bind(_this2, listing.route) },
@@ -27063,11 +27103,24 @@
 	      return tags.length < 2 ? tags : tags.join(', ');
 	    }
 	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var hash = window.location.hash.replace('#', '');
+	      console.log('hash inside listing expanded', hash);
+	      if (hash) {
+	        var node = document.getElementById(hash);
+	        console.log('node inside listing expanded', node);
+	        if (node) {
+	          node.scrollIntoView(true);
+	        }
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'pending-for-edit' },
+	        { id: this.props.listing.route, className: 'pending-for-edit' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'listing-expanded noborder' },
@@ -27152,13 +27205,32 @@
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { onClick: this.props.delete },
-	            'remove'
+	            { onClick: this.props.approve },
+	            'approve'
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { onClick: this.props.approve },
-	            'approve'
+	            { onClick: this.props.delete },
+	            'remove'
+	          )
+	        ) : '',
+	        this.props.active ? _react2.default.createElement(
+	          'div',
+	          { id: 'editPending' },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.edit },
+	            'edit'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.setToExpired },
+	            'set to expired'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.delete },
+	            'remove'
 	          )
 	        ) : ''
 	      );
@@ -27186,10 +27258,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(32);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27210,6 +27278,8 @@
 	  _createClass(ListingContracted, [{
 	    key: 'render',
 	    value: function render() {
+	      // let expiringSoon = { backgroundColor: 'lightblue' };
+	      // style={ (this.props.active) ? expiringSoon : {}}
 	      return _react2.default.createElement(
 	        'div',
 	        { id: 'listing' },
@@ -27679,7 +27749,7 @@
 	      var _this2 = this;
 	
 	      console.log('clicked', this.state.clicked);
-	      _axios2.default.delete('/admin/pending', { data: { id: this.state.clicked } }).then(function () {
+	      _axios2.default.delete('/admin', { data: { id: this.state.clicked } }).then(function () {
 	        _this2.setState({ clicked: '' });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
@@ -27735,7 +27805,7 @@
 	
 	      editedKeys.id = this.state.clicked;
 	
-	      _axios2.default.put('/admin/pending', editedKeys).then(function () {
+	      _axios2.default.put('/admin', editedKeys).then(function () {
 	        console.log('success');
 	
 	        fields.map(function (field) {
@@ -34127,6 +34197,14 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _listingContracted = __webpack_require__(239);
+	
+	var _listingContracted2 = _interopRequireDefault(_listingContracted);
+	
+	var _listingExpanded = __webpack_require__(238);
+	
+	var _listingExpanded2 = _interopRequireDefault(_listingExpanded);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34143,157 +34221,82 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Active.__proto__ || Object.getPrototypeOf(Active)).call(this, props));
 	
+	    _this.setToExpired = _this.setToExpired.bind(_this);
+	    _this.delete = _this.delete.bind(_this);
 	    _this.state = {
-	      clicked: {}
+	      errors: {},
+	      clicked: '',
+	      editing: false
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(Active, [{
 	    key: 'toggleView',
-	    value: function toggleView(route) {
-	      if (this.state.clicked === route) {
-	        this.setState({ clicked: {} });
+	    value: function toggleView(id) {
+	      if (this.state.clicked === id) {
+	        this.setState({ clicked: '' });
 	      } else {
-	        this.setState({ clicked: route });
+	        this.setState({ clicked: id });
 	      }
 	    }
 	  }, {
-	    key: 'displayTags',
-	    value: function displayTags(tags) {
-	      return tags.length < 2 ? tags : tags.join(', ');
+	    key: 'delete',
+	    value: function _delete() {
+	      var _this2 = this;
+	
+	      console.log('deleting active');
+	      axios.delete('/admin', { data: { id: this.state.clicked } }).then(function () {
+	        _this2.setState({ clicked: '' });
+	      }).catch(function (error) {
+	        var errorArray = error.response.data;
+	        var err = {};
+	        for (var i = 0; i < errorArray.length; i++) {
+	          err[errorArray[i].path] = errorArray[i].message;
+	        }
+	        _this2.setState({ errors: err });
+	        console.log('error city!', err);
+	      });
+	    }
+	  }, {
+	    key: 'setToExpired',
+	    value: function setToExpired() {
+	      console.log('setting this active listing to expired');
+	    }
+	  }, {
+	    key: 'edit',
+	    value: function edit() {
+	      console.log('editing mode');
+	    }
+	  }, {
+	    key: 'renderExpanded',
+	    value: function renderExpanded(listing, i) {
+	      return _react2.default.createElement(
+	        'div',
+	        { key: i },
+	        _react2.default.createElement(_listingExpanded2.default, { listing: listing, toggleView: this.toggleView.bind(this, listing.id), edit: this.edit.bind(this, listing), 'delete': this.delete, approve: this.approve, setToExpired: this.setToExpired, active: true })
+	      );
 	    }
 	  }, {
 	    key: 'displayActive',
 	    value: function displayActive(listings) {
-	      var _this2 = this;
+	      var _this3 = this;
 	
-	      return listings ? listings.map(function (listing, i) {
-	        if (_this2.state.clicked === listing.route) {
-	          return _react2.default.createElement(
-	            'div',
-	            { key: i, onClick: _this2.toggleView.bind(_this2, listing.route), className: 'listing-expanded' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'groupA' },
-	              _react2.default.createElement(
-	                'h2',
-	                null,
-	                listing.title
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'commitment' },
-	                listing.timeCommitment
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'time' },
-	                listing.hours
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'address' },
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  listing.meetingLocation
-	                ),
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  listing.neighborhood,
-	                  ', ',
-	                  listing.borough
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'a',
-	                { href: 'mailto:' + listing.contactEmail },
-	                'contact'
-	              ),
-	              _react2.default.createElement(
-	                'a',
-	                { href: listing.moreInfoUrl },
-	                'more info'
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'tags' },
-	                _react2.default.createElement(
-	                  'span',
-	                  { style: { fontFamily: 'Avenir Black' } },
-	                  'TAGS: '
-	                ),
-	                _this2.displayTags(listing.tags)
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'groupD' },
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'description' },
-	                listing.fullDescription
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                null,
-	                'REQUIREMENTS: ',
-	                listing.requirements
-	              )
-	            )
-	          );
+	      return listings.map(function (listing, i) {
+	        // if(this.state.editing && (this.state.clicked === listing.id)){
+	        //    return this.renderEditing(listing, i);
+	        //  }
+	        if (_this3.state.clicked === listing.id) {
+	          return _this3.renderExpanded(listing, i);
 	        } else {
+	          // this renders collapsed version of listing
 	          return _react2.default.createElement(
 	            'div',
-	            { onClick: _this2.toggleView.bind(_this2, listing.route), id: 'listing', key: i },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'groupA' },
-	              _react2.default.createElement(
-	                'h2',
-	                null,
-	                listing.title
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'commitment' },
-	                listing.timeCommitment
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'time' },
-	                listing.hours
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'groupB' },
-	              _react2.default.createElement(
-	                'h3',
-	                null,
-	                listing.neighborhood,
-	                ','
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                null,
-	                listing.borough
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'groupC' },
-	              _react2.default.createElement(
-	                'h3',
-	                { className: 'blurb' },
-	                listing.briefDescription
-	              )
-	            )
+	            { onClick: _this3.toggleView.bind(_this3, listing.id), key: i },
+	            _react2.default.createElement(_listingContracted2.default, { active: true, listing: listing })
 	          );
 	        }
-	      }) : '';
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -34629,7 +34632,7 @@
 	      e.preventDefault();
 	      // const authAction = new AuthAction;
 	      // authAction.handleSubmit(this.state);
-	      _axios2.default.put('/admin', { user: this.state }).then(function (res) {
+	      _axios2.default.put('/admin/login', { user: this.state }).then(function (res) {
 	        var token = res.data;
 	        localStorage.setItem('jwtToken', token);
 	        (0, _setAuthorizationToken2.default)(token);

@@ -31,7 +31,7 @@ export default class Login extends React.Component {
     e.preventDefault();
     // const authAction = new AuthAction;
     // authAction.handleSubmit(this.state);
-    axios.put('/admin', { user: this.state })
+    axios.put('/admin/login', { user: this.state })
     .then( (res) => {
       const token = res.data;
       localStorage.setItem('jwtToken', token);

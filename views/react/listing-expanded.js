@@ -13,9 +13,21 @@ export default class ListingExpanded extends React.Component {
     return tags.length < 2 ? tags : tags.join(', ');
   }
 
+  componentDidMount() {
+      let hash = window.location.hash.replace('#', '');
+        console.log('hash inside listing expanded', hash)
+        if (hash) {
+            let node = document.getElementById(hash);
+            console.log('node inside listing expanded', node)
+            if (node) {
+                node.scrollIntoView(true);
+            }
+        }
+  }
+
   render() {
     return (
-            <div className="pending-for-edit">
+            <div id={this.props.listing.route} className="pending-for-edit">
             <div className="listing-expanded noborder">
                <div className="groupA" onClick={this.props.toggleView}>
                   <h2>{ this.props.listing.title }</h2>
@@ -36,11 +48,20 @@ export default class ListingExpanded extends React.Component {
                   <h3>REQUIREMENTS: { this.props.listing.requirements }</h3>
                </div>
          </div>
+
          { this.props.pending ?
              <div id='editPending'>
                 <button onClick={this.props.edit}>edit</button>
-                <button onClick={this.props.delete}>remove</button>
                 <button onClick={this.props.approve}>approve</button>
+                <button onClick={this.props.delete}>remove</button>
+              </div>
+         : '' }
+
+         { this.props.active ?
+             <div id='editPending'>
+                <button onClick={this.props.edit}>edit</button>
+                <button onClick={this.props.setToExpired}>set to expired</button>
+                <button onClick={this.props.delete}>remove</button>
               </div>
          : '' }
         </div>
