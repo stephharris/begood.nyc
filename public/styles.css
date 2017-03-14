@@ -2,6 +2,8 @@
 /* DOCUMENT DEFAULT STYLES */
 /***************************/
 
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
 @font-face {
     font-family: "Avenir Roman";
     src: url('fonts/Avenir.ttc') format('truetype');
@@ -58,6 +60,12 @@ h3 {
   font-family: "Avenir Medium";
   letter-spacing: .08rem;
   font-size: 1rem;
+}
+
+h4 {
+  font-family: "Merriweather";
+  font-size: 1.25rem;
+  letter-spacing: .08rem;
 }
 
 textarea {
@@ -124,6 +132,13 @@ header {
   box-shadow: inset 0 -.5em 0 #ff4d4d;
 }
 
+* {
+  -webkit-transition: all 0.2s ease;
+  -moz-transition:    all 0.2s ease;
+  -ms-transition:     all 0.2s ease;
+  -o-transition:      all 0.2s ease;
+}
+
 
 /******************/
 /**POST & FILTERS**/
@@ -143,10 +158,6 @@ header {
   color: #FFF;
 }
 
-#post:hover {
-  background: #212121;
-}
-
 #post svg {
   margin-left: auto;
   height: 1.1rem;
@@ -164,8 +175,30 @@ header {
   align-items: center;
 }
 
-#filters:hover {
-  background: #fe3a3a;
+@keyframes rotate {
+    0% { transform: rotate(0) }
+    50% { transform: rotate(50%); }
+}
+
+@keyframes word-slide {
+    0% { transform: translateX(0) }
+    50% { transform: translateX(1em); }
+}
+
+#filters:hover h3, #post:hover h3 {
+  animation-name: word-slide;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  transform: translateX(1em);
+  cursor: pointer;
+}
+
+#post:hover svg {
+  animation-name: rotate;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  transform: rotate(50%);
+  cursor: pointer;
 }
 
 #filters-expanded {
@@ -184,11 +217,12 @@ header {
   margin-left: auto;
   height: .95rem;
   fill: #FFF;
+  cursor: pointer;
 }
 
 
 /*#filters-expanded h3 */
-.filterDefault {
+.filterSelected {
   background: #2d2d2d;
   color: white;
   height: 1.75em;
@@ -196,10 +230,10 @@ header {
   border-radius: 1.5em;
   font-weight: normal;
   margin: .3em .4em .3em 0em;
+  cursor: pointer;
 }
 
-
-.filterDefault:hover, .filterSelected {
+.filterDefault {
   color: #2d2d2d;
   font-weight: bold;
   height: 1.75em;
@@ -210,6 +244,12 @@ header {
   -webkit-box-shadow:inset 0 0 0 .2em #2d2d2d;
   -moz-box-shadow:inset 0 0 0 .2em #2d2d2d;
   box-shadow:inset 0 0 0 .2em #2d2d2d;
+  cursor: pointer;
+}
+
+.filterDefault:hover {
+  background: #2d2d2d;
+  color: white;
 }
 
 #filters-expanded svg:hover {
@@ -225,8 +265,12 @@ header {
   display: -webkit-flex;
   display: flex;
   border-bottom: .1em solid #dbdbdb;
+  cursor: pointer;
 }
 
+#listing:hover {
+  background: #f9f9f9;
+}
 
 #listing div:not(:first-child) {
   margin-left: 1.5em;
@@ -291,7 +335,9 @@ header {
   display: -webkit-flex;
   display: flex;
   border-bottom: .1em solid #dbdbdb;
+  cursor: pointer;
 }
+
 
 .listing-expanded .groupA {
   height: 100%;
@@ -413,24 +459,50 @@ input:-webkit-autofill {
   align-items: center;
 }
 
-.adminNav h3 {
+.adminNav button {
   background: #2d2d2d;
   color: white;
-  height: 1.75em;
-  padding: .65em 1em .3em 1em;
-  border-radius: .2em;
+  border: none;
+  height: 3.5em;
+  outline: 0;
+/*  margin-bottom: 1em;*/
+  width: 25%;
   font-weight: normal;
-  margin: .3em 1em .3em 0em;
+  border-right: .1em solid #f9f9f9;
+/*  margin: .3em .4em 1em 0em;*/
+  font-family: "Avenir Medium";
+  letter-spacing: .08rem;
+  font-size: 1rem;
 }
 
+.adminNav button:nth-child(4) {
+  border-right: 0em;
+}
 
-.adminNav h3:hover, .adminNavActive {
-  color: #2d2d2d;
-  font-weight: bold;
-  background: transparent;
-  -webkit-box-shadow:inset 0 0 0 .2em #2d2d2d;
-  -moz-box-shadow:inset 0 0 0 .2em #2d2d2d;
-  box-shadow:inset 0 0 0 .2em #2d2d2d;
+.adminNav button:hover {
+  background: #383838;
+}
+
+.adminNav button.active {
+  background: #ff4d4d;
+}
+
+.adminNav button.active:hover {
+  background: #ff6464;
+}
+
+/******************/
+/***** CREATE *****/
+/******************/
+
+#submitDescription {
+  background: #f9f9f9;
+  padding: 2em 4.5em 1em 4.5em;
+}
+
+#submitDescription h4 {
+  margin: 0;
+  line-height: 1.6em;
 }
 
 .createContainer {
@@ -665,6 +737,10 @@ select {
   font-size: 1rem;
 }
 
+.submitForm button:hover {
+  background: #383838;
+}
+
 #errorCaseContainer {
   display: -webkit-flex;
   display: flex;
@@ -741,35 +817,31 @@ h6.error2 {
   background: #fff7f7;
 }
 
-/*#editPending h3 {
-  padding-right: 1.5em;
-  background: #2d2d2d;
-  color: white;
-  height: 1.75em;
-  padding: .65em 1em .3em 1em;
-  border-radius: .2em;
-  font-weight: normal;
-  margin: .3em 1em .3em 0em;
-}*/
 .noborder {
   border-bottom: none;
 }
 
 #editPending button {
-    background: #2d2d2d;
+  background: #2d2d2d;
   color: white;
   height: 3.5em;
   outline: 0;
   margin-bottom: 1em;
-  width: 15em;
+  width: 20em;
   font-weight: normal;
   border: none;
-/*  border-radius: 2.5em;*/
   margin: .3em .4em 1em 0em;
-/*  padding: .65em 1em .3em 1em;*/
   font-family: "Avenir Medium";
   letter-spacing: .08rem;
   font-size: 1rem;
+}
+
+#editPending button:hover {
+  background: #383838;
+}
+
+#editPending button:nth-child(3) {
+  margin-right: 0em;
 }
 
 .editingButtons {
@@ -801,6 +873,10 @@ h6.error2 {
 
 .editingButtons button:nth-child(2) {
   margin-left: .5em;
+}
+
+.editingButtons button:hover {
+  background: #383838;
 }
 
 .editGroupA form, .editGroupB form, .editGroupC form {
@@ -896,6 +972,10 @@ h6.error2 {
     padding: 1em 1.5em 1em 1.5em;
   }
 
+  #submitDescription {
+  padding: 2em 3em 1em 3em;
+  }
+
   textarea {
     width: 80%;
   }
@@ -903,6 +983,10 @@ h6.error2 {
   .editadminTags {
     -webkit-flex-direction: column;
     flex-direction: column;
+  }
+
+  #editPending button {
+    width: 15em;
   }
 
 }
@@ -961,10 +1045,26 @@ h6.error2 {
 
 }
 
+@media (max-width: 775px) {
+
+  #editPending button {
+    width: 13em;
+  }
+
+  .editingButtons button {
+    width: 19em;
+  }
+
+}
+
 @media (max-width: 730px) {
 
   h2, h3, a, .byline, #nav a {
     font-size: 1.05rem;
+  }
+
+  h4 {
+    font-size: 1.25rem;
   }
 
   #lockup h1 {
@@ -1079,6 +1179,16 @@ eliminating 'location' from mobile version
     flex-direction: column;
   }
 
+  #editPending {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #editPending button {
+    width: 20em;
+    margin: 0em 0em 1em 0em;
+  }
+
 
 }
 
@@ -1095,6 +1205,15 @@ eliminating 'location' from mobile version
     width: 89%;
   }
 
+  #editPending button {
+    width: 89%;
+  }
+
+  #submitDescription {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
 }
 
 
@@ -1103,6 +1222,15 @@ eliminating 'location' from mobile version
   header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
     padding-left: .8em;
     padding-right: .8em;
+  }
+
+  #submitDescription {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  #submitDesription h4 {
+    font-size: .8rem;
   }
 
   .submitForm button {

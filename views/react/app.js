@@ -3,12 +3,14 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
 import Authenticated from './authenticated';
-import Home from './home';
-import About from './about';
-import Contact from './contact';
 import Admin from './admin/admin.js';
 import Login from './admin/login.js';
 import Create from './admin/createListingContainer';
+import Home from './home';
+import About from './about';
+import Contact from './contact';
+import Submit from './submit';
+import Success from './success';
 
 /********************
 If you aren't going to use redux think about changing token store to be window global starting from app.js
@@ -53,17 +55,6 @@ const authTransition = function authTransition(nextState, replace, callback) {
 }
 *********************************************/
 
-function hashLinkScroll() {
-  const { hash } = window.location;
-  if (hash !== '') {
-    setTimeout(() => {
-      const id = hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) element.scrollIntoView();
-    }, 1);
-  }
-}
-
 class App extends Component {
   render() {
     return (
@@ -75,8 +66,10 @@ class App extends Component {
               <Route path='/admin-panel/loggedin/create' component={Create}/>
             </Route>
           </Route>
-          <Route path='/' component={Layout} onEnter={hashLinkScroll}>
+          <Route path='/' component={Layout}>
             <IndexRoute component={Home} />
+            <Route path='/submit' component={Submit} />
+            <Route path='submit/success' component={Success} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
             <Route path='/(:opportunity)' component={Home}/>

@@ -19,7 +19,7 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    // new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [ // this loads and bundles all our front-end styles/js files

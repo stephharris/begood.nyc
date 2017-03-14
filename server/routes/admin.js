@@ -76,13 +76,26 @@ router.post('/create', function(req, res, next) {
 });
 
 // updating a listing's status to active
-router.put('/pending/approve', function(req, res, next) {
-  console.log('body of put', req.body)
+router.put('/approve', function(req, res, next) {
   Listing.findById(req.body.id)
   .then( (listing) => {
     if(listing){
       listing.updateAttributes({
         status: 'active'
+      })
+      .then( () => res.sendStatus(201) )
+      .catch(next)
+    }
+  })
+});
+
+// setting a listing's status to expired
+router.put('/setexpired', function(req, res, next) {
+  Listing.findById(req.body.id)
+  .then( (listing) => {
+    if(listing){
+      listing.updateAttributes({
+        status: 'expired'
       })
       .then( () => res.sendStatus(201) )
       .catch(next)
@@ -98,6 +111,17 @@ router.get('/pending', function(req, res, next) {
     order: '"expires"'
   }).then( (pendingListings) => {
     res.json(pendingListings)
+  })
+  .catch(next)
+})
+
+// retrieving all expired listings, ordered by most recently expired
+router.get('/expired', function(req, res, next) {
+  Listing.findAll({
+    where: { status: 'expired' },
+    order: '"expires"'
+  }).then( (expiredListings) => {
+    res.json(expiredListings)
   })
   .catch(next)
 })

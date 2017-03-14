@@ -27,29 +27,14 @@ export default class Listings extends React.Component {
     }
   }
 
-
-  // componentDidMount() {
-  //     let hash = window.location.hash.replace('#', '');
-  //       console.log('hash', hash)
-  //       if (hash) {
-  //           let node = document.getElementById(hash);
-  //           console.log('node', node)
-  //           if (node) {
-  //               node.scrollIntoView(true);
-  //           }
-  //       }
-  // }
-
-
   displayListings(listings){
-    return listings ? listings.map((listing, i) => {
+    return listings.length > 0 ? listings.map((listing, i) => {
      const hashed = '#' + listing.route;
-     console.log('state route', this.state.route)
 
      if(this.state.route === hashed || this.state.clicked === listing.route) {
        return(
-        <div key={i} onClick={this.toggleView.bind(this, listing.route)}>
-        <ListingExpanded listing={listing}/>
+        <div key={i}>
+        <ListingExpanded toggleView={this.toggleView.bind(this, listing.route)} listing={listing}/>
         </div>
       )
      }else{
@@ -58,7 +43,7 @@ export default class Listings extends React.Component {
            <ListingContracted listing={listing}/>
            </div>)
      }
-    }) : '';
+    }) : (<h3>awaiting more opportunities</h3>);
   }
 
   render() {

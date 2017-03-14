@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
 import Pending from './pending';
+import Expired from './expired';
 import Active from './active';
 import Create from './createListingContainer';
 import axios from 'axios';
@@ -15,25 +16,33 @@ export default class Admin extends React.Component {
     this.state = {
       pending: [],
       selected: 'pending',
-      active: []
+      active: [],
+      expired: []
     }
   }
 
   toggleSelected(value){
     this.setState({ selected: value });
-    this.FetchActiveListings();
+    value === 'active' ? this.FetchActiveListings() : '';
+    value === 'expired' ? this.FetchExpiredListings() : '';
   }
-
-  isActive(value) {
-    return (value === this.state.selected) ? 'adminNavActive' : '';
-  }
-
 
   componentDidMount() {
     fetch('/admin/pending')
     .then(res => res.json())
     .then(data => {
       this.setState({ pending: data })
+    })
+    .catch(err => {
+      console.error('error', err)
+    })
+  }
+
+  FetchExpiredListings() {
+    return fetch('/admin/expired')
+    .then( res => res.json())
+    .then( data => {
+      this.setState({ expired: data })
     })
     .catch(err => {
       console.error('error', err)
@@ -79,15 +88,23 @@ export default class Admin extends React.Component {
         </div>
       )
     }
+    else if(this.state.selected === 'expired'){
+      return (
+        <div>
+          <Expired expired={this.state.expired}/>
+        </div>
+      )
+    }
   }
 
   render() {
     return (
       <div>
       <div className="adminNav">
-        <h3 className={ this.isActive('create')} onClick={ this.toggleSelected.bind(this,'create') }>create</h3>
-        <h3 className={this.isActive('pending')} onClick={ this.toggleSelected.bind(this, 'pending') }>pending</h3>
-        <h3 className={this.isActive('active')} onClick={ this.toggleSelected.bind(this, 'active') }>active</h3>
+        <button className={this.state.selected === 'create' ? 'active' : ''} onClick={ this.toggleSelected.bind(this,'create')}>create</button>
+        <button className={this.state.selected === 'pending' ? 'active' : ''} onClick={ this.toggleSelected.bind(this, 'pending')}>pending</button>
+        <button className={this.state.selected === 'active' ? 'active' : ''} onClick={ this.toggleSelected.bind(this, 'active')}>active</button>
+        <button className={this.state.selected === 'expired' ? 'active' : ''} onClick={this.toggleSelected.bind(this, 'expired')}>expired</button>
       </div>
         { this.displayComponent() }
       </div>
