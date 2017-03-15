@@ -192,7 +192,7 @@ export default class Pending extends React.Component {
       // this renders collapsed version of listing
        return(
           <div onClick={this.toggleView.bind(this, listing.id)} key={i}>
-           <ListingContracted listing={listing}/>
+           <ListingContracted pending={true} listing={listing}/>
           </div>
        )
      }

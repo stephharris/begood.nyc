@@ -325,6 +325,36 @@ header {
   max-width: 30ch;
 }
 
+#listing.expired {
+  background: #ff4d4d;
+    background: #7f7f7f;
+/*  background: #7a7a7a;*/
+/*  background: #aeaeae;*/
+  /*background: #eaeaea;*/
+}
+
+#listing.expiringsoon {
+/*  background: #aeaeae;*/
+ /* background: #ff8f8f;*/
+  background: #eaeaea;
+}
+
+#lightgrey {
+  color: #c6c6c6;
+}
+
+#black {
+  color: #000;
+}
+
+#listing.expired:hover {
+  background: #7f7f7f;
+}
+
+#listing.adminHover:hover {
+  background: #FFF;
+}
+
 /***************************/
 /*****LISTINGS-EXPANDED*****/
 /***************************/

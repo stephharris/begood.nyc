@@ -34,7 +34,7 @@ export default class Expired extends React.Component {
       // this renders collapsed version of listing
        return(
           <div onClick={this.toggleView.bind(this, listing.id)} key={i}>
-           <ListingContracted listing={listing}/>
+           <ListingContracted expired={true} listing={listing}/>
           </div>
        )
      }
