@@ -1,11 +1,8 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ListingContracted from '../listing-contracted';
 import ListingExpanded from '../listing-expanded';
-import Part1 from './form-part1';
-import Part2 from './form-part2';
 import _ from 'lodash';
 import axios from 'axios';
 import EditingMode from './editing-mode';
@@ -20,25 +17,25 @@ export default class Pending extends React.Component {
     this.delete = this.delete.bind(this);
     this.save = this.save.bind(this);
     this.state = {
-       author: '',
-       personalEmail: '',
-       title: '',
-       timeCommitment: '',
-       hours: '',
-       briefDescription: '',
-       neighborhood: '',
-       borough: '',
-       meetingLocation: '',
-       tags: [],
-       fullDescription: '',
-       requirements: '',
-       moreInfoUrl: '',
-       contactEmail: '',
-       expires: '',
-       errors: {},
-       clicked: '',
-       editing: false,
-       fieldsEdited: []
+      author: '',
+      personalEmail: '',
+      title: '',
+      timeCommitment: '',
+      hours: '',
+      briefDescription: '',
+      neighborhood: '',
+      borough: '',
+      meetingLocation: '',
+      tags: [],
+      fullDescription: '',
+      requirements: '',
+      moreInfoUrl: '',
+      contactEmail: '',
+      expires: '',
+      errors: {},
+      clicked: '',
+      editing: false,
+      fieldsEdited: []
     }
   }
 
@@ -71,9 +68,9 @@ export default class Pending extends React.Component {
     })
   }
 
-  approve(listing){
+  approve(){
     // setting the status in our database to active
-    axios.put('/admin/pending/approve', { id: this.state.clicked })
+    axios.put('/admin/approve', { id: this.state.clicked })
     .then( () => {
       this.setState({ clicked: '' })
     })
@@ -89,7 +86,6 @@ export default class Pending extends React.Component {
   }
 
   edit(listing){
-    // console.log('inside edit', this.state, listing)
     let copyTags = listing.tags.map( (tag) => { return tag });
     this.setState({ editing: true, tags: copyTags })
   }
@@ -205,7 +201,7 @@ export default class Pending extends React.Component {
 
  render() {
   return(
-    <div style={{marginTop: '1.5em'}}>
+    <div>
        { this.displayPending(this.props.pending) }
     </div>
   )

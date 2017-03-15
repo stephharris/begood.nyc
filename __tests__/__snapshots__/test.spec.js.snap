@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should properly render multiple contracted listings components 1`] = `
+<div>
+  <div
+    onClick={[Function]}
+  >
+    <ListingContracted
+      listing={
+        Object {
+          "active": true,
+          "borough": "Brooklyn",
+          "briefDescription": "testing testing 123",
+          "hours": "scheduling tbd",
+          "neighborhood": "Downtown Brooklyn",
+          "timeCommitment": "ongoing",
+          "title": "Test Title",
+        }
+      }
+    />
+  </div>
+  <div
+    onClick={[Function]}
+  >
+    <ListingContracted
+      listing={
+        Object {
+          "active": true,
+          "borough": "Brooklyn",
+          "briefDescription": "testing testing 123",
+          "hours": "scheduling tbd",
+          "neighborhood": "Downtown Brooklyn",
+          "timeCommitment": "ongoing",
+          "title": "Test Title 2",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Should properly render singular expanded listings component 1`] = `
+<div>
+  <div>
+    <ListingExpanded
+      listing={
+        Object {
+          "active": true,
+          "borough": "Brooklyn",
+          "briefDescription": "testing testing 123",
+          "hours": "scheduling tbd",
+          "neighborhood": "Downtown Brooklyn",
+          "route": "Test_Title",
+          "timeCommitment": "ongoing",
+          "title": "Test Title",
+        }
+      }
+      toggleView={[Function]}
+    />
+  </div>
+</div>
+`;
+
+exports[`Should render 0 Listings as expected 1`] = `
+<div>
+  <h3>
+    awaiting more opportunities
+  </h3>
+</div>
+`;
+
+exports[`Should render Listings Component 1`] = `
+<div>
+  <h3>
+    awaiting more opportunities
+  </h3>
+</div>
+`;
