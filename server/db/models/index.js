@@ -1,7 +1,6 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/begood');
 
-
 let Listing = db.define('listing', {
 
   id: {
@@ -140,6 +139,15 @@ let Listing = db.define('listing', {
     validate: {
       isUrl: { msg: 'invalid url.' },
       notEmpty: { msg: 'field required.' }
+    },
+    set: function(val) {
+      console.log('$$$$$$$', val)
+      if(val.slice(0,7) === 'http://' || val.slice(0,8) === 'https://'){
+        this.setDataValue('moreInfoUrl', val);
+      }
+      else{
+        this.setDataValue('moreInfoUrl', 'http://' + val);
+      }
     }
   },
 

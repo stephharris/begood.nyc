@@ -68,11 +68,3 @@ exports[`Should render 0 Listings as expected 1`] = `
   </h3>
 </div>
 `;
-
-exports[`Should render Listings Component 1`] = `
-<div>
-  <h3>
-    awaiting more opportunities
-  </h3>
-</div>
-`;
