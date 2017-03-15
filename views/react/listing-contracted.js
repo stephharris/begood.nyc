@@ -1,50 +1,46 @@
 'use strict';
 
 import React from 'react';
+import ListingExpired from './admin/admin.listing.expired';
+import ListingExpiringSoon from './admin/admin.listing.expiringsoon';
+import DefaultListing from './listing.default';
 
 export default class ListingContracted extends React.Component {
 
   constructor(props){
     super(props);
+    this.compareDates = this.compareDates.bind(this);
+  }
+
+// diff of one day is 86400000
+// if the listing's expiration date is within 5 days of today, this fn returns true
+  compareDates(today, expirationDate){
+    let t = new Date(today), d = new Date(expirationDate);
+    let diff = d - t;
+    console.log('diff', diff)
+    if(diff < 5184e5 && diff > 0){
+        return true;
+    }
   }
 
   render() {
-
-   let today = new Date().toISOString();
-
-   if(this.props.listing.expires < today && this.props.active || this.props.pending){
-    return (
-      <div id="listing">
-       <div className="groupA">
-          <h2>{ this.props.listing.title }</h2>
-          <h3 className="commitment">{ this.props.listing.timeCommitment }</h3>
-          <h3 className="time">{ this.props.listing.hours }</h3>
-        </div>
-        <div className="groupB">
-          <h3>{ this.props.listing.neighborhood },</h3>
-          <h3>{ this.props.listing.borough }</h3>
-        </div>
-        <div className="groupC">
-          <h3 className="blurb">{ this.props.listing.briefDescription }</h3>
-        </div>
-      </div>)
-   }
-   else{
-    return (
-      <div id="listing">
-        <div className="groupA">
-          <h2>{ this.props.listing.title }</h2>
-          <h3 className="commitment">{ this.props.listing.timeCommitment }</h3>
-          <h3 className="time">{ this.props.listing.hours }</h3>
-        </div>
-        <div className="groupB">
-          <h3>{ this.props.listing.neighborhood },</h3>
-          <h3>{ this.props.listing.borough }</h3>
-        </div>
-        <div className="groupC">
-          <h3 className="blurb">{ this.props.listing.briefDescription }</h3>
-        </div>
-      </div>)
+    let today = new Date().toISOString();
+    if(this.props.expired){
+      return (<ListingExpired listing={this.props.listing} />);
+    }
+    else if(this.props.pending || this.props.active){
+      if(this.props.listing.expires < today){
+        return (<ListingExpired listing={this.props.listing} />);
+       }
+      else if(this.compareDates(today, this.props.listing.expires)){
+        return (<ListingExpiringSoon listing={this.props.listing} />);
+       }
+      else{
+        return (<DefaultListing admin={true} listing={this.props.listing} />);
+      }
+    }
+    else{
+      return (<DefaultListing listing={this.props.listing} />);
     }
   }
 }
