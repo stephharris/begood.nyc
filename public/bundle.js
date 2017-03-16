@@ -33874,11 +33874,6 @@
 	    return _this;
 	  }
 	
-	  // TO DO BEFORE AXIOS REQUEST:
-	  // must concatenate hoursA + hoursB
-	  // must handle expiration date as well
-	
-	
 	  _createClass(CreateListingContainer, [{
 	    key: 'handleCheckbox',
 	    value: function handleCheckbox(e) {
@@ -33906,7 +33901,7 @@
 	    key: 'handleEnter',
 	    value: function handleEnter(e) {
 	      e.preventDefault();
-	      console.log('saved values on enter key', this.state.input);
+	      //  console.log('saved values on enter key', this.state.input);
 	    }
 	  }, {
 	    key: 'reconfigureData',
@@ -33937,7 +33932,7 @@
 	      _axios2.default.post('/admin/create', { data: data }).then(function () {
 	        console.log('success!');
 	        // re-direct to success pg?
-	        // browserHistory.push('/admin-panel/loggedin/');
+	        browserHistory.push('/submit/success/');
 	        _this2.setState(clear);
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;

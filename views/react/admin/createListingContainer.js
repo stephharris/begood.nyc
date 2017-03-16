@@ -57,10 +57,6 @@ export default class CreateListingContainer extends React.Component {
     }
   }
 
-  // TO DO BEFORE AXIOS REQUEST:
-  // must concatenate hoursA + hoursB
-  // must handle expiration date as well
-
 
   handleCheckbox(e) {
     let currentTags = this.state.tags;
@@ -83,7 +79,7 @@ export default class CreateListingContainer extends React.Component {
   // this simply 'saves our data' to state upon hitting enter key
   handleEnter(e) {
     e.preventDefault();
-    console.log('saved values on enter key', this.state.input);
+  //  console.log('saved values on enter key', this.state.input);
   }
 
   reconfigureData() {
@@ -111,7 +107,7 @@ export default class CreateListingContainer extends React.Component {
     .then( () => {
       console.log('success!');
       // re-direct to success pg?
-      // browserHistory.push('/admin-panel/loggedin/');
+      browserHistory.push('/submit/success/');
       this.setState(clear);
     })
     .catch( (error) => {
