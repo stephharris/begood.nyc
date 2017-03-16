@@ -2,4 +2,4 @@
 node_modules
 ./public/bundle.js
 ./public/bundle.js.map
-./server/configure/login-credentials.js
+./server/configure/credentials.js
