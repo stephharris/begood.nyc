@@ -1,8 +1,8 @@
 'use strict';
 
 const Credentials = {
-  username: 'steph',
-  password: 'steph',
+  username: 'stephanie',
+  password: 'stephanie',
   jwtSecret: 'somesecretkeyforjsonwebtoken'
 }
 

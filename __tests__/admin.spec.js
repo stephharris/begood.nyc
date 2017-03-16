@@ -36,31 +36,14 @@ let testListings = [{
     expires: targetDate
   }]
 
-// describe('Test', () => {
+// test('blah', () => {
+//   let listing = testListings[1];
+//   const checkbox = shallow(
+//     <ListingContracted listing={listing} pending={true}/>
+//   );
 
-//   beforeEach( () => {
-//     let TestUtils = React.addons.TestUtils;
-//     let today = new Date().toISOString();
-//     let listing = testListings[1];
-//     let Fn = TestUtils.renderIntoDocument(<ListingContracted listing={listing} pending={true}/>)
-//   });
-
-//   it('The compareDates function should return false if a listing\'s expiration date is more than 5 days away from today', () => {
-//     Fn.compareDates(today, listing.expires)
-//    // let test = new ListingContracted(listing)
-//     //const component = renderer.create(<ListingContracted listing={listing} pending={true}/>)
-//     console.log('test 1', Fn.compareDates(today, listing.expires));
-//   })
+//   console.log(checkbox.compareDates())
 // })
-
-test('blah', () => {
-  let listing = testListings[1];
-  const checkbox = shallow(
-    <ListingContracted listing={listing} pending={true}/>
-  );
-
-  console.log(checkbox.compareDates())
-})
 
 test('If listing expired, component should contain className expired', () => {
     let today = new Date().toISOString();
