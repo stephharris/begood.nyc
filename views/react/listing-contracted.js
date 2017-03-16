@@ -17,7 +17,7 @@ export default class ListingContracted extends React.Component {
   compareDates(today, expirationDate){
     let t = new Date(today), d = new Date(expirationDate);
     let diff = d - t;
-    console.log('diff', diff)
+   // console.log('diff', diff)
     if(diff < 5184e5 && diff > 0){
         return true;
     }

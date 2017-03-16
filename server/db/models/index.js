@@ -141,7 +141,6 @@ let Listing = db.define('listing', {
       notEmpty: { msg: 'field required.' }
     },
     set: function(val) {
-      console.log('$$$$$$$', val)
       if(val.slice(0,7) === 'http://' || val.slice(0,8) === 'https://'){
         this.setDataValue('moreInfoUrl', val);
       }
@@ -165,7 +164,7 @@ let Listing = db.define('listing', {
     allowNull: false,
     validate: {
      notEmpty: { msg: 'field required.' },
-     isAfter: { args: new Date().toISOString().slice(0,10), msg: 'date invalid.' }
+     isAfter: { args: new Date(Date.now() - 1*24*60*60*1000).toISOString().slice(0,10), msg: 'date invalid.' }
     }
   },
 

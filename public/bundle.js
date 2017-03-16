@@ -31159,7 +31159,7 @@
 	      var t = new Date(today),
 	          d = new Date(expirationDate);
 	      var diff = d - t;
-	      console.log('diff', diff);
+	      // console.log('diff', diff)
 	      if (diff < 5184e5 && diff > 0) {
 	        return true;
 	      }
