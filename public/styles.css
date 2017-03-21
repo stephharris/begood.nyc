@@ -72,6 +72,15 @@ textarea {
     resize: none;
 }
 
+button.unstyled {
+  outline: none;
+  border: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+  color: #FFF;
+}
+
 /*****************/
 /* HEADER STYLES */
 /*****************/
@@ -212,12 +221,19 @@ header {
 }
 
 #filters-expanded svg {
-  -webkit-align-self: flex-end;
-  align-self: flex-end;
-  margin-left: auto;
   height: .95rem;
   fill: #FFF;
   cursor: pointer;
+}
+
+#filters-expanded .close {
+  outline: none;
+  border: none;
+  color: transparent;
+  background-color: transparent;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+  margin-left: auto;
 }
 
 
@@ -304,14 +320,14 @@ header {
 }
 
 .time {
-  color: #9b9b9b;
+  color: #767676;
   font-weight: lighter;
   margin-top: 0;
 }
 
 
 .groupB h3 {
-  color: #9b9b9b;
+  color: #767676;
   font-weight: lighter;
   margin: 0 0 0 0;
   text-align: left;
@@ -355,6 +371,11 @@ header {
   background: #FFF;
 }
 
+.sorry {
+  color: #767676;
+  padding: 1em 3em 0em 3em;
+}
+
 /***************************/
 /*****LISTINGS-EXPANDED*****/
 /***************************/
@@ -392,7 +413,7 @@ header {
 }
 
 .address h3:last-child {
-  color: #9b9b9b;
+  color: #767676;
   font-weight: lighter;
 }
 
@@ -446,7 +467,7 @@ input:-webkit-autofill {
 }
 
 ::-webkit-input-placeholder {
-  color: #9b9b9b;
+  color: #767676;
   font-size: 1rem;
   font-family: "Avenir Roman";
   line-height: 1.3em;
@@ -454,7 +475,7 @@ input:-webkit-autofill {
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: #9b9b9b;
+  color: #767676;
   font-size: 1rem;
   font-family: "Avenir Roman";
   line-height: 1.3em;
@@ -462,7 +483,7 @@ input:-webkit-autofill {
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: #9b9b9b;
+  color: #767676;
   font-size: 1rem;
   font-family: "Avenir Roman";
   line-height: 1.3em;
@@ -470,7 +491,7 @@ input:-webkit-autofill {
 }
 
 :-ms-input-placeholder {
-  color: #9b9b9b;
+  color: #767676;
   font-size: 1rem;
   font-family: "Avenir Roman";
   line-height: 1.3em;
@@ -979,7 +1000,7 @@ h6.error2 {
   letter-spacing: .1em;
   -webkit-align-self: flex-start;
   align-self: flex-start;
-  color: #9b9b9b;
+  color: #767676;
   text-transform: uppercase;
 }
 
@@ -1101,7 +1122,7 @@ h6.error2 {
     letter-spacing: 0.01em;
   }
 
-  header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
+  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry {
     padding-left: 1.5em;
     padding-right: 1.5em;
   }
@@ -1249,7 +1270,7 @@ eliminating 'location' from mobile version
 
 @media (max-width: 350px) {
 
-  header, #post, #filters, #filters-expanded, #listing, .listing-expanded {
+  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry {
     padding-left: .8em;
     padding-right: .8em;
   }

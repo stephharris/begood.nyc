@@ -117,52 +117,52 @@ export default function (props) {
         </div>
 
       <div id="errorCaseContainer">
-        <label>full description (330 char. max)<span style={{ color: '#ff4d4d' }}>*</span></label>
+        <label id="volunteer_fullDescription">full description (330 char. max)<span style={{ color: '#ff4d4d' }}>*</span></label>
         { errors.fullDescription ?
-          <h6 className="error2">{ errors.fullDescription }</h6>
+          <h6 id="fullDescription_error" role="alert" className="error2">{ errors.fullDescription }</h6>
           : ''
         }
       </div>
-      <textarea name="fullDescription" value={props.input.fullDescription} className="createLongDescription" type="text" placeholder="This is your listing’s elevator pitch. Be sure to emphasize its impact on the community in addition to including a description of the volunteer work itself." maxLength="330"></textarea>
+      <textarea aria-required="true" aria-describedby="fullDescription_error" aria-labelledby="volunteer_fullDescription" name="fullDescription" value={props.input.fullDescription} className="createLongDescription" type="text" placeholder="This is your listing’s elevator pitch. Be sure to emphasize its impact on the community in addition to including a description of the volunteer work itself." maxLength="330"></textarea>
 
       <div id="errorCaseContainer">
-        <label>requirements (130 char. max)</label>
+        <label id="volunteer_requirements">requirements (130 char. max)</label>
         { errors.requirements ?
-          <h6 className="error2">{ errors.requirements }</h6>
+          <h6 id="requirements_error" role="alert" className="error2">{ errors.requirements }</h6>
           : ''
         }
       </div>
-      <textarea name="requirements" value={props.input.requirements} className="createBriefDescription" type="text" placeholder="voluteers will be sent a short training video and brief quiz to help prepare them for participation" maxLength="130"></textarea>
+      <textarea aria-describedby="requirments_error" aria-labelledby="volunteer_requirements" name="requirements" value={props.input.requirements} className="createBriefDescription" type="text" placeholder="voluteers will be sent a short training video and brief quiz to help prepare them for participation" maxLength="130"></textarea>
 
       <div id="errorCaseContainer">
-        <label>url (for more info.)<span style={{ color: '#ff4d4d' }}>*</span></label>
+        <label id="volunteer_moreInfoUrl">url (for more info.)<span style={{ color: '#ff4d4d' }}>*</span></label>
         { errors.moreInfoUrl ?
-          <h6 className="error2">{ errors.moreInfoUrl }</h6>
+          <h6 id="url_error" role="alert" className="error2">{ errors.moreInfoUrl }</h6>
           : ''
         }
       </div>
-      <input name="moreInfoUrl" value={props.input.moreInfoUrl} className="adminAuth" type="text" placeholder="paste link"/>
+      <input aria-required="true" aria-describedby="url_error" aria-labelledby="volunteer_moreInfoUrl" name="moreInfoUrl" value={props.input.moreInfoUrl} className="adminAuth" type="text" placeholder="paste link"/>
 
       <div id="errorCaseContainer">
-        <label>contact email (public)<span style={{ color: '#ff4d4d' }}>*</span></label>
+        <label id="volunteer_contactEmail">contact email (public)<span style={{ color: '#ff4d4d' }}>*</span></label>
         { errors.contactEmail ?
-          <h6 className="error2">{ errors.contactEmail }</h6>
+          <h6 id="contactEmail_error" role="alert" className="error2">{ errors.contactEmail }</h6>
           : ''
         }
       </div>
-      <input name="contactEmail" value={props.input.contactEmail} className="adminAuth" type="email" placeholder="email of organizer"/>
+      <input aria-required="true" aria-describedby="contactEmail_error" aria-labelledby="volunteer_contactEmail" name="contactEmail" value={props.input.contactEmail} className="adminAuth" type="email" placeholder="email of organizer"/>
 
       <div id="errorCaseContainer">
-        <label>listing expiration date<span style={{ color: '#ff4d4d' }}>*</span></label>
+        <label id="volunteer_expires">listing expiration date<span style={{ color: '#ff4d4d' }}>*</span></label>
         { errors.expires ?
-          <h6 className="error2">{ errors.expires }</h6>
+          <h6 id="expires_error" role="alert" className="error2">{ errors.expires }</h6>
           : ''
         }
       </div>
       <div className="adminExpiration">
-        <input name="mm" value={props.input.mm} type="text" placeholder="mm" maxLength="2"/>
-        <input name="dd" value={props.input.dd} type="text" placeholder="dd" maxLength="2"/>
-        <input name="yyyy" value={props.input.yyyy} type="text" placeholder="yyyy" maxLength="4"/>
+        <input aria-required="true" aria-describedby="expires_error" aria-labelledby="volunteer_expires" name="mm" value={props.input.mm} type="text" placeholder="mm" maxLength="2"/>
+        <input aria-required="true" aria-describedby="expires_error" aria-labelledby="volunteer_expires"  name="dd" value={props.input.dd} type="text" placeholder="dd" maxLength="2"/>
+        <input aria-required="true" aria-describedby="expires_error" aria-labelledby="volunteer_expires" name="yyyy" value={props.input.yyyy} type="text" placeholder="yyyy" maxLength="4"/>
       </div>
 
     </form>

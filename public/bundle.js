@@ -21595,7 +21595,8 @@
 	            _reactRouter.Route,
 	            { component: _authenticated2.default },
 	            _react2.default.createElement(_reactRouter.Route, { path: '/admin-panel/loggedin', component: _admin2.default }),
-	            _react2.default.createElement(_reactRouter.Route, { path: '/admin-panel/loggedin/create', component: _createListingContainer2.default })
+	            _react2.default.createElement(_reactRouter.Route, { path: '/admin-panel/loggedin/create', component: _createListingContainer2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/admin-panel/loggedin/submitted-successfully', component: _success2.default })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -21603,7 +21604,7 @@
 	          { path: '/', component: Layout },
 	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/submit', component: _submit2.default }),
-	          _react2.default.createElement(_reactRouter.Route, { path: 'submit/success', component: _success2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { path: '/submit/success', component: _success2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _about2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/contact', component: _contact2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/(:opportunity)', component: _home2.default })
@@ -26857,7 +26858,6 @@
 	          _react2.default.createElement(_active2.default, { active: this.state.active })
 	        );
 	      } else if (this.state.selected === 'create') {
-	        // browserHistory.push('/admin-panel/loggedin/create');
 	        return _react2.default.createElement(
 	          'div',
 	          null,
@@ -26987,6 +26987,7 @@
 	      contactEmail: '',
 	      expires: '',
 	      errors: {},
+	      deleted: [],
 	      clicked: '',
 	      editing: false,
 	      fieldsEdited: []
@@ -26998,22 +26999,23 @@
 	    key: 'cancel',
 	    value: function cancel() {
 	      // resetting/clearing the state
+	      var deletedIds = this.state.deleted;
 	      var clearKeys = {};
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
 	        fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
 	      }
 	      this.setState(clearKeys);
-	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} });
+	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds });
 	    }
 	  }, {
 	    key: 'delete',
 	    value: function _delete() {
 	      var _this2 = this;
 	
-	      console.log('clicked', this.state.clicked);
 	      _axios2.default.delete('/admin', { data: { id: this.state.clicked } }).then(function () {
-	        _this2.setState({ clicked: '' });
+	        var id = _this2.state.clicked;
+	        _this2.setState({ clicked: '', deleted: _this2.state.deleted.concat([id]) });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -27058,6 +27060,7 @@
 	      console.log('being saved', this.state);
 	      var editedKeys = {};
 	      var clearKeys = {};
+	      var deletedIds = this.state.deleted;
 	
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
@@ -27075,7 +27078,7 @@
 	        });
 	
 	        _this4.setState({ clearKeys: clearKeys });
-	        _this4.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} });
+	        _this4.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -27158,6 +27161,9 @@
 	    value: function displayPending(listings) {
 	      var _this5 = this;
 	
+	      listings = listings.filter(function (item) {
+	        return _this5.state.deleted.indexOf(item.id) === -1;
+	      });
 	      return listings.map(function (listing, i) {
 	        if (_this5.state.editing && _this5.state.clicked === listing.id) {
 	          return _this5.renderEditing(listing, i);
@@ -33807,6 +33813,8 @@
 	
 	var _createListingForm2 = _interopRequireDefault(_createListingForm);
 	
+	var _reactRouter = __webpack_require__(179);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -33830,6 +33838,7 @@
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.handleCheckbox = _this.handleCheckbox.bind(_this);
 	    _this.reconfigureData = _this.reconfigureData.bind(_this);
+	    _this.handleRefresh = _this.handleRefresh.bind(_this);
 	    var initialState = {
 	      author: '',
 	      personalEmail: '',
@@ -33847,7 +33856,8 @@
 	      moreInfoUrl: '',
 	      contactEmail: '',
 	      expires: '',
-	      errors: {}
+	      errors: {},
+	      formsDirty: false
 	    };
 	    _this.state = {
 	      inputCleared: initialState,
@@ -33869,7 +33879,8 @@
 	      mm: '',
 	      dd: '',
 	      yyyy: '',
-	      errors: {}
+	      errors: {},
+	      formsDirty: false
 	    };
 	    return _this;
 	  }
@@ -33877,6 +33888,7 @@
 	  _createClass(CreateListingContainer, [{
 	    key: 'handleCheckbox',
 	    value: function handleCheckbox(e) {
+	      this.state.formsDirty === false ? this.setState({ formsDirty: true }) : '';
 	      var currentTags = this.state.tags;
 	      currentTags.indexOf(e.target.value) > -1 ? currentTags = (0, _remove3.default)(currentTags, function (tag) {
 	        return tag !== e.target.value;
@@ -33888,6 +33900,7 @@
 	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(e) {
+	      this.state.formsDirty === false ? this.setState({ formsDirty: true }) : '';
 	      if (e.target.type === 'checkbox') {
 	        this.handleCheckbox(e);
 	      } else {
@@ -33901,17 +33914,18 @@
 	    key: 'handleEnter',
 	    value: function handleEnter(e) {
 	      e.preventDefault();
-	      //  console.log('saved values on enter key', this.state.input);
 	    }
 	  }, {
 	    key: 'reconfigureData',
 	    value: function reconfigureData() {
+	      console.log('the state when reconfigureData is called', this.state);
 	      var undesiredKeys = ['inputCleared', 'yyyy', 'mm', 'dd', 'hoursA', 'hoursB', 'errors'];
 	      var data = {};
 	      // must concatenate hoursA + hoursB
 	      this.state.hoursA && this.state.hoursB ? data.hours = this.state.hoursA + ' to ' + this.state.hoursB : data.hours = 'scheduling tbd';
 	      // handles expiration date
 	      data.expires = this.state.yyyy + '-' + this.state.mm + '-' + this.state.dd;
+	
 	      for (var i in this.state) {
 	        if (undesiredKeys.indexOf(i) === -1) {
 	          data[i] = this.state[i];
@@ -33930,11 +33944,10 @@
 	      var data = this.reconfigureData();
 	
 	      _axios2.default.post('/admin/create', { data: data }).then(function () {
-	        console.log('success!');
-	        // re-direct to success pg?
-	        browserHistory.push('/submit/success/');
 	        _this2.setState(clear);
+	        _reactRouter.browserHistory.push('/submit/success/');
 	      }).catch(function (error) {
+	        console.log('got to the error/catch part');
 	        var errorArray = error.response.data;
 	        console.log('error array', errorArray);
 	        var err = {};
@@ -33943,15 +33956,31 @@
 	        }
 	        _this2.setState({ errors: err });
 	        console.log('error city!', err);
+	        return;
 	      });
+	    }
+	  }, {
+	    key: 'handleRefresh',
+	    value: function handleRefresh() {
+	      var formsDirty = this.state.formsDirty;
+	      window.onbeforeunload = function (e) {
+	        if (formsDirty) {
+	          console.log('got here');
+	          var message = "Are you sure you want leave?";
+	          e.returnValue = message;
+	          return message;
+	        }
+	        return;
+	      };
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      this.handleRefresh();
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_createListingForm2.default, { input: this.state, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
+	        _react2.default.createElement(_createListingForm2.default, { autocomplete: 'off', input: this.state, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
 	      );
 	    }
 	  }]);
@@ -34036,16 +34065,16 @@
 	    _react2.default.createElement(
 	      "form",
 	      { onSubmit: handleEnter, onChange: handleChange },
-	      _react2.default.createElement("input", { name: "author", value: props.input.author, className: "adminAuth", type: "text", placeholder: "name*" }),
+	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "author_error", name: "author", value: props.input.author, className: "adminAuth", type: "text", placeholder: "name*" }),
 	      errors.author ? _react2.default.createElement(
 	        "h6",
-	        { className: "error" },
+	        { id: "author_error", role: "alert", className: "error" },
 	        errors.author
 	      ) : '',
-	      _react2.default.createElement("input", { name: "personalEmail", value: props.input.personalEmail, className: "adminAuth", type: "email", placeholder: "personal email*" }),
+	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "email_error", name: "personalEmail", value: props.input.personalEmail, className: "adminAuth", type: "email", placeholder: "personal email*" }),
 	      errors.personalEmail ? _react2.default.createElement(
 	        "h6",
-	        { className: "error" },
+	        { id: "email_error", role: "alert", className: "error" },
 	        errors.personalEmail
 	      ) : '',
 	      _react2.default.createElement(
@@ -34053,7 +34082,7 @@
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { placeholder: "union settlement: meals on wheels", "aria-placeholder": "union settlement: meals on wheels", id: "volunteer_title", "for": "v_title" },
 	          "title (45 char. max)",
 	          _react2.default.createElement(
 	            "span",
@@ -34061,19 +34090,19 @@
 	            "*"
 	          )
 	        ),
-	        errors.title ? _react2.default.createElement(
+	        errors.title || errors.routeTitle ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
-	          errors.title
+	          { id: "title_error", role: "alert", className: "error2" },
+	          errors.title || errors.routeTitle
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "title", value: props.input.title, className: "createTitle", type: "text", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
+	      _react2.default.createElement("textarea", { id: "v_title", "aria-required": "true", "aria-describedby": "title_error", "aria-labelledby": "volunteer_title", name: "title", value: props.input.title, className: "createTitle", type: "text", "aria-placeholder": "union settlement: meals on wheels", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_time" },
 	          "time commitment",
 	          _react2.default.createElement(
 	            "span",
@@ -34083,14 +34112,14 @@
 	        ),
 	        errors.timeCommitment ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "time_error", role: "alert", className: "error2" },
 	          errors.timeCommitment
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "timeCommitment", value: props.input.timeCommitment, className: "createTitle", type: "text", placeholder: "saturday, january 7, weekly, tuesdays, ongoing, etc.", maxLength: "45" }),
+	      _react2.default.createElement("textarea", { "aria-required": "true", "aria-describedby": "time_error", "aria-labelledby": "volunteer_time", name: "timeCommitment", value: props.input.timeCommitment, className: "createTitle", type: "text", placeholder: "saturday, january 7, weekly, tuesdays, ongoing, etc.", maxLength: "45" }),
 	      _react2.default.createElement(
 	        "label",
-	        null,
+	        { id: "volunteer_hours" },
 	        "hours ",
 	        _react2.default.createElement(
 	          "span",
@@ -34101,20 +34130,20 @@
 	      _react2.default.createElement(
 	        "div",
 	        { className: "adminHours" },
-	        _react2.default.createElement("input", { name: "hoursA", value: props.input.hoursA, type: "text", placeholder: "9:30am" }),
+	        _react2.default.createElement("input", { "aria-labelledby": "volunteer_hours", name: "hoursA", value: props.input.hoursA, type: "text", placeholder: "9:30am" }),
 	        _react2.default.createElement(
 	          "div",
 	          { style: { margin: '0 .4em 0 .4em' } },
 	          "to"
 	        ),
-	        _react2.default.createElement("input", { name: "hoursB", value: props.input.hoursB, type: "text", placeholder: "1:00pm" })
+	        _react2.default.createElement("input", { "aria-labelledby": "volunteer_hours", name: "hoursB", value: props.input.hoursB, type: "text", placeholder: "1:00pm" })
 	      ),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_briefDescription" },
 	          "brief description (80 char. max)",
 	          _react2.default.createElement(
 	            "span",
@@ -34124,17 +34153,17 @@
 	        ),
 	        errors.briefDescription ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "brief_error", role: "alert", className: "error2" },
 	          errors.briefDescription
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "briefDescription", value: props.input.briefDescription, className: "createBriefDescription", type: "text", placeholder: "tell us what, but also tell us why your opportunity matters. (i.e. \u201Ccombat recidivism by teaching inmates beadwork & jewelry making skills\u201D)", maxLength: "80" }),
+	      _react2.default.createElement("textarea", { "aria-required": "true", "aria-describedby": "brief_error", "aria-labelledby": "volunteer_briefDescription", name: "briefDescription", value: props.input.briefDescription, className: "createBriefDescription", type: "text", placeholder: "tell us what, but also tell us why your opportunity matters. (i.e. \u201Ccombat recidivism by teaching inmates beadwork & jewelry making skills\u201D)", maxLength: "80" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_neighborhood" },
 	          "neighborhood",
 	          _react2.default.createElement(
 	            "span",
@@ -34144,11 +34173,11 @@
 	        ),
 	        errors.neighborhood ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "neighborhood_error", role: "alert", className: "error2" },
 	          errors.neighborhood
 	        ) : ''
 	      ),
-	      _react2.default.createElement("input", { name: "neighborhood", value: props.input.neighborhood, className: "adminAuth", type: "text", placeholder: "east harlem, williamsburg, etc." }),
+	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "neighborhood_error", "aria-labelledby": "volunteer_neighborhood", name: "neighborhood", value: props.input.neighborhood, className: "adminAuth", type: "text", placeholder: "east harlem, williamsburg, etc." }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
@@ -34164,13 +34193,13 @@
 	        ),
 	        errors.borough ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "borough_error", role: "alert", className: "error2" },
 	          errors.borough
 	        ) : ''
 	      ),
 	      _react2.default.createElement(
 	        "select",
-	        { name: "borough", required: true },
+	        { "aria-required": "true", "aria-describedby": "borough_error", role: "combobox", name: "borough", required: true },
 	        _react2.default.createElement(
 	          "option",
 	          null,
@@ -34207,7 +34236,7 @@
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_mtg" },
 	          "meeting location (60 char. max)",
 	          _react2.default.createElement(
 	            "span",
@@ -34217,11 +34246,11 @@
 	        ),
 	        errors.meetingLocation ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "mtg_error", role: "alert", className: "error2" },
 	          errors.meetingLocation
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "meetingLocation", value: props.input.meetingLocation, className: "createLoc", type: "text", placeholder: "Jefferson Senior Center, 2205, First Avenue (at E. 113th St.)", maxLength: "60" })
+	      _react2.default.createElement("textarea", { "aria-required": "true", "aria-describedby": "mtg_error", "aria-labelledby": "volunteer_mtg", name: "meetingLocation", value: props.input.meetingLocation, className: "createLoc", type: "text", placeholder: "Jefferson Senior Center, 2205, First Avenue (at E. 113th St.)", maxLength: "60" })
 	    )
 	  );
 	};
@@ -34417,7 +34446,7 @@
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_fullDescription" },
 	          "full description (330 char. max)",
 	          _react2.default.createElement(
 	            "span",
@@ -34427,32 +34456,32 @@
 	        ),
 	        errors.fullDescription ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "fullDescription_error", role: "alert", className: "error2" },
 	          errors.fullDescription
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "fullDescription", value: props.input.fullDescription, className: "createLongDescription", type: "text", placeholder: "This is your listing\u2019s elevator pitch. Be sure to emphasize its impact on the community in addition to including a description of the volunteer work itself.", maxLength: "330" }),
+	      _react2.default.createElement("textarea", { "aria-required": "true", "aria-describedby": "fullDescription_error", "aria-labelledby": "volunteer_fullDescription", name: "fullDescription", value: props.input.fullDescription, className: "createLongDescription", type: "text", placeholder: "This is your listing\u2019s elevator pitch. Be sure to emphasize its impact on the community in addition to including a description of the volunteer work itself.", maxLength: "330" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_requirements" },
 	          "requirements (130 char. max)"
 	        ),
 	        errors.requirements ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "requirements_error", role: "alert", className: "error2" },
 	          errors.requirements
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { name: "requirements", value: props.input.requirements, className: "createBriefDescription", type: "text", placeholder: "voluteers will be sent a short training video and brief quiz to help prepare them for participation", maxLength: "130" }),
+	      _react2.default.createElement("textarea", { "aria-describedby": "requirments_error", "aria-labelledby": "volunteer_requirements", name: "requirements", value: props.input.requirements, className: "createBriefDescription", type: "text", placeholder: "voluteers will be sent a short training video and brief quiz to help prepare them for participation", maxLength: "130" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_moreInfoUrl" },
 	          "url (for more info.)",
 	          _react2.default.createElement(
 	            "span",
@@ -34462,17 +34491,17 @@
 	        ),
 	        errors.moreInfoUrl ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "url_error", role: "alert", className: "error2" },
 	          errors.moreInfoUrl
 	        ) : ''
 	      ),
-	      _react2.default.createElement("input", { name: "moreInfoUrl", value: props.input.moreInfoUrl, className: "adminAuth", type: "text", placeholder: "paste link" }),
+	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "url_error", "aria-labelledby": "volunteer_moreInfoUrl", name: "moreInfoUrl", value: props.input.moreInfoUrl, className: "adminAuth", type: "text", placeholder: "paste link" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_contactEmail" },
 	          "contact email (public)",
 	          _react2.default.createElement(
 	            "span",
@@ -34482,17 +34511,17 @@
 	        ),
 	        errors.contactEmail ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "contactEmail_error", role: "alert", className: "error2" },
 	          errors.contactEmail
 	        ) : ''
 	      ),
-	      _react2.default.createElement("input", { name: "contactEmail", value: props.input.contactEmail, className: "adminAuth", type: "email", placeholder: "email of organizer" }),
+	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "contactEmail_error", "aria-labelledby": "volunteer_contactEmail", name: "contactEmail", value: props.input.contactEmail, className: "adminAuth", type: "email", placeholder: "email of organizer" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          null,
+	          { id: "volunteer_expires" },
 	          "listing expiration date",
 	          _react2.default.createElement(
 	            "span",
@@ -34502,16 +34531,16 @@
 	        ),
 	        errors.expires ? _react2.default.createElement(
 	          "h6",
-	          { className: "error2" },
+	          { id: "expires_error", role: "alert", className: "error2" },
 	          errors.expires
 	        ) : ''
 	      ),
 	      _react2.default.createElement(
 	        "div",
 	        { className: "adminExpiration" },
-	        _react2.default.createElement("input", { name: "mm", value: props.input.mm, type: "text", placeholder: "mm", maxLength: "2" }),
-	        _react2.default.createElement("input", { name: "dd", value: props.input.dd, type: "text", placeholder: "dd", maxLength: "2" }),
-	        _react2.default.createElement("input", { name: "yyyy", value: props.input.yyyy, type: "text", placeholder: "yyyy", maxLength: "4" })
+	        _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "expires_error", "aria-labelledby": "volunteer_expires", name: "mm", value: props.input.mm, type: "text", placeholder: "mm", maxLength: "2" }),
+	        _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "expires_error", "aria-labelledby": "volunteer_expires", name: "dd", value: props.input.dd, type: "text", placeholder: "dd", maxLength: "2" }),
+	        _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "expires_error", "aria-labelledby": "volunteer_expires", name: "yyyy", value: props.input.yyyy, type: "text", placeholder: "yyyy", maxLength: "4" })
 	      )
 	    )
 	  );
@@ -65492,9 +65521,13 @@
 	          'div',
 	          { onClick: this.toggleFilter, id: 'filters' },
 	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            'filters'
+	            'button',
+	            { className: 'unstyled', tableindex: '0', 'aria-expanded': 'false' },
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'filters'
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings, opportunity: this.props.location.hash })
@@ -65583,20 +65616,20 @@
 	        if (_this2.state.route === hashed || _this2.state.clicked === listing.route) {
 	          return _react2.default.createElement(
 	            'div',
-	            { key: i },
+	            { 'aria-expanded': 'true', tableindex: '0', key: i },
 	            _react2.default.createElement(_listingExpanded2.default, { toggleView: _this2.toggleView.bind(_this2, listing.route), listing: listing })
 	          );
 	        } else {
 	          return _react2.default.createElement(
 	            'div',
-	            { onClick: _this2.toggleView.bind(_this2, listing.route), key: i },
+	            { 'aria-expanded': 'false', tableindex: '0', onClick: _this2.toggleView.bind(_this2, listing.route), key: i },
 	            _react2.default.createElement(_listingContracted2.default, { listing: listing })
 	          );
 	        }
 	      }) : _react2.default.createElement(
 	        'h3',
-	        null,
-	        'awaiting more opportunities'
+	        { className: 'sorry' },
+	        'sorry! nothing to see here...'
 	      );
 	    }
 	  }, {
@@ -65665,7 +65698,7 @@
 	            } },
 	          _react2.default.createElement(
 	            'h3',
-	            { className: category.selected ? 'filterSelected' : 'filterDefault' },
+	            { tableindex: '0', role: 'menuitem', className: category.selected ? 'filterSelected' : 'filterDefault' },
 	            category.name
 	          )
 	        );
@@ -65677,12 +65710,16 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        { id: 'filters-expanded' },
+	        { id: 'filters-expanded', 'aria-expanded': 'true' },
 	        this.displayCategories(this.props.categories),
 	        _react2.default.createElement(
-	          'svg',
-	          { onClick: this.props.toggle, xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 162.4 162.4' },
-	          _react2.default.createElement('path', { d: 'M138.6 2.5L81.2 59.9 23.8 2.5C21.2-0.2 11.9-2.3 4.8 4.8s-5 16.3-2.4 18.9l57.4 57.4L2.5 138.6c-2.6 2.6-4.7 11.8 2.4 18.9 7.1 7.1 16.3 5 18.9 2.4l57.4-57.4 57.4 57.4c2.6 2.6 11.8 4.7 18.9-2.4 7.1-7.1 5-16.3 2.4-18.9l-57.4-57.4 57.4-57.4c2.6-2.6 4.7-11.8-2.4-18.9C150.5-2.3 141.2-0.2 138.6 2.5z' })
+	          'button',
+	          { className: 'close' },
+	          _react2.default.createElement(
+	            'svg',
+	            { 'aria-label': 'CloseFilters', onClick: this.props.toggle, xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 162.4 162.4' },
+	            _react2.default.createElement('path', { d: 'M138.6 2.5L81.2 59.9 23.8 2.5C21.2-0.2 11.9-2.3 4.8 4.8s-5 16.3-2.4 18.9l57.4 57.4L2.5 138.6c-2.6 2.6-4.7 11.8 2.4 18.9 7.1 7.1 16.3 5 18.9 2.4l57.4-57.4 57.4 57.4c2.6 2.6 11.8 4.7 18.9-2.4 7.1-7.1 5-16.3 2.4-18.9l-57.4-57.4 57.4-57.4c2.6-2.6 4.7-11.8-2.4-18.9C150.5-2.3 141.2-0.2 138.6 2.5z' })
+	          )
 	        )
 	      );
 	    }
@@ -65841,6 +65878,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(179);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65855,10 +65894,24 @@
 	  function Success(props) {
 	    _classCallCheck(this, Success);
 	
-	    return _possibleConstructorReturn(this, (Success.__proto__ || Object.getPrototypeOf(Success)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Success.__proto__ || Object.getPrototypeOf(Success)).call(this, props));
+	
+	    _this.adminRedirect = _this.adminRedirect.bind(_this);
+	    _this.homeRedirect = _this.homeRedirect.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Success, [{
+	    key: 'adminRedirect',
+	    value: function adminRedirect() {
+	      this.context.router.replace('/admin-panel/loggedin');
+	    }
+	  }, {
+	    key: 'homeRedirect',
+	    value: function homeRedirect() {
+	      this.context.router.replace('/');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -65868,6 +65921,15 @@
 	          'h3',
 	          null,
 	          'Success!!'
+	        ),
+	        window.location.pathname === '/admin-panel/loggedin/submitted-successfully' ? _react2.default.createElement(
+	          'button',
+	          { onClick: this.adminRedirect },
+	          'go to admin'
+	        ) : _react2.default.createElement(
+	          'button',
+	          { onClick: this.homeRedirect },
+	          'go back to home'
 	        )
 	      );
 	    }
@@ -65877,6 +65939,11 @@
 	}(_react2.default.Component);
 	
 	exports.default = Success;
+	
+	
+	Success.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired
+	};
 
 /***/ }
 /******/ ]);

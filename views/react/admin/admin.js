@@ -81,7 +81,6 @@ export default class Admin extends React.Component {
       )
     }
     else if(this.state.selected === 'create'){
-      // browserHistory.push('/admin-panel/loggedin/create');
       return (
         <div>
         <Create/>
