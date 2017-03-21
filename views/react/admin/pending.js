@@ -34,6 +34,7 @@ export default class Pending extends React.Component {
       expires: '',
       errors: {},
       deleted: [],
+      madeActive: [],
       clicked: '',
       editing: false,
       fieldsEdited: []
@@ -43,13 +44,14 @@ export default class Pending extends React.Component {
   cancel(){
     // resetting/clearing the state
     let deletedIds = this.state.deleted;
+    let madeActive = this.state.madeActive;
     let clearKeys = {};
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
       fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
     }
     this.setState(clearKeys)
-    this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds })
+    this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds, madeActive: madeActive })
   }
 
   delete(){
@@ -73,7 +75,8 @@ export default class Pending extends React.Component {
     // setting the status in our database to active
     axios.put('/admin/approve', { id: this.state.clicked })
     .then( () => {
-      this.setState({ clicked: '' })
+      let id = this.state.clicked;
+      this.setState({ clicked: '', madeActive: this.state.madeActive.concat([id]) })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -96,6 +99,7 @@ export default class Pending extends React.Component {
     let editedKeys = {};
     let clearKeys = {};
     let deletedIds = this.state.deleted;
+    let madeActive = this.state.madeActive;
 
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
@@ -114,7 +118,7 @@ export default class Pending extends React.Component {
       })
 
        this.setState({ clearKeys })
-       this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds })
+       this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds, madeActive: madeActive })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -183,7 +187,11 @@ export default class Pending extends React.Component {
 
 
   displayPending(listings){
-    listings = listings.filter( (item) => { return this.state.deleted.indexOf(item.id) === -1 })
+
+    listings = listings.filter( (item) => {
+      return (this.state.deleted.indexOf(item.id) === -1 && this.state.madeActive.indexOf(item.id) === -1)
+    })
+
     return listings.map((listing, i) => {
     if(this.state.editing && (this.state.clicked === listing.id)){
        return this.renderEditing(listing, i);

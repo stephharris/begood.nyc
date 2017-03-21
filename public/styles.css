@@ -79,6 +79,7 @@ button.unstyled {
   margin: 0;
   padding: 0;
   color: #FFF;
+  cursor: pointer;
 }
 
 /*****************/
@@ -182,6 +183,7 @@ header {
   display: flex;
   -webkit-align-items: center;
   align-items: center;
+  cursor: pointer;
 }
 
 @keyframes rotate {
@@ -386,7 +388,6 @@ header {
   display: -webkit-flex;
   display: flex;
   border-bottom: .1em solid #dbdbdb;
-  cursor: pointer;
 }
 
 
@@ -424,11 +425,13 @@ header {
 .tags {
   padding-top: 1em;
   max-width: 30ch;
+  pointer-events: none;
 }
 
 .listing-expanded .groupD {
   height: 100%;
   width: 70%;
+  pointer-events: none;
 }
 
 .groupD .description {
@@ -436,9 +439,11 @@ header {
   max-width: 70ch;
   line-height: 1.4em;
   color: #ff4d4d;
+  pointer-events: auto;
 }
 
-.groupD > h3:last-child {
+
+.groupD .req h3 {
   padding-top: 1em;
   max-width: 70ch;
 }
@@ -516,11 +521,10 @@ input:-webkit-autofill {
   border: none;
   height: 3.5em;
   outline: 0;
-/*  margin-bottom: 1em;*/
   width: 25%;
   font-weight: normal;
   border-right: .1em solid #f9f9f9;
-/*  margin: .3em .4em 1em 0em;*/
+  cursor: pointer;
   font-family: "Avenir Medium";
   letter-spacing: .08rem;
   font-size: 1rem;
@@ -554,6 +558,75 @@ input:-webkit-autofill {
 #submitDescription h4 {
   margin: 0;
   line-height: 1.6em;
+}
+
+#successDescription {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  height: 70vh;
+  padding-top: 5%;
+  background: #151515;
+  flex-wrap: wrap;
+}
+
+#successDescription h4 {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 2rem;
+  color: #FFF;
+}
+
+#successDescription h3 {
+  color: #f9f9f9;
+  font-weight: normal;
+  margin-bottom: 2em;
+}
+
+#successDescription a {
+  font-size: 1rem;
+  font-weight: bold;
+  display: inline-block;
+  text-decoration: none;
+  color: #f9f9f9;
+  line-height: 1.6;
+  box-shadow: inset 0 -.1em 0 #ff4d4d;
+}
+
+#successDescription a:hover {
+  box-shadow: inset 0 -.6em 0 #ff4d4d;
+}
+
+#successDescription button {
+  background: #FFF;
+  color: #2d2d2d;
+  height: 3.5em;
+  outline: 0;
+  width: 20em;
+  font-weight: normal;
+  border: none;
+  margin: .3em .4em .3em 0em;
+  font-family: "Avenir Medium";
+  letter-spacing: .08rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#successDescription #uno_mas {
+  margin-bottom: 1em;
+  background: #ff4d4d;
+  color: #FFF;
+}
+
+#successDescription #uno_mas:hover {
+  background: #ff6464;
+}
+
+#successDescription button:hover {
+  background: lightgrey;
 }
 
 .createContainer {
@@ -780,12 +853,11 @@ select {
   width: 20em;
   font-weight: normal;
   border: none;
-/*  border-radius: 2.5em;*/
   margin: .3em .4em .3em 0em;
-/*  padding: .65em 1em .3em 1em;*/
   font-family: "Avenir Medium";
   letter-spacing: .08rem;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .submitForm button:hover {
@@ -885,6 +957,7 @@ h6.error2 {
   font-family: "Avenir Medium";
   letter-spacing: .08rem;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 #editPending button:hover {
@@ -916,6 +989,7 @@ h6.error2 {
   font-weight: normal;
   letter-spacing: .08rem;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .editingButtons button:nth-child(1) {
@@ -1122,9 +1196,19 @@ h6.error2 {
     letter-spacing: 0.01em;
   }
 
-  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry {
+  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry, #successDescription {
     padding-left: 1.5em;
     padding-right: 1.5em;
+  }
+
+  #successDescription h4 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  #successDescription h3 {
+    width: 75%;
+    text-align: center;
   }
 
   #nav a {
@@ -1265,6 +1349,18 @@ eliminating 'location' from mobile version
     padding-right: 2em;
   }
 
+  #successDescription h4 {
+    font-size: 1.6rem;
+  }
+
+}
+
+@media (max-width: 440px) {
+
+  #successDescription h4 {
+    font-size: 1.75rem;
+  }
+
 }
 
 
@@ -1280,7 +1376,7 @@ eliminating 'location' from mobile version
     padding-right: 2em;
   }
 
-  #submitDesription h4 {
+  #submitDescription h4 {
     font-size: .8rem;
   }
 

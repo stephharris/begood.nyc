@@ -113,7 +113,11 @@ export default class CreateListingContainer extends React.Component {
     axios.post('/admin/create', { data })
     .then( () => {
       this.setState(clear);
-      browserHistory.push('/submit/success/');
+      if(window.location.pathname === '/admin-panel/loggedin/create'){
+        browserHistory.push('/admin-panel/loggedin/submitted-successfully')
+      }else{
+        browserHistory.push('/submit/success/');
+      }
     })
     .catch( (error) => {
       console.log('got to the error/catch part')
@@ -146,7 +150,7 @@ export default class CreateListingContainer extends React.Component {
     this.handleRefresh();
     return (
       <div>
-        <Form autocomplete="off" input={this.state} handleChange={this.handleChange} handleEnter={this.handleEnter} handleSubmit={this.handleSubmit} />
+        <Form input={this.state} handleChange={this.handleChange} handleEnter={this.handleEnter} handleSubmit={this.handleSubmit} />
       </div>
     )
   }

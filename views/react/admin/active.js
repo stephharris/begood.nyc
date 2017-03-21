@@ -32,6 +32,8 @@ export default class Active extends React.Component {
       contactEmail: '',
       expires: '',
       errors: {},
+      deleted: [],
+      madeExpired: [],
       clicked: '',
       editing: false,
       fieldsEdited: []
@@ -74,19 +76,23 @@ export default class Active extends React.Component {
 
   cancel(){
     // resetting/clearing the state
+    let deletedIds = this.state.deleted;
+    let madeExpired = thi.state.madeExpired;
     let clearKeys = {};
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
       fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
     }
     this.setState(clearKeys)
-    this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} })
+    this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds, madeExpired: madeExpired })
   }
 
   save(listing){
     console.log('being saved', this.state)
     let editedKeys = {};
     let clearKeys = {};
+    let deletedIds = this.state.deleted;
+    let madeActive = this.state.madeActive;
 
     let fields = this.state.fieldsEdited;
     console.log('fields', fields)
@@ -106,7 +112,7 @@ export default class Active extends React.Component {
       })
 
        this.setState({ clearKeys })
-       this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} })
+       this.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds, madeActive: madeActive })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -121,10 +127,10 @@ export default class Active extends React.Component {
 
 
   delete(){
-    console.log('deleting active')
     axios.delete('/admin', { data: { id: this.state.clicked } })
     .then( () => {
-      this.setState({ clicked: '' })
+      let id = this.state.clicked;
+      this.setState({ clicked: '', deleted: this.state.deleted.concat([id]) })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -138,10 +144,10 @@ export default class Active extends React.Component {
   }
 
   setToExpired(){
-    console.log('setting this active listing to expired')
     axios.put('/admin/setexpired', { id: this.state.clicked })
     .then( () => {
-      this.setState({ clicked: '' })
+      let id = this.state.clicked;
+      this.setState({ clicked: '', madeExpired: this.state.madeExpired.concat([id]) })
     })
     .catch( (error) => {
       let errorArray = error.response.data
@@ -182,6 +188,11 @@ export default class Active extends React.Component {
 
 
   displayActive(listings){
+
+    listings = listings.filter( (item) => {
+      return (this.state.deleted.indexOf(item.id) === -1 && this.state.madeExpired.indexOf(item.id) === -1)
+    })
+
     return listings.map((listing, i) => {
     if(this.state.editing && (this.state.clicked === listing.id)){
        return this.renderEditing(listing, i);
