@@ -64,12 +64,13 @@ class App extends Component {
             <Route component={Authenticated}>
               <Route path='/admin-panel/loggedin' component={Admin}/>
               <Route path='/admin-panel/loggedin/create' component={Create}/>
+              <Route path='/admin-panel/loggedin/submitted-successfully' component={Success}/>
             </Route>
           </Route>
           <Route path='/' component={Layout}>
             <IndexRoute component={Home} />
             <Route path='/submit' component={Submit} />
-            <Route path='submit/success' component={Success} />
+            <Route path='/submit/success' component={Success} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
             <Route path='/(:opportunity)' component={Home}/>

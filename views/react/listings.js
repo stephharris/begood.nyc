@@ -33,17 +33,17 @@ export default class Listings extends React.Component {
 
      if(this.state.route === hashed || this.state.clicked === listing.route) {
        return(
-        <div key={i}>
+        <div aria-expanded="true" tableindex="0" key={i}>
         <ListingExpanded toggleView={this.toggleView.bind(this, listing.route)} listing={listing}/>
         </div>
       )
      }else{
        return(
-           <div onClick={this.toggleView.bind(this, listing.route)} key={i}>
+           <div aria-expanded="false" tableindex="0" onClick={this.toggleView.bind(this, listing.route)} key={i}>
            <ListingContracted listing={listing}/>
            </div>)
      }
-    }) : (<h3>awaiting more opportunities</h3>);
+    }) : (<h3 className="sorry">sorry! nothing to see here...</h3>);
   }
 
   render() {
