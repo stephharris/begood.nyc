@@ -40,7 +40,9 @@ export default class ListingExpanded extends React.Component {
                   <h3 className="description">
                   { this.props.listing.fullDescription }
                   </h3>
+                  <div className="req">
                   <h3>REQUIREMENTS: { this.props.listing.requirements }</h3>
+                  </div>
                </div>
          </div>
 

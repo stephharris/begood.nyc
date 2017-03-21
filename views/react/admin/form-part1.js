@@ -9,7 +9,7 @@ export default function (props) {
 
   return (
     <div className="containerA">
-    <form onSubmit={handleEnter} onChange={handleChange}>
+    <form autocomplete="off" onSubmit={handleEnter} onChange={handleChange}>
 
         <input aria-required="true" aria-describedby="author_error" name="author" value={props.input.author} className="adminAuth" type="text" placeholder="name*"/>
         { errors.author ?

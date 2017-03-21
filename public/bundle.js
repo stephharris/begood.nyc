@@ -21632,7 +21632,7 @@
 	        { id: 'lockup' },
 	        _react2.default.createElement(
 	          _reactRouter.Link,
-	          { to: '/admin-panel' },
+	          { to: '/admin-panel/loggedin' },
 	          _react2.default.createElement(
 	            'h1',
 	            null,
@@ -26858,6 +26858,7 @@
 	          _react2.default.createElement(_active2.default, { active: this.state.active })
 	        );
 	      } else if (this.state.selected === 'create') {
+	        // this.handleRoute()
 	        return _react2.default.createElement(
 	          'div',
 	          null,
@@ -26988,6 +26989,7 @@
 	      expires: '',
 	      errors: {},
 	      deleted: [],
+	      madeActive: [],
 	      clicked: '',
 	      editing: false,
 	      fieldsEdited: []
@@ -27000,13 +27002,14 @@
 	    value: function cancel() {
 	      // resetting/clearing the state
 	      var deletedIds = this.state.deleted;
+	      var madeActive = this.state.madeActive;
 	      var clearKeys = {};
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
 	        fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
 	      }
 	      this.setState(clearKeys);
-	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds });
+	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds, madeActive: madeActive });
 	    }
 	  }, {
 	    key: 'delete',
@@ -27033,7 +27036,8 @@
 	
 	      // setting the status in our database to active
 	      _axios2.default.put('/admin/approve', { id: this.state.clicked }).then(function () {
-	        _this3.setState({ clicked: '' });
+	        var id = _this3.state.clicked;
+	        _this3.setState({ clicked: '', madeActive: _this3.state.madeActive.concat([id]) });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -27061,6 +27065,7 @@
 	      var editedKeys = {};
 	      var clearKeys = {};
 	      var deletedIds = this.state.deleted;
+	      var madeActive = this.state.madeActive;
 	
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
@@ -27078,7 +27083,7 @@
 	        });
 	
 	        _this4.setState({ clearKeys: clearKeys });
-	        _this4.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds });
+	        _this4.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds, madeActive: madeActive });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -27162,8 +27167,9 @@
 	      var _this5 = this;
 	
 	      listings = listings.filter(function (item) {
-	        return _this5.state.deleted.indexOf(item.id) === -1;
+	        return _this5.state.deleted.indexOf(item.id) === -1 && _this5.state.madeActive.indexOf(item.id) === -1;
 	      });
+	
 	      return listings.map(function (listing, i) {
 	        if (_this5.state.editing && _this5.state.clicked === listing.id) {
 	          return _this5.renderEditing(listing, i);
@@ -31526,10 +31532,14 @@
 	              this.props.listing.fullDescription
 	            ),
 	            _react2.default.createElement(
-	              'h3',
-	              null,
-	              'REQUIREMENTS: ',
-	              this.props.listing.requirements
+	              'div',
+	              { className: 'req' },
+	              _react2.default.createElement(
+	                'h3',
+	                null,
+	                'REQUIREMENTS: ',
+	                this.props.listing.requirements
+	              )
 	            )
 	          )
 	        ),
@@ -33577,6 +33587,8 @@
 	      contactEmail: '',
 	      expires: '',
 	      errors: {},
+	      deleted: [],
+	      madeExpired: [],
 	      clicked: '',
 	      editing: false,
 	      fieldsEdited: []
@@ -33623,13 +33635,15 @@
 	    key: 'cancel',
 	    value: function cancel() {
 	      // resetting/clearing the state
+	      var deletedIds = this.state.deleted;
+	      var madeExpired = thi.state.madeExpired;
 	      var clearKeys = {};
 	      var fields = this.state.fieldsEdited;
 	      for (var i = 0; i < fields.length; i++) {
 	        fields[i] !== 'tags' ? clearKeys[fields[i]] = '' : clearKeys['tags'] = [];
 	      }
 	      this.setState(clearKeys);
-	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {} });
+	      this.setState({ editing: false, clicked: '', fieldsEdited: [], errors: {}, deleted: deletedIds, madeExpired: madeExpired });
 	    }
 	  }, {
 	    key: 'save',
@@ -33639,6 +33653,8 @@
 	      console.log('being saved', this.state);
 	      var editedKeys = {};
 	      var clearKeys = {};
+	      var deletedIds = this.state.deleted;
+	      var madeActive = this.state.madeActive;
 	
 	      var fields = this.state.fieldsEdited;
 	      console.log('fields', fields);
@@ -33657,7 +33673,7 @@
 	        });
 	
 	        _this2.setState({ clearKeys: clearKeys });
-	        _this2.setState({ editing: false, fieldsEdited: [], tags: [], errors: {} });
+	        _this2.setState({ editing: false, fieldsEdited: [], tags: [], errors: {}, deleted: deletedIds, madeActive: madeActive });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -33673,9 +33689,9 @@
 	    value: function _delete() {
 	      var _this3 = this;
 	
-	      console.log('deleting active');
 	      _axios2.default.delete('/admin', { data: { id: this.state.clicked } }).then(function () {
-	        _this3.setState({ clicked: '' });
+	        var id = _this3.state.clicked;
+	        _this3.setState({ clicked: '', deleted: _this3.state.deleted.concat([id]) });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -33691,9 +33707,9 @@
 	    value: function setToExpired() {
 	      var _this4 = this;
 	
-	      console.log('setting this active listing to expired');
 	      _axios2.default.put('/admin/setexpired', { id: this.state.clicked }).then(function () {
-	        _this4.setState({ clicked: '' });
+	        var id = _this4.state.clicked;
+	        _this4.setState({ clicked: '', madeExpired: _this4.state.madeExpired.concat([id]) });
 	      }).catch(function (error) {
 	        var errorArray = error.response.data;
 	        var err = {};
@@ -33749,6 +33765,10 @@
 	    key: 'displayActive',
 	    value: function displayActive(listings) {
 	      var _this5 = this;
+	
+	      listings = listings.filter(function (item) {
+	        return _this5.state.deleted.indexOf(item.id) === -1 && _this5.state.madeExpired.indexOf(item.id) === -1;
+	      });
 	
 	      return listings.map(function (listing, i) {
 	        if (_this5.state.editing && _this5.state.clicked === listing.id) {
@@ -33945,7 +33965,11 @@
 	
 	      _axios2.default.post('/admin/create', { data: data }).then(function () {
 	        _this2.setState(clear);
-	        _reactRouter.browserHistory.push('/submit/success/');
+	        if (window.location.pathname === '/admin-panel/loggedin/create') {
+	          _reactRouter.browserHistory.push('/admin-panel/loggedin/submitted-successfully');
+	        } else {
+	          _reactRouter.browserHistory.push('/submit/success/');
+	        }
 	      }).catch(function (error) {
 	        console.log('got to the error/catch part');
 	        var errorArray = error.response.data;
@@ -33980,7 +34004,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_createListingForm2.default, { autocomplete: 'off', input: this.state, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
+	        _react2.default.createElement(_createListingForm2.default, { input: this.state, handleChange: this.handleChange, handleEnter: this.handleEnter, handleSubmit: this.handleSubmit })
 	      );
 	    }
 	  }]);
@@ -34064,7 +34088,7 @@
 	    { className: "containerA" },
 	    _react2.default.createElement(
 	      "form",
-	      { onSubmit: handleEnter, onChange: handleChange },
+	      { autocomplete: "off", onSubmit: handleEnter, onChange: handleChange },
 	      _react2.default.createElement("input", { "aria-required": "true", "aria-describedby": "author_error", name: "author", value: props.input.author, className: "adminAuth", type: "text", placeholder: "name*" }),
 	      errors.author ? _react2.default.createElement(
 	        "h6",
@@ -34082,7 +34106,7 @@
 	        { id: "errorCaseContainer" },
 	        _react2.default.createElement(
 	          "label",
-	          { placeholder: "union settlement: meals on wheels", "aria-placeholder": "union settlement: meals on wheels", id: "volunteer_title", "for": "v_title" },
+	          { id: "volunteer_title", "for": "v_title" },
 	          "title (45 char. max)",
 	          _react2.default.createElement(
 	            "span",
@@ -34096,7 +34120,7 @@
 	          errors.title || errors.routeTitle
 	        ) : ''
 	      ),
-	      _react2.default.createElement("textarea", { id: "v_title", "aria-required": "true", "aria-describedby": "title_error", "aria-labelledby": "volunteer_title", name: "title", value: props.input.title, className: "createTitle", type: "text", "aria-placeholder": "union settlement: meals on wheels", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
+	      _react2.default.createElement("textarea", { id: "v_title", "aria-required": "true", "aria-describedby": "title_error", "aria-labelledby": "volunteer_title", name: "title", value: props.input.title, className: "createTitle", type: "text", placeholder: "union settlement: meals on wheels", maxLength: "45" }),
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
@@ -34283,7 +34307,7 @@
 	    { className: "containerB" },
 	    _react2.default.createElement(
 	      "form",
-	      { onSubmit: handleEnter, onChange: handleChange },
+	      { autocomplete: "off", onSubmit: handleEnter, onChange: handleChange },
 	      _react2.default.createElement(
 	        "div",
 	        { id: "errorCaseContainer" },
@@ -65898,10 +65922,20 @@
 	
 	    _this.adminRedirect = _this.adminRedirect.bind(_this);
 	    _this.homeRedirect = _this.homeRedirect.bind(_this);
+	    _this.createRedirect = _this.createRedirect.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(Success, [{
+	    key: 'createRedirect',
+	    value: function createRedirect() {
+	      if (window.location.pathname === '/admin-panel/loggedin/submitted-successfully') {
+	        this.context.router.replace('/admin-panel/loggedin/create');
+	      } else {
+	        this.context.router.replace('/submit');
+	      }
+	    }
+	  }, {
 	    key: 'adminRedirect',
 	    value: function adminRedirect() {
 	      this.context.router.replace('/admin-panel/loggedin');
@@ -65918,18 +65952,43 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'h3',
-	          null,
-	          'Success!!'
-	        ),
-	        window.location.pathname === '/admin-panel/loggedin/submitted-successfully' ? _react2.default.createElement(
-	          'button',
-	          { onClick: this.adminRedirect },
-	          'go to admin'
-	        ) : _react2.default.createElement(
-	          'button',
-	          { onClick: this.homeRedirect },
-	          'go back to home'
+	          'div',
+	          { id: 'successDescription' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Thanks for your submission - '
+	          ),
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'We\'ll be in touch shortly.'
+	          ),
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'questions? ',
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'mailto:steph@begood.nyc?Subject=submitted%20listing%20inquiry', target: '_top' },
+	              'email us here'
+	            ),
+	            '.'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { id: 'uno_mas', onClick: this.createRedirect },
+	            'submit another'
+	          ),
+	          window.location.pathname === '/admin-panel/loggedin/submitted-successfully' ? _react2.default.createElement(
+	            'button',
+	            { onClick: this.adminRedirect },
+	            'back to panel'
+	          ) : _react2.default.createElement(
+	            'button',
+	            { onClick: this.homeRedirect },
+	            'back to home'
+	          )
 	        )
 	      );
 	    }

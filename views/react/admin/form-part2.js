@@ -9,7 +9,7 @@ export default function (props) {
 
   return (
     <div className="containerB">
-    <form onSubmit={handleEnter} onChange={handleChange}>
+    <form autocomplete="off" onSubmit={handleEnter} onChange={handleChange}>
 
       <div id="errorCaseContainer">
         <label>tags (check all that apply)<span style={{ color: '#ff4d4d' }}>*</span></label>
