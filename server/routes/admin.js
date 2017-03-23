@@ -6,7 +6,7 @@ const models = require('../db/models');
 const Listing = models.Listing;
 const Validator = require('validator');
 const _ = require('lodash');
-const Login = require('../configure/credentials');
+const Login = require('../configure/credentials.js');
 const Credentials = Login.Credentials;
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
@@ -53,8 +53,8 @@ router.put('/', function(req, res, next) {
 
 // verifying login request
 router.put('/login', function(req, res, next) {
-  console.log('req', req)
-  console.log('res', res)
+ // console.log('req', req)
+  // console.log('res', res)
   console.log('loggin req body', req.body);
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
