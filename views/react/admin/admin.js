@@ -81,7 +81,7 @@ export default class Admin extends React.Component {
       )
     }
     else if(this.state.selected === 'create'){
-      // this.handleRoute()
+      this.handleRoute()
       return (
         <div>
         <Create/>

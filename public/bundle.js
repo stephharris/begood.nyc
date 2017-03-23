@@ -26858,7 +26858,7 @@
 	          _react2.default.createElement(_active2.default, { active: this.state.active })
 	        );
 	      } else if (this.state.selected === 'create') {
-	        // this.handleRoute()
+	        this.handleRoute();
 	        return _react2.default.createElement(
 	          'div',
 	          null,
