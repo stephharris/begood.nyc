@@ -3,4 +3,4 @@ node_modules
 ./public/bundle.js
 ./public/bundle.js.map
 ./server/configure/credentials.js
-./server/configure/credentials.js
+
