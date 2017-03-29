@@ -66,7 +66,8 @@
     "sequelize": "~3.27.0",
     "supertest": "^3.0.0",
     "webpack": "~1.13.3",
-    "webpack-dev-server": "~1.16.2"
+    "webpack-dev-server": "~1.16.2",
+    "moment": "~2.18.1"
   },
   "jest": {
     "moduleNameMapper": {
@@ -94,6 +95,7 @@
     "history": "~4.5.0",
     "jsonwebtoken": "~7.2.1",
     "lodash": "~4.17.4",
+    "moment": "~2.18.1",
     "nodemon": "~1.11.0",
     "pg": "~6.1.0",
     "pg-hstore": "~2.3.2",

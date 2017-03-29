@@ -10,6 +10,7 @@ const Login = require('../configure/credentials.js');
 const Credentials = Login.Credentials;
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 module.exports = router;
 
 
@@ -37,7 +38,7 @@ function validateInput(data) {
   }
 }
 
-// router.use(expressJWT({ secret: Credentials.jwtSecret }));
+//router.use(expressJWT({ secret: Credentials.jwtSecret }));
 
 // updating the listing (regardless of status)
 router.put('/', function(req, res, next) {
@@ -53,19 +54,43 @@ router.put('/', function(req, res, next) {
 
 // verifying login request
 router.put('/login', function(req, res, next) {
- // console.log('req', req)
-  // console.log('res', res)
-  console.log('loggin req body', req.body);
   const { errors, isValid } = validateInput(req.body);
   if(!isValid) {
-    console.log('oooooh errors', errors)
     res.status(400).json(errors);
   }else {
-    const token = jwt.sign(req.body.user.username , Credentials.jwtSecret);
+    //let expires = moment().add(7, 'days').valueOf();
+    let expires = moment().add(20, 'seconds');
+    let payload = {
+      iss: req.body.user.username,
+      exp: expires.valueOf()
+    };
+
+    let start = moment();
+    let end = expires;
+
+    const token = jwt.sign(payload, Credentials.jwtSecret);
     // simulates writing jwtToken to database
     Credentials.jwtToken = token;
-    res.status(200).json(token)
+    Credentials.timeout = [start, end];
+    payload.token = token;
+    res.status(200).json(payload);
   }
+})
+
+router.put('/verify', function(req, res, next) {
+  console.log('token obj from localStorage', req.body)
+  //console.log('Credentials', Credentials)
+  let end = Credentials.timeout[1];
+  let start = Credentials.timeout[0];
+  let diff = moment.duration(end.diff(start));
+
+  if(diff <= 0 ){
+    // log em out
+    console.log('unverified')
+    res.status(201).json({ verified: false })
+  }
+  //console.log('IDKKKKKKKKKK', diff);
+  //console.log(JSON.stringify(req.body.token))
 })
 
 // creating new listing

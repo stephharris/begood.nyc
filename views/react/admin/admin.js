@@ -7,6 +7,7 @@ import Pending from './pending';
 import Expired from './expired';
 import Active from './active';
 import Create from './createListingContainer';
+import Logout from './logout';
 import axios from 'axios';
 
 export default class Admin extends React.Component {
@@ -100,6 +101,7 @@ export default class Admin extends React.Component {
   render() {
     return (
       <div>
+      <button onClick={Logout}>logout</button>
       <div className="adminNav">
         <button className={this.state.selected === 'create' ? 'active' : ''} onClick={ this.toggleSelected.bind(this,'create')}>create</button>
         <button className={this.state.selected === 'pending' ? 'active' : ''} onClick={ this.toggleSelected.bind(this, 'pending')}>pending</button>

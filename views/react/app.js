@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
-import Authenticated from './authenticated';
+//import Authenticated from './authenticated';
 import Admin from './admin/admin.js';
 import Login from './admin/login.js';
 import Create from './admin/createListingContainer';
@@ -11,6 +11,7 @@ import About from './about';
 import Contact from './contact';
 import Submit from './submit';
 import Success from './success';
+import Verify from './validate_auth';
 
 /********************
 If you aren't going to use redux think about changing token store to be window global starting from app.js
@@ -61,11 +62,9 @@ class App extends Component {
       <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
-            <Route component={Authenticated}>
-              <Route path='/admin-panel/loggedin' component={Admin}/>
-              <Route path='/admin-panel/loggedin/create' component={Create}/>
-              <Route path='/admin-panel/loggedin/submitted-successfully' component={Success}/>
-            </Route>
+              <Route onEnter={Verify} path='/admin-panel/loggedin' component={Admin}/>
+              <Route onEnter={Verify} path='/admin-panel/loggedin/create' component={Create}/>
+              <Route onEnter={Verify} path='/admin-panel/loggedin/submitted-successfully' component={Success}/>
           </Route>
           <Route path='/' component={Layout}>
             <IndexRoute component={Home} />

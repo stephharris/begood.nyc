@@ -77,7 +77,7 @@ export default class Active extends React.Component {
   cancel(){
     // resetting/clearing the state
     let deletedIds = this.state.deleted;
-    let madeExpired = thi.state.madeExpired;
+    let madeExpired = this.state.madeExpired;
     let clearKeys = {};
     let fields = this.state.fieldsEdited;
     for(let i = 0; i < fields.length; i++){
