@@ -21505,19 +21505,19 @@
 	
 	var _about2 = _interopRequireDefault(_about);
 	
-	var _contact = __webpack_require__(608);
+	var _contact = __webpack_require__(610);
 	
 	var _contact2 = _interopRequireDefault(_contact);
 	
-	var _submit = __webpack_require__(609);
+	var _submit = __webpack_require__(611);
 	
 	var _submit2 = _interopRequireDefault(_submit);
 	
-	var _success = __webpack_require__(610);
+	var _success = __webpack_require__(612);
 	
 	var _success2 = _interopRequireDefault(_success);
 	
-	var _validate_auth = __webpack_require__(611);
+	var _validate_auth = __webpack_require__(613);
 	
 	var _validate_auth2 = _interopRequireDefault(_validate_auth);
 	
@@ -66816,11 +66816,11 @@
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
-	var _aboutContent = __webpack_require__(613);
+	var _aboutContent = __webpack_require__(608);
 	
 	var _aboutContent2 = _interopRequireDefault(_aboutContent);
 	
-	var _aboutSection = __webpack_require__(612);
+	var _aboutSection = __webpack_require__(609);
 	
 	var _aboutSection2 = _interopRequireDefault(_aboutSection);
 	
@@ -66871,6 +66871,129 @@
 
 /***/ },
 /* 608 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var content = {
+	
+	  'section1': {
+	    h1: 'The Problem',
+	    body: 'the big reveal'
+	  },
+	
+	  'section2': {
+	    h1: 'The Solution',
+	    body: 'blah blah blah'
+	  }
+	
+	};
+	
+	exports.default = content;
+
+/***/ },
+/* 609 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AboutSection = function (_React$Component) {
+	  _inherits(AboutSection, _React$Component);
+	
+	  function AboutSection(props) {
+	    _classCallCheck(this, AboutSection);
+	
+	    var _this = _possibleConstructorReturn(this, (AboutSection.__proto__ || Object.getPrototypeOf(AboutSection)).call(this, props));
+	
+	    _this.state = {
+	      maxHeight: 0,
+	      h1Class: 'section-default',
+	      rotate: 90,
+	      opacity: 1,
+	      display: 'none'
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(AboutSection, [{
+	    key: 'onShow',
+	    value: function onShow() {
+	      if (this.state.maxHeight === 0) {
+	        this.setState({ maxHeight: 100, h1Class: 'section-expanded', rotate: 0, opacity: 0, display: 'block' });
+	      } else {
+	        this.setState({ maxHeight: 0, h1Class: 'section-default', rotate: 90, opacity: 1, display: 'none' });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { onClick: this.onShow.bind(this), id: 'about-container' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            { className: this.state.h1Class },
+	            this.props.content.h1
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'svgContainer' },
+	            _react2.default.createElement(
+	              'svg',
+	              { style: { transform: 'rotate(' + this.state.rotate + 'deg)', opacity: this.state.opacity }, viewBox: '0 0 560.3 560.3' },
+	              _react2.default.createElement('polygon', { points: '344.4,215.8 344.4,0 215.8,0 215.8,215.8 0,215.8 0,344.4 215.8,344.4 215.8,560.3 344.4,560.3 344.4,344.4 560.3,344.4 560.3,215.8 ' })
+	            ),
+	            _react2.default.createElement(
+	              'svg',
+	              { style: { display: this.state.display }, viewBox: '0 0 17.9 4.1' },
+	              _react2.default.createElement('rect', { x: '0', width: '17.9', height: '4.1' })
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'aboutSection', style: { maxHeight: this.state.maxHeight } },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            this.props.content.body
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return AboutSection;
+	}(_react2.default.Component);
+	
+	exports.default = AboutSection;
+
+/***/ },
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66929,7 +67052,7 @@
 	exports.default = Contact;
 
 /***/ },
-/* 609 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67011,7 +67134,7 @@
 	exports.default = Submit;
 
 /***/ },
-/* 610 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67134,7 +67257,7 @@
 	};
 
 /***/ },
-/* 611 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67180,129 +67303,6 @@
 	    return false;
 	  }
 	}
-
-/***/ },
-/* 612 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var AboutSection = function (_React$Component) {
-	  _inherits(AboutSection, _React$Component);
-	
-	  function AboutSection(props) {
-	    _classCallCheck(this, AboutSection);
-	
-	    var _this = _possibleConstructorReturn(this, (AboutSection.__proto__ || Object.getPrototypeOf(AboutSection)).call(this, props));
-	
-	    _this.state = {
-	      maxHeight: 0,
-	      h1Class: 'section-default',
-	      rotate: 90,
-	      opacity: 1,
-	      display: 'none'
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(AboutSection, [{
-	    key: 'onShow',
-	    value: function onShow() {
-	      if (this.state.maxHeight === 0) {
-	        this.setState({ maxHeight: 100, h1Class: 'section-expanded', rotate: 0, opacity: 0, display: 'block' });
-	      } else {
-	        this.setState({ maxHeight: 0, h1Class: 'section-default', rotate: 90, opacity: 1, display: 'none' });
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { onClick: this.onShow.bind(this), id: 'about-container' },
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'h1',
-	            { className: this.state.h1Class },
-	            this.props.content.h1
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'svgContainer' },
-	            _react2.default.createElement(
-	              'svg',
-	              { style: { transform: 'rotate(' + this.state.rotate + 'deg)', opacity: this.state.opacity }, viewBox: '0 0 560.3 560.3' },
-	              _react2.default.createElement('polygon', { points: '344.4,215.8 344.4,0 215.8,0 215.8,215.8 0,215.8 0,344.4 215.8,344.4 215.8,560.3 344.4,560.3 344.4,344.4 560.3,344.4 560.3,215.8 ' })
-	            ),
-	            _react2.default.createElement(
-	              'svg',
-	              { style: { display: this.state.display }, viewBox: '0 0 17.9 4.1' },
-	              _react2.default.createElement('rect', { x: '0', width: '17.9', height: '4.1' })
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'aboutSection', style: { maxHeight: this.state.maxHeight } },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            this.props.content.body
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return AboutSection;
-	}(_react2.default.Component);
-	
-	exports.default = AboutSection;
-
-/***/ },
-/* 613 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var content = {
-	
-	  'section1': {
-	    h1: 'The Problem',
-	    body: 'the big reveal'
-	  },
-	
-	  'section2': {
-	    h1: 'The Solution',
-	    body: 'blah blah blah'
-	  }
-	
-	};
-	
-	exports.default = content;
 
 /***/ }
 /******/ ]);
