@@ -2,8 +2,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Listings from './listings.js';
-import Filter from './filter.js';
+import Listings from './listings';
+import Filter from './filter';
+import Layout from './layout';
+import Footer from './footer';
 import { Link } from 'react-router';
 
 export default class Home extends React.Component {
@@ -124,9 +126,10 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
+        <Layout/>
         <Link style={{textDecoration: 'none'}} to="/submit">
         <div id="post">
-          <h3>submit an opportunity</h3>
+          <h3>Submit An Opportunity</h3>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 216"><path d="M204.3 92.9h-81.2V11.7C123.1 8 118 0 108 0S92.9 8 92.9 11.7v81.2H11.7C8 92.9 0 98 0 108s8 15.1 11.7 15.1h81.2v81.2c0 3.7 5 11.7 15.1 11.7s15.1-8 15.1-11.7v-81.2h81.2c3.7 0 11.7-5 11.7-15.1S208 92.9 204.3 92.9z"/></svg>
         </div>
         </Link>
@@ -134,12 +137,12 @@ export default class Home extends React.Component {
         <Filter toggleCategory={this.toggleCategory} toggle={this.toggleFilter} active={this.state.filterActive} categories={this.state.categories} />
         : <div onClick={this.toggleFilter} id="filters">
           <button className="unstyled" tableindex="0" aria-expanded="false" >
-            <h3>filters</h3>
+            <h3>Filters</h3>
           </button>
           </div>
         }
-
         <Listings listings={this.state.filteredListings} opportunity={this.props.location.hash}/>
+        <Footer/>
       </div>
     )
   }

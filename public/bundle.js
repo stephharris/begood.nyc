@@ -21501,25 +21501,29 @@
 	
 	var _home2 = _interopRequireDefault(_home);
 	
-	var _about = __webpack_require__(605);
+	var _about = __webpack_require__(607);
 	
 	var _about2 = _interopRequireDefault(_about);
 	
-	var _contact = __webpack_require__(606);
+	var _contact = __webpack_require__(608);
 	
 	var _contact2 = _interopRequireDefault(_contact);
 	
-	var _submit = __webpack_require__(607);
+	var _submit = __webpack_require__(609);
 	
 	var _submit2 = _interopRequireDefault(_submit);
 	
-	var _success = __webpack_require__(608);
+	var _success = __webpack_require__(610);
 	
 	var _success2 = _interopRequireDefault(_success);
 	
-	var _validate_auth = __webpack_require__(609);
+	var _validate_auth = __webpack_require__(611);
 	
 	var _validate_auth2 = _interopRequireDefault(_validate_auth);
+	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -21599,7 +21603,7 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactRouter.Route,
-	          { path: '/', component: Layout },
+	          { path: '/' },
 	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/submit', component: _submit2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/submit/success', component: _success2.default }),
@@ -21651,60 +21655,6 @@
 	            { className: 'byline' },
 	            'curated local volunteer opportunities'
 	          )
-	        )
-	      )
-	    ),
-	    props.children
-	  );
-	};
-	
-	var Layout = function Layout(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(
-	      'header',
-	      null,
-	      _react2.default.createElement(
-	        'div',
-	        { id: 'lockup' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/' },
-	          _react2.default.createElement(
-	            'h1',
-	            null,
-	            'BEGOOD'
-	          ),
-	          _react2.default.createElement(
-	            'h1',
-	            { className: 'NYC' },
-	            _react2.default.createElement(
-	              'span',
-	              { className: 'dot' },
-	              '.'
-	            ),
-	            'NYC'
-	          ),
-	          _react2.default.createElement(
-	            'h3',
-	            { className: 'byline' },
-	            'curated local volunteer opportunities'
-	          )
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { id: 'nav' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/about' },
-	          'about'
-	        ),
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/contact' },
-	          'contact'
 	        )
 	      )
 	    ),
@@ -66228,6 +66178,14 @@
 	
 	var _filter2 = _interopRequireDefault(_filter);
 	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
+	
+	var _footer = __webpack_require__(606);
+	
+	var _footer2 = _interopRequireDefault(_footer);
+	
 	var _reactRouter = __webpack_require__(179);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -66359,6 +66317,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(_layout2.default, null),
 	        _react2.default.createElement(
 	          _reactRouter.Link,
 	          { style: { textDecoration: 'none' }, to: '/submit' },
@@ -66368,7 +66327,7 @@
 	            _react2.default.createElement(
 	              'h3',
 	              null,
-	              'submit an opportunity'
+	              'Submit An Opportunity'
 	            ),
 	            _react2.default.createElement(
 	              'svg',
@@ -66386,11 +66345,12 @@
 	            _react2.default.createElement(
 	              'h3',
 	              null,
-	              'filters'
+	              'Filters'
 	            )
 	          )
 	        ),
-	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings, opportunity: this.props.location.hash })
+	        _react2.default.createElement(_listings2.default, { listings: this.state.filteredListings, opportunity: this.props.location.hash }),
+	        _react2.default.createElement(_footer2.default, null)
 	      );
 	    }
 	  }]);
@@ -66497,7 +66457,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'displayListingsContainer' },
 	        this.displayListings(this.props.listings)
 	      );
 	    }
@@ -66594,61 +66554,243 @@
 /* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(179);
+	
+	var _footer = __webpack_require__(606);
+	
+	var _footer2 = _interopRequireDefault(_footer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var About = function About() {
-	  return _react2.default.createElement(
-	    "div",
-	    null,
-	    _react2.default.createElement(
-	      "h2",
-	      null,
-	      "This is the About page"
-	    )
-	  );
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	exports.default = About;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Layout = function (_React$Component) {
+	  _inherits(Layout, _React$Component);
+	
+	  function Layout(props) {
+	    _classCallCheck(this, Layout);
+	
+	    return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
+	  }
+	
+	  _createClass(Layout, [{
+	    key: 'render',
+	    value: function render() {
+	
+	      if (window.location.pathname === '/' || window.location.pathname === '/submit') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'header',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'lockup' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/' },
+	                _react2.default.createElement(
+	                  'h1',
+	                  null,
+	                  'BEGOOD'
+	                ),
+	                _react2.default.createElement(
+	                  'h1',
+	                  { className: 'NYC' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'dot' },
+	                    '.'
+	                  ),
+	                  'NYC'
+	                ),
+	                _react2.default.createElement(
+	                  'h3',
+	                  { className: 'byline' },
+	                  'curated local volunteer opportunities'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'nav' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/about' },
+	                'about'
+	              ),
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/contact' },
+	                'contact'
+	              )
+	            )
+	          ),
+	          this.props.children
+	        );
+	      } else if (window.location.pathname === '/contact' || window.location.pathname === '/submit/success') {
+	
+	        var strikethrough = void 0;
+	        window.location.pathname === '/contact' ? strikethrough = { textDecoration: 'line-through' } : '';
+	
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'header',
+	            { className: 'contactHeader' },
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'lockup' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/' },
+	                _react2.default.createElement(
+	                  'h1',
+	                  null,
+	                  'BEGOOD'
+	                ),
+	                _react2.default.createElement(
+	                  'h1',
+	                  { className: 'NYC' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'dot' },
+	                    '.'
+	                  ),
+	                  'NYC'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'nav' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/about' },
+	                'about'
+	              ),
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { style: strikethrough, to: '/contact' },
+	                'contact'
+	              )
+	            )
+	          ),
+	          this.props.children
+	        );
+	      } else if (window.location.pathname === '/about') {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'aboutHeader' },
+	          _react2.default.createElement(
+	            'header',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'lockup' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/' },
+	                _react2.default.createElement(
+	                  'h1',
+	                  null,
+	                  'BEGOOD'
+	                ),
+	                _react2.default.createElement(
+	                  'h1',
+	                  { className: 'NYC' },
+	                  _react2.default.createElement(
+	                    'span',
+	                    { className: 'dot' },
+	                    '.'
+	                  ),
+	                  'NYC'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { id: 'nav' },
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { style: { textDecoration: 'line-through' }, to: '/about' },
+	                'about'
+	              ),
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/contact' },
+	                'contact'
+	              )
+	            )
+	          ),
+	          this.props.children
+	        );
+	      }
+	    }
+	  }]);
+	
+	  return Layout;
+	}(_react2.default.Component);
+	
+	exports.default = Layout;
 
 /***/ },
 /* 606 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Contact = function Contact() {
+	exports.default = function () {
 	  return _react2.default.createElement(
-	    "div",
+	    'footer',
 	    null,
 	    _react2.default.createElement(
-	      "h2",
+	      'h6',
 	      null,
-	      "This is the contact page"
+	      '\xA9 2017 BeGood.NYC - Built with ',
+	      _react2.default.createElement(
+	        'span',
+	        { className: 'heart' },
+	        '\u2764'
+	      ),
+	      ' & JavaScript by ',
+	      _react2.default.createElement(
+	        'a',
+	        { className: 'steph', target: '_blank', href: 'https:ste.ph' },
+	        'Steph Harris'
+	      ),
+	      '.'
 	    )
 	  );
 	};
 	
-	exports.default = Contact;
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 /* 607 */
@@ -66666,9 +66808,153 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
+	
+	var _footer = __webpack_require__(606);
+	
+	var _footer2 = _interopRequireDefault(_footer);
+	
+	var _aboutContent = __webpack_require__(613);
+	
+	var _aboutContent2 = _interopRequireDefault(_aboutContent);
+	
+	var _aboutSection = __webpack_require__(612);
+	
+	var _aboutSection2 = _interopRequireDefault(_aboutSection);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var About = function (_React$Component) {
+	  _inherits(About, _React$Component);
+	
+	  function About() {
+	    _classCallCheck(this, About);
+	
+	    return _possibleConstructorReturn(this, (About.__proto__ || Object.getPrototypeOf(About)).call(this));
+	  }
+	
+	  _createClass(About, [{
+	    key: 'render',
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_layout2.default, null),
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'aboutBG' },
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'about' },
+	            _react2.default.createElement(_aboutSection2.default, { content: _aboutContent2.default.section1 }),
+	            _react2.default.createElement(_aboutSection2.default, { content: _aboutContent2.default.section2 })
+	          )
+	        ),
+	        _react2.default.createElement(_footer2.default, null)
+	      );
+	    }
+	  }]);
+	
+	  return About;
+	}(_react2.default.Component);
+	
+	exports.default = About;
+
+/***/ },
+/* 608 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
+	
+	var _footer = __webpack_require__(606);
+	
+	var _footer2 = _interopRequireDefault(_footer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Contact = function Contact() {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(_layout2.default, null),
+	    _react2.default.createElement(
+	      'div',
+	      { id: 'contact' },
+	      _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h1',
+	          { style: { margin: '1em 0 1em 0' } },
+	          'This is for all the New Yorkers who want to do something physical to help & just don\'t know where to start...'
+	        ),
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'questions? ',
+	          _react2.default.createElement(
+	            'a',
+	            { href: 'mailto:steph@begood.nyc?Subject=submitted%20listing%20inquiry', target: '_top' },
+	            'email us here'
+	          ),
+	          '.'
+	        )
+	      )
+	    ),
+	    _react2.default.createElement(_footer2.default, null)
+	  );
+	};
+	
+	exports.default = Contact;
+
+/***/ },
+/* 609 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var _createListingContainer = __webpack_require__(392);
 	
 	var _createListingContainer2 = _interopRequireDefault(_createListingContainer);
+	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
+	
+	var _footer = __webpack_require__(606);
+	
+	var _footer2 = _interopRequireDefault(_footer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -66693,6 +66979,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(_layout2.default, null),
 	        _react2.default.createElement(
 	          'div',
 	          { id: 'submitDescription' },
@@ -66709,10 +66996,11 @@
 	          _react2.default.createElement(
 	            'h4',
 	            { style: { margin: '1em 0 1em 0' } },
-	            'If you/your organization is looking for cause-driven individuals to take charge and make this city a better place to live, reach out using the form below and we\u2019ll be in touch shortly!'
+	            'If your organization or program is looking for cause-driven individuals to take charge and make this city a better place to live, please reach out using the form below and we\u2019ll be in touch shortly!'
 	          )
 	        ),
-	        _react2.default.createElement(_createListingContainer2.default, null)
+	        _react2.default.createElement(_createListingContainer2.default, null),
+	        _react2.default.createElement(_footer2.default, null)
 	      );
 	    }
 	  }]);
@@ -66723,7 +67011,7 @@
 	exports.default = Submit;
 
 /***/ },
-/* 608 */
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66739,6 +67027,10 @@
 	var _react2 = _interopRequireDefault(_react);
 	
 	var _reactRouter = __webpack_require__(179);
+	
+	var _layout = __webpack_require__(605);
+	
+	var _layout2 = _interopRequireDefault(_layout);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -66787,6 +67079,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        window.location.pathname === '/submit/success' ? _react2.default.createElement(_layout2.default, null) : '',
 	        _react2.default.createElement(
 	          'div',
 	          { id: 'successDescription' },
@@ -66841,7 +67134,7 @@
 	};
 
 /***/ },
-/* 609 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66887,6 +67180,129 @@
 	    return false;
 	  }
 	}
+
+/***/ },
+/* 612 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AboutSection = function (_React$Component) {
+	  _inherits(AboutSection, _React$Component);
+	
+	  function AboutSection(props) {
+	    _classCallCheck(this, AboutSection);
+	
+	    var _this = _possibleConstructorReturn(this, (AboutSection.__proto__ || Object.getPrototypeOf(AboutSection)).call(this, props));
+	
+	    _this.state = {
+	      maxHeight: 0,
+	      h1Class: 'section-default',
+	      rotate: 90,
+	      opacity: 1,
+	      display: 'none'
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(AboutSection, [{
+	    key: 'onShow',
+	    value: function onShow() {
+	      if (this.state.maxHeight === 0) {
+	        this.setState({ maxHeight: 100, h1Class: 'section-expanded', rotate: 0, opacity: 0, display: 'block' });
+	      } else {
+	        this.setState({ maxHeight: 0, h1Class: 'section-default', rotate: 90, opacity: 1, display: 'none' });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { onClick: this.onShow.bind(this), id: 'about-container' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            { className: this.state.h1Class },
+	            this.props.content.h1
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'svgContainer' },
+	            _react2.default.createElement(
+	              'svg',
+	              { style: { transform: 'rotate(' + this.state.rotate + 'deg)', opacity: this.state.opacity }, viewBox: '0 0 560.3 560.3' },
+	              _react2.default.createElement('polygon', { points: '344.4,215.8 344.4,0 215.8,0 215.8,215.8 0,215.8 0,344.4 215.8,344.4 215.8,560.3 344.4,560.3 344.4,344.4 560.3,344.4 560.3,215.8 ' })
+	            ),
+	            _react2.default.createElement(
+	              'svg',
+	              { style: { display: this.state.display }, viewBox: '0 0 17.9 4.1' },
+	              _react2.default.createElement('rect', { x: '0', width: '17.9', height: '4.1' })
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'aboutSection', style: { maxHeight: this.state.maxHeight } },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            this.props.content.body
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return AboutSection;
+	}(_react2.default.Component);
+	
+	exports.default = AboutSection;
+
+/***/ },
+/* 613 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var content = {
+	
+	  'section1': {
+	    h1: 'The Problem',
+	    body: 'the big reveal'
+	  },
+	
+	  'section2': {
+	    h1: 'The Solution',
+	    body: 'blah blah blah'
+	  }
+	
+	};
+	
+	exports.default = content;
 
 /***/ }
 /******/ ]);
