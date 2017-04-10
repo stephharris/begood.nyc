@@ -19,7 +19,7 @@ let listings = [
     requirements: 'deep knowledge of beadwork, jewlery design or profitable arts, able to facilitate instructions to groups, must be patient/reliable',
     moreInfoUrl: 'http://www.wpaonline.org/wpaassets/Beadwork_Volunteer.pdf',
     contactEmail: 'srice@wpaonline.org',
-    expires: '2017-03-28'
+    expires: '2017-04-05'
   },
   {
     status: 'active',
@@ -55,7 +55,7 @@ let listings = [
     requirements: 'To participate, register here: https://www.eventbrite.com/e/debug-politics-1st-nyc-hackathon-tickets-29492120727',
     moreInfoUrl: 'http://www.debugpolitics.com/',
     contactEmail: 'hello@debugpolitics.com',
-    expires: '2017-03-28'
+    expires: '2017-04-28'
   },
    {
     status: 'pending',
@@ -89,7 +89,7 @@ let listings = [
     fullDescription: 'We\'re looking for volunteers to help by spreading mulch that is generated during MulchFest around young trees to insulate them from the cold winter weather, retain moisture, & provide a decorative addition to neighborhoods around the city. You can also pick up bags of mulch to take home w/ you to use on trees on your street!',
     moreInfoUrl: 'https://www.nycgovparks.org/reg/stewardship/2696',
     contactEmail: 'fakeemail@fakeemail.com',
-    expires: '2017-03-28'
+    expires: '2017-04-28'
   }
 ];
 

@@ -3,9 +3,9 @@
 import React from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import setAuthorizationToken from './setAuthorizationToken';
+// import setAuthorizationToken from './setAuthorizationToken';
 import jwt from 'jsonwebtoken';
-import tokenStore from './tokenStore';
+// import tokenStore from './tokenStore';
 
 
 export default class Login extends React.Component {
@@ -29,14 +29,11 @@ export default class Login extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    // const authAction = new AuthAction;
-    // authAction.handleSubmit(this.state);
     axios.put('/admin/login', { user: this.state })
     .then( (res) => {
+      console.log('res data', res.data)
       const token = res.data;
-      localStorage.setItem('jwtToken', token);
-      setAuthorizationToken(token);
-      tokenStore.sessionToken = token;
+      localStorage.setItem('token', JSON.stringify(token));
       this.setState({ errors: {} });
       // console.log('auth action token', jwt.decode(token))
       browserHistory.push('/admin-panel/loggedin');
