@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router';
-import Authenticated from './authenticated';
+//import Authenticated from './authenticated';
 import Admin from './admin/admin.js';
 import Login from './admin/login.js';
 import Create from './admin/createListingContainer';
@@ -11,6 +11,8 @@ import About from './about';
 import Contact from './contact';
 import Submit from './submit';
 import Success from './success';
+import Verify from './validate_auth';
+import Layout from './layout';
 
 /********************
 If you aren't going to use redux think about changing token store to be window global starting from app.js
@@ -61,13 +63,11 @@ class App extends Component {
       <Router history={browserHistory}>
           <Route path='/admin-panel' component={AdminLayout}>
             <IndexRoute component={Login} />
-            <Route component={Authenticated}>
-              <Route path='/admin-panel/loggedin' component={Admin}/>
-              <Route path='/admin-panel/loggedin/create' component={Create}/>
-              <Route path='/admin-panel/loggedin/submitted-successfully' component={Success}/>
-            </Route>
+              <Route onEnter={Verify} path='/admin-panel/loggedin' component={Admin}/>
+              <Route onEnter={Verify} path='/admin-panel/loggedin/create' component={Create}/>
+              <Route onEnter={Verify} path='/admin-panel/loggedin/submitted-successfully' component={Success}/>
           </Route>
-          <Route path='/' component={Layout}>
+          <Route path='/'>
             <IndexRoute component={Home} />
             <Route path='/submit' component={Submit} />
             <Route path='/submit/success' component={Success} />
@@ -96,25 +96,6 @@ const AdminLayout = (props) => (
       </div>
     </header>
     { props.children }
-  </div>
-);
-
-
-const Layout = (props) => (
-  <div>
-    <header>
-      <div id="lockup"><Link to="/">
-        <h1>BEGOOD</h1>
-        <h1 className="NYC"><span className="dot">.</span>NYC</h1>
-        <h3 className="byline">curated local volunteer opportunities</h3>
-      </Link>
-      </div>
-      <div id="nav">
-        <Link to="/about">about</Link>
-        <Link to="/contact">contact</Link>
-      </div>
-    </header>
-    {props.children}
   </div>
 );
 

@@ -45,6 +45,7 @@
 
 html, body {
   margin: 0;
+  height: 100%;
 }
 
 
@@ -82,6 +83,7 @@ button.unstyled {
   cursor: pointer;
 }
 
+
 /*****************/
 /* HEADER STYLES */
 /*****************/
@@ -117,7 +119,7 @@ header {
 .byline {
   font-size: 1rem;
   font-family: "Avenir Roman";
-  color: #2d2d2d;
+  color: #151515;
   line-height: 1.3em;
 }
 
@@ -127,20 +129,20 @@ header {
 
 #nav a {
   font-size: 1rem;
-  font-weight: bold;
+/*  font-weight: bold;*/
   display: inline-block;
   text-decoration: none;
-  color: #2d2d2d;
-  box-shadow: inset 0 -.5em 0 #ffd9d9;
+  color: #151515;
+/*  box-shadow: inset 0 -.5em 0 #ffd9d9;*/
 }
 
 #nav a:last-child {
   margin-left: 1em;
 }
 
-#nav a:hover {
+/*#nav a:hover {
   box-shadow: inset 0 -.5em 0 #ff4d4d;
-}
+}*/
 
 * {
   -webkit-transition: all 0.2s ease;
@@ -149,13 +151,204 @@ header {
   -o-transition:      all 0.2s ease;
 }
 
+/*****************/
+/* FOOTER STYLES */
+/*****************/
+
+footer {
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  padding: 1em 3em 1em 3em;
+  -webkit-align-items: center;
+  align-items: center;
+  justify-content: center;
+  background: #ebebeb;
+  color: #151515;
+/*  width: 100%;*/
+  bottom: 0;
+}
+
+footer h6 {
+  margin: 0;
+  padding: 0;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+}
+
+footer h6 .steph {
+  cursor: pointer;
+  font-size: 1em;
+  text-decoration: none;
+  color: #151515;
+  font-family: "Avenir Black";
+}
+
+.heart {
+  color: #ff4d4d;
+}
+
+footer #socials {
+  margin-left: auto;
+}
+
+/******************/
+/** ABOUT STYLES **/
+/******************/
+
+.aboutHeader {
+  background: #f24034;
+/*  background: #ff4d4d;*/
+}
+
+.aboutHeader #lockup h1, .aboutHeader .dot {
+  color: #FFF;
+}
+
+.aboutHeader #nav a {
+  color: #FFF;
+}
+
+#aboutBG {
+  background: #f24034;
+  height: 80%;
+/*  background: #ff4d4d;*/
+}
+
+#about {
+  padding: 1.5em 3em 1em 3em;
+  color: #FFF;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  margin-left: 8em;
+  margin-right: 8em;
+}
+
+#about-container {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: .2em solid #151515;
+  cursor: pointer;
+}
+
+#about-container > div {
+  display: flex;
+  align-items: center;
+}
+
+#about h1 {
+  font-size: 4rem;
+  letter-spacing: .09rem;
+  top: 0;
+  bottom: 0;
+  font-family: "Avenir Black";
+}
+
+.svgContainer {
+  margin-left: auto;
+  align-items: center;
+  height: 2em;
+  width: 2em;
+}
+
+.section-default {
+  color: #151515;
+}
+
+.section-default:hover {
+  box-shadow: inset 0 -.6em 0 #FFF;
+}
+
+.section-expanded {
+  color: #FFF;
+}
+
+
+#about svg {
+  height: 2em;
+  width: 2em;
+  fill: #151515;
+  position: absolute;
+}
+
+
+#about-container > .accordion {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+
+#about > #about-container:first-child {
+  border-top: .2em solid #151515;
+}
+
+.aboutSection {
+  transition: max-height .3s ease-in-out;
+  overflow: hidden;
+}
+
+
+/******************/
+/* CONTACT STYLES */
+/******************/
+
+.contactHeader {
+  background: #151515;
+}
+
+.contactHeader #lockup h1, .contactHeader .dot {
+  color: #FFF;
+}
+
+.contactHeader #nav a {
+  color: #FFF;
+}
+
+#contact {
+  background: #151515;
+  height: 75vh;
+  padding: 0em 8.5em 0em 8.5em;
+  color: #FFF;
+  display: -webkit-flex;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+/*  height: 57vh;*/
+}
+
+#contact h1 {
+  margin: 0;
+/*  line-height: 1.6em;*/
+/*  font-size: 1.25rem;*/
+  letter-spacing: .08rem;
+  text-align: center;
+/*  font-size: 3rem;*/
+}
+
+#contact a {
+  font-size: 1rem;
+  font-weight: bold;
+  display: inline-block;
+  text-decoration: none;
+  color: #f9f9f9;
+  line-height: 1.6;
+  box-shadow: inset 0 -.1em 0 #ff4d4d;
+}
+
+#contact a:hover {
+  box-shadow: inset 0 -.6em 0 #ff4d4d;
+}
 
 /******************/
 /**POST & FILTERS**/
 /******************/
 
 #post {
-  background: #2d2d2d;
+  background: #151515;
   height: 4em;
   padding: 0 3em 0 3em;
   display: -webkit-flex;
@@ -241,7 +434,7 @@ header {
 
 /*#filters-expanded h3 */
 .filterSelected {
-  background: #2d2d2d;
+  background: #151515;
   color: white;
   height: 1.75em;
   padding: .65em 1em .3em 1em;
@@ -252,37 +445,46 @@ header {
 }
 
 .filterDefault {
-  color: #2d2d2d;
+  color: #151515;
   font-weight: bold;
   height: 1.75em;
   padding: .65em 1em .3em 1em;
   border-radius: 1.5em;
   margin: .3em .4em .3em 0em;
   background: transparent;
-  -webkit-box-shadow:inset 0 0 0 .2em #2d2d2d;
-  -moz-box-shadow:inset 0 0 0 .2em #2d2d2d;
-  box-shadow:inset 0 0 0 .2em #2d2d2d;
+  -webkit-box-shadow:inset 0 0 0 .2em #151515;
+  -moz-box-shadow:inset 0 0 0 .2em #151515;
+  box-shadow:inset 0 0 0 .2em #151515;
   cursor: pointer;
 }
 
 .filterDefault:hover {
-  background: #2d2d2d;
+  background: #151515;
   color: white;
 }
 
 #filters-expanded svg:hover {
-  fill: #2d2d2d;
+  fill: #151515;
 }
 
 /******************/
 /*****LISTINGS*****/
 /******************/
 
+.displayListingsContainer {
+  min-height: 30vh;
+}
+
+.displayListingsContainer > div:last-child {
+  border-bottom: none;
+}
+
 #listing {
   padding: 1em 3em 0em 3em;
   display: -webkit-flex;
   display: flex;
-  border-bottom: .1em solid #dbdbdb;
+/*  border-bottom: .1em solid #dbdbdb;*/
+  border-bottom: .1em solid #eee;
   cursor: pointer;
 }
 
@@ -398,7 +600,7 @@ header {
 
 .listing-expanded .groupA a {
   font-weight: bold;
-  color: #2d2d2d;
+  color: #151515;
   margin-right: 1.5em;
   box-shadow: inset 0 -.5em 0 #ffd9d9;
   text-decoration: none;
@@ -459,7 +661,7 @@ input, textarea {
   appearance: none;*/
   outline: none;
   border: none;
-  color: #2d2d2d;
+  color: #151515;
   font-size: 1rem;
   font-family: "Avenir Roman";
   line-height: 1.3em;
@@ -516,7 +718,7 @@ input:-webkit-autofill {
 }
 
 .adminNav button {
-  background: #2d2d2d;
+  background: #151515;
   color: white;
   border: none;
   height: 3.5em;
@@ -557,7 +759,8 @@ input:-webkit-autofill {
 
 #submitDescription h4 {
   margin: 0;
-  line-height: 1.6em;
+  line-height: 1.55em;
+  letter-spacing: .05rem;
 }
 
 #successDescription {
@@ -602,7 +805,7 @@ input:-webkit-autofill {
 
 #successDescription button {
   background: #FFF;
-  color: #2d2d2d;
+  color: #151515;
   height: 3.5em;
   outline: 0;
   width: 20em;
@@ -841,11 +1044,11 @@ select {
   justify-content: center;
   height: 4em;
   outline: 0;
-  margin: 2em 0em 1em 0em;
+  margin: 2em 0em 4em 0em;
 }
 
 .submitForm button {
-  background: #2d2d2d;
+  background: #151515;
   color: white;
   height: 3.5em;
   outline: 0;
@@ -945,7 +1148,7 @@ h6.error2 {
 }
 
 #editPending button {
-  background: #2d2d2d;
+  background: #151515;
   color: white;
   height: 3.5em;
   outline: 0;
@@ -977,7 +1180,7 @@ h6.error2 {
 
 .editingButtons button {
   height: 3.5em;
-  background: #2d2d2d;
+  background: #151515;
   color: #FFF;
   width: 20em;
   margin-bottom: 1em;
@@ -1086,6 +1289,7 @@ h6.error2 {
   color: red;
 }
 
+
 /*****************/
 /* MOBILE STYLES */
 /*****************/
@@ -1172,6 +1376,10 @@ h6.error2 {
 
 @media (max-width: 775px) {
 
+  #contact {
+    padding: 0em 4.5em 4.5em 4.5em;
+  }
+
   #editPending button {
     width: 13em;
   }
@@ -1196,7 +1404,7 @@ h6.error2 {
     letter-spacing: 0.01em;
   }
 
-  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry, #successDescription {
+  header, #post, #filters, #filters-expanded, #listing, .listing-expanded, .sorry, #successDescription, footer {
     padding-left: 1.5em;
     padding-right: 1.5em;
   }
@@ -1328,6 +1536,11 @@ eliminating 'location' from mobile version
 }
 
 @media (max-width: 500px) {
+
+  footer {
+    font-size: .9rem;
+  }
+
   .editing select {
     width: 89%;
   }

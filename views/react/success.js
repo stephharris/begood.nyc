@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { browserHistory } from 'react-router';
+import Layout from './layout';
 
 export default class Success extends React.Component {
 
@@ -31,6 +32,7 @@ export default class Success extends React.Component {
   render(){
     return(
       <div>
+        { window.location.pathname === '/submit/success' ? <Layout/> : '' }
         <div id="successDescription">
           <h4>Thanks for your submission - </h4>
           <h4>We'll be in touch shortly.</h4>

@@ -39,16 +39,16 @@ export default class Listings extends React.Component {
       )
      }else{
        return(
-           <div aria-expanded="false" tableindex="0" onClick={this.toggleView.bind(this, listing.route)} key={i}>
-           <ListingContracted listing={listing}/>
-           </div>)
+        <div aria-expanded="false" tableindex="0" onClick={this.toggleView.bind(this, listing.route)} key={i}>
+        <ListingContracted listing={listing}/>
+        </div>)
      }
     }) : (<h3 className="sorry">sorry! nothing to see here...</h3>);
   }
 
   render() {
     return (
-      <div>
+      <div className="displayListingsContainer">
       { this.displayListings(this.props.listings) }
       </div>
     )
