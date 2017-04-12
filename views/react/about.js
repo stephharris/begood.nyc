@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from './layout';
 import Footer from './footer';
-import Content from './about-content';
-import AboutSection from './about-section';
+import AboutTheProblemSection from './about-the-problem-section';
+import AboutTheMissionSection from './about-the-mission-section';
 
 export default class About extends React.Component {
 
@@ -17,8 +17,8 @@ export default class About extends React.Component {
         <Layout/>
         <div id="aboutBG">
           <div id="about">
-            <AboutSection content={Content.section1}/>
-            <AboutSection content={Content.section2}/>
+            <AboutTheProblemSection/>
+            <AboutTheMissionSection/>
           </div>
         </div>
         <Footer/>

@@ -132,7 +132,7 @@ export default function (props) {
           : ''
         }
       </div>
-      <textarea aria-describedby="requirments_error" aria-labelledby="volunteer_requirements" name="requirements" value={props.input.requirements} className="createBriefDescription" type="text" placeholder="voluteers will be sent a short training video and brief quiz to help prepare them for participation" maxLength="130"></textarea>
+      <textarea aria-describedby="requirments_error" aria-labelledby="volunteer_requirements" name="requirements" value={props.input.requirements} className="createBriefDescription" type="text" placeholder="volunteers will be sent a short training video and brief quiz to help prepare them for participation" maxLength="130"></textarea>
 
       <div id="errorCaseContainer">
         <label id="volunteer_moreInfoUrl">url (for more info.)<span style={{ color: '#ff4d4d' }}>*</span></label>

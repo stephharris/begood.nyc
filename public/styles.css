@@ -11,6 +11,12 @@
 }
 
 @font-face {
+    font-family: "Avenir Light";
+    src: url('fonts/Avenir.ttc') format('truetype');
+    font-weight: Light;
+}
+
+@font-face {
   font-family: "Avenir Black";
   src: url('fonts/Avenir Next.ttc');
   font-weight: Bold;
@@ -289,6 +295,13 @@ footer #socials {
   transition: max-height .3s ease-in-out;
   overflow: hidden;
 }
+
+.aboutSection > h3 {
+  margin: 0 0 1.5em 0;
+  font-weight: thin;
+font-family: "Avenir Light";
+}
+
 
 
 /******************/
@@ -754,13 +767,15 @@ input:-webkit-autofill {
 
 #submitDescription {
   background: #f9f9f9;
-  padding: 2em 4.5em 1em 4.5em;
+  padding: 2em 4.5em .5em 4.5em;
 }
 
-#submitDescription h4 {
+#submitDescription h1 {
   margin: 0;
   line-height: 1.55em;
-  letter-spacing: .05rem;
+  font-size: 2rem;
+/*  letter-spacing: .05rem;*/
+  font-weight: bolder;
 }
 
 #successDescription {
@@ -1302,7 +1317,7 @@ h6.error2 {
   }
 
   #submitDescription {
-  padding: 2em 3em 1em 3em;
+  padding: 2em 3em 0.5em 3em;
   }
 
   textarea {
@@ -1386,6 +1401,10 @@ h6.error2 {
 
   .editingButtons button {
     width: 19em;
+  }
+
+  #submitDescription h1 {
+    font-size: 1.5rem;
   }
 
 }
