@@ -19,7 +19,7 @@ let listings = [
     requirements: 'deep knowledge of beadwork, jewlery design or profitable arts, able to facilitate instructions to groups, must be patient/reliable',
     moreInfoUrl: 'http://www.wpaonline.org/wpaassets/Beadwork_Volunteer.pdf',
     contactEmail: 'srice@wpaonline.org',
-    expires: '2017-04-05'
+    expires: '2017-04-25'
   },
   {
     status: 'active',
@@ -37,7 +37,7 @@ let listings = [
     requirements: 'Volunteers will be sent a short training video and brief quiz to help prepare them for participation.',
     moreInfoUrl: 'https://unionsettlement.org/programs/senior-services/',
     contactEmail: 'volunteers@unionsettlement.org',
-    expires: '2017-04-02'
+    expires: '2017-04-22'
   },
    {
     status: 'active',

@@ -7,10 +7,8 @@ const morgan = require('morgan');
 let port = process.env.PORT || 3001;
 let models = require('./server/db/models/index.js');
 let Listing = models.Listing;
-const Login = require('./server/configure/credentials');
-const Credentials = Login.Credentials;
-const expressJWT = require('express-jwt');
-const jwt = require('jsonwebtoken');
+
+
 
 require('./server/configure')(app); // body-parsing middleware & file paths
 
@@ -29,7 +27,7 @@ app.use(function (err, req, res, next) {
 });
 
 
-Listing.sync()
+Listing.sync({})
     .then(function () {
       console.log('Sequelize models synced to Postgres')
     })

@@ -3,4 +3,6 @@ node_modules
 ./public/bundle.js
 ./public/bundle.js.map
 ./server/configure/credentials.js
+./server/env/development.js
+./server/env/production.js
 

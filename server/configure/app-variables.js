@@ -7,8 +7,11 @@ const indexPath = path.join(rootPath, './views/index.html');
 const publicPath = path.join(rootPath, './public');
 const browserPath = path.join(rootPath, './views');
 const npmPath = path.join(rootPath, './node_modules');
+const env = require(path.join(rootPath, './server/env'));
+
 
 module.exports = function (app) {
+  app.set('env', env);
   app.set('projectRoot', rootPath);
   app.set('npmPath', npmPath);
   app.set('indexHTMLPath', indexPath);

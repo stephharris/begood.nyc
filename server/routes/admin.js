@@ -11,6 +11,7 @@ const Credentials = Login.Credentials;
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const ENV = require('../env/index.js')
 module.exports = router;
 
 
@@ -55,6 +56,8 @@ router.put('/', function(req, res, next) {
 // verifying login request
 router.put('/login', function(req, res, next) {
   const { errors, isValid } = validateInput(req.body);
+  let p = process.env.PORT;
+  console.log('process env', p)
   if(!isValid) {
     res.status(400).json(errors);
   }else {
@@ -68,7 +71,7 @@ router.put('/login', function(req, res, next) {
     let start = moment();
     let end = expires;
 
-    const token = jwt.sign(payload, Credentials.jwtSecret);
+    const token = jwt.sign(payload, ENV.SESSION_SECRET);
     // simulates writing jwtToken to database
     Credentials.jwtToken = token;
     Credentials.timeout = [start, end];

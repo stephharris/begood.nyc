@@ -1,5 +1,6 @@
-var Sequelize = require('sequelize');
-var db = new Sequelize('postgres://localhost:5432/begood');
+const Sequelize = require('sequelize');
+const env = require('../../env');
+let db = new Sequelize(env.DATABASE_URL);
 
 let Listing = db.define('listing', {
 
