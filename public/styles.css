@@ -89,6 +89,10 @@ button.unstyled {
   cursor: pointer;
 }
 
+.test-container {
+  position: relative;
+  min-height: 100%;
+}
 
 /*****************/
 /* HEADER STYLES */
