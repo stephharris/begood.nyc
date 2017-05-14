@@ -125,7 +125,7 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="test-container">
         <Layout/>
         <Link style={{textDecoration: 'none'}} to="/submit">
         <div id="post">

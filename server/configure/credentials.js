@@ -2,8 +2,7 @@
 
 const Credentials = {
   username: 'steph',
-  password: 'steph',
-  jwtSecret: 'somesecretkeyforjsonwebtoken'
+  password: 'steph'
 }
 
 module.exports = {
