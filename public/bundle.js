@@ -66847,7 +66847,7 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { id: 'test-container' },
 	        _react2.default.createElement(_layout2.default, null),
 	        _react2.default.createElement(
 	          'div',
