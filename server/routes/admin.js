@@ -11,6 +11,7 @@ const Credentials = Login.Credentials;
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const env = require('../env');
 module.exports = router;
 
 
@@ -68,7 +69,7 @@ router.put('/login', function(req, res, next) {
     let start = moment();
     let end = expires;
 
-    const token = jwt.sign(payload, Credentials.jwtSecret);
+    const token = jwt.sign(payload, env.SESSION_SECRET);
     // simulates writing jwtToken to database
     Credentials.jwtToken = token;
     Credentials.timeout = [start, end];
